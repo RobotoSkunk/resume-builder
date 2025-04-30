@@ -26,3 +26,12 @@ files:
 
   - from: src/frontend/public
     to: app/public
+
+
+win:
+  target:
+    - nsis
+
+linux:
+  target:
+    - AppImage

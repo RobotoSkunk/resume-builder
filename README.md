@@ -22,8 +22,7 @@ paquetes, adelante, pero no aceptaré pull requests que tengan que ver con ello.
     - Para que **nodemon** haga efecto, ejecuta `npm run tscw` en una consola
     aparte.
 - `npm run tscw`: compila el backend en modo de vigilancia.
-- `npm run make`: compila el proyecto para ser usado en modo de
-producción.
+- `npm run make`: compila el proyecto para ser usado en modo de producción.
 
 
 ## Contribuciones
