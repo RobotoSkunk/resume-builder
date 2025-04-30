@@ -1,0 +1,28 @@
+asar: true
+executableName: resume-builder
+appId: com.robotoskunk.resume-builder
+
+asarUnpack:
+  - node_modules/next
+  - node_modules/@img
+  - node_modules/sharp
+  - '**\\*.{node,dll}'
+
+files:
+  - src/backend/dist
+  - assets
+
+  - from: src/frontend/.next/standalone/src/frontend
+    to: app
+
+  - from: src/frontend/.next/standalone
+    to: app
+    filter:
+      - '!**/.env'
+      - '!**/package.json'
+
+  - from: src/frontend/.next/static
+    to: app/.next/static
+
+  - from: src/frontend/public
+    to: app/public

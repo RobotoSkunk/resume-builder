@@ -1,0 +1,39 @@
+{
+	"name": "resume-builder",
+	"version": "0.1.0",
+	"private": true,
+	"main": "src/backend/dist/index.js",
+	"author": "Edgar Lima (RobotoSkunk)",
+	"description": "Una aplicación simple para construír currículums automáticamente porque me da flojera usar Word.",
+	"scripts": {
+		"dev": "npm run build:backend && concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev src/frontend --turbopack\" \"electron .\"",
+		"dev:watch": "concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev src/frontend --turbopack\" \"nodemon --exec electron .\"",
+		"build:backend": "tsc -p src/backend",
+		"build:backend:watch": "tsc -w -p src/backend",
+		"build": "npm run build:backend && next build src/frontend && electron-builder",
+		"prebuild": "next telemetry disable",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@electron-toolkit/utils": "^4.0.0",
+		"express": "^5.1.0",
+		"get-port-please": "^3.1.2",
+		"next": "15.3.1",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"source-map-support": "^0.5.21"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3",
+		"@types/express": "^5.0.1",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"concurrently": "^9.1.2",
+		"electron": "^36.0.0",
+		"electron-builder": "^26.0.12",
+		"eslint": "^9",
+		"eslint-config-next": "15.3.1",
+		"typescript": "^5"
+	}
+}
