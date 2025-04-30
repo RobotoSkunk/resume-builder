@@ -12,19 +12,24 @@ versiones diferentes del mismo currículum para trabajos específicos.
 ## Comandos
 
 Este programa usa **npm** por defecto. Si quieres usar otro administrador de
-paquetes porque no te gusta esperar un par de segundos por instalar paquetes
-que solo instalas una vez, adelante, pero no aceptaré pull requests que
-tengan que ver con ello.
+paquetes, adelante, pero no aceptaré pull requests que tengan que ver con ello.
 
 - `npm run dev`: inicia el programa en modo de desarrollo.
 - `npm run dev:watch`: lo mismo que el comando anterior, pero también ejecuta
 **nodemon** para ver cualquier cambio.
     - Requiere tener **nodemon** instalado globalmente, si no lo tienes
     instalado, ejecuta `npm i -g nodemon`.
-    - Para que **nodemon** haga efecto, ejecuta `npm run build:backend:watch` en
-    una consola aparte.
-- `npm run build`: compila el proyecto para ser usado en modo de producción.
-- `npm run build:backend:watch`: compila el backend en modo de vigilancia.
+    - Para que **nodemon** haga efecto, ejecuta `npm run tscw` en una consola
+    aparte.
+- `npm run tscw`: compila el backend en modo de vigilancia.
+- `npm run release`: compila el proyecto para ser usado en modo de
+producción para Linux por defecto.
+- `npm run release:win`: compila el proyecto para ser usado en modo de
+producción para Windows.
+- `npm run release:mac`: compila el proyecto para ser usado en modo de
+producción para macOS.
+- `npm run release:linux`: compila el proyecto para ser usado en modo de
+producción para Linux.
 
 
 ## Contribuciones

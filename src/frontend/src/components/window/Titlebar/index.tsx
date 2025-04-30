@@ -29,6 +29,9 @@ import iconUnmaximize from '@/assets/icons/window/unmaximize.svg';
 import iconClose from '@/assets/icons/window/close.svg';
 
 
+type CallbackBoolean = RobotoSkunk.IPC.CallbackListener<boolean>;
+
+
 export default function Titlebar()
 {
 	const [ focused, setFocused ] = useState(true);
@@ -36,12 +39,12 @@ export default function Titlebar()
 
 	useEffect(() =>
 	{
-		const onWindowFocus = (_: any, isFocused: boolean) =>
+		const onWindowFocus: CallbackBoolean = (_, isFocused) =>
 		{
 			setFocused(isFocused);
 		};
 
-		const onWindowMaximize = (_: any, isMaximized: boolean) =>
+		const onWindowMaximize: CallbackBoolean = (_, isMaximized) =>
 		{
 			document.body.setAttribute('maximized', isMaximized ? 'true' : 'false');
 			setMaximized(isMaximized);

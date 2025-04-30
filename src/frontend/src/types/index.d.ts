@@ -26,11 +26,11 @@ declare global
 	interface Window
 	{
 		api: {
-			invoke:         (channel: RobotoSkunk.IPC.Sender, data: any) => Promise<any>;
-			send:           (channel: RobotoSkunk.IPC.Sender, data: any) => void;
-			on:             (channel: string, callback: RobotoSkunk.IPC.CallbackListener<any, any>) => void;
-			once:           (channel: string, callback: RobotoSkunk.IPC.CallbackListener<any, any>) => void;
-			removeListener: (channel: string, callback: RobotoSkunk.IPC.CallbackListener<any, any>) => void;
+			invoke:         <T>(channel: RobotoSkunk.IPC.Sender, data: T) => Promise<T>;
+			send:           <T>(channel: RobotoSkunk.IPC.Sender, data: T) => void;
+			on:             <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
+			once:           <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
+			removeListener: <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
 
 			actions: {
 				setTitle: (title: string) => void;
@@ -40,11 +40,11 @@ declare global
 			}
 
 			events: {
-				onWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<any, boolean>) => void;
-				onWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<any, boolean>) => void;
+				onWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
+				onWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
 
-				removeWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<any, boolean>) => void;
-				removeWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<any, boolean>) => void;
+				removeWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
+				removeWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
 			}
 		}
 	}
@@ -73,7 +73,7 @@ declare global
 		}
 
 		namespace IPC {
-			type CallbackListener<TEvent, TArg> =  (event: TEvent, ...args: TArg[]) => void;
+			type CallbackListener<T> =  (event: Electron.IpcMainEvent, ...args: T[]) => void;
 		}
 	}
 }

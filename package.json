@@ -9,10 +9,13 @@
 		"dev": "npm run build:backend && concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev src/frontend --turbopack\" \"electron .\"",
 		"dev:watch": "concurrently -n \"NEXT,ELECTRON\" -c \"yellow,blue\" --kill-others \"next dev src/frontend --turbopack\" \"nodemon --exec electron .\"",
 		"build:backend": "tsc -p src/backend",
-		"build:backend:watch": "tsc -w -p src/backend",
-		"build": "npm run build:backend && next build src/frontend && electron-builder",
+		"tscw": "tsc -w -p src/backend",
+		"release:mac":   "npm run build:backend && next build src/frontend && electron-builder -m -p always",
+		"release:win":   "npm run build:backend && next build src/frontend && electron-builder -w -p always",
+		"release:linux": "npm run build:backend && next build src/frontend && electron-builder -l -p always",
+		"release": "npm run release:linux",
 		"prebuild": "next telemetry disable",
-		"lint": "next lint"
+		"lint": "next lint src/frontend"
 	},
 	"dependencies": {
 		"@electron-toolkit/utils": "^4.0.0",
@@ -35,5 +38,6 @@
 		"eslint": "^9",
 		"eslint-config-next": "15.3.1",
 		"typescript": "^5"
-	}
+	},
+	"packageManager": "npm@11.3.0"
 }

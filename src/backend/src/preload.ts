@@ -18,17 +18,17 @@
 
 import { contextBridge, ipcRenderer } from 'electron';
 
-type CallbackListener        = RobotoSkunk.IPC.CallbackListener<any, any>;
-type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<any, number>;
+type CallbackListener<T>     = RobotoSkunk.IPC.CallbackListener<T>;
+type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
 
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		invoke: (channel: string, data: any) => ipcRenderer.invoke(channel, data),
-		send: (channel: string, data: any) => ipcRenderer.send(channel, data),
-		on: (channel: string, callback: CallbackListener) => ipcRenderer.on(channel, callback),
-		once: (channel: string, callback: CallbackListener) => ipcRenderer.once(channel, callback),
-		removeListener: (channel: string, callback: CallbackListener) => ipcRenderer.removeListener(channel, callback),
+		invoke: <T>(channel: string, data: T) => ipcRenderer.invoke(channel, data),
+		send: <T>(channel: string, data: T) => ipcRenderer.send(channel, data),
+		on: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.on(channel, callback),
+		once: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.once(channel, callback),
+		removeListener: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.removeListener(channel, callback),
 
 		actions: {
 			setTitle: (title: string) => ipcRenderer.send('window/set-title', title),
