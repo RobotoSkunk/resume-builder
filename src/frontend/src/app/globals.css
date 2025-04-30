@@ -1,0 +1,96 @@
+/*
+ * Resume Builder, un programa para generar currículums vitae.
+ * Copyright (C) 2025  Edgar Lima (RobotoSkunk)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+:root {
+	--background: #ffffff;
+	--foreground: #333333;
+
+	--titlebar-background: #ffffff;
+	--titlebar-color: #333333;
+
+	--window-border: #222222;
+}
+
+/* @media (prefers-color-scheme: dark) {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
+} */
+
+
+:root {
+	--header-size: 30px;
+	--window-border-radius: 10px;
+}
+
+
+html,
+body {
+	max-width: 100vw;
+	min-height: 100vh;
+
+	overflow-x: hidden;
+
+	color: var(--foreground);
+	background: transparent;
+
+	border-radius: var(--window-border-radius);
+
+	margin: 0;
+	padding: 0;
+}
+
+#app {
+	display: block;
+
+	position: fixed;
+	top: var(--header-size);
+	left: 0;
+
+	width: calc(100vw - 2px);
+	height: calc(100vh - var(--header-size) - 1px);
+
+	margin: 0;
+	padding: 0;
+
+	border: 1px solid var(--window-border);
+	border-radius: 0 0 var(--window-border-radius) var(--window-border-radius);
+	border-top: 0;
+
+	background: var(--background);
+}
+
+body[maximized=true] #app {
+	width: 100vw;
+	height: calc(100vh - var(--header-size));
+
+	border: 0;
+	border-radius: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* @media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+} */
