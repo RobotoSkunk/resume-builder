@@ -26,12 +26,6 @@ declare global
 	interface Window
 	{
 		api: {
-			// invoke:         <T>(channel: RobotoSkunk.IPC.Sender, data: T) => Promise<T>;
-			// send:           <T>(channel: RobotoSkunk.IPC.Sender, data: T) => void;
-			// on:             <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
-			// once:           <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
-			// removeListener: <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
-
 			actions: {
 				setTitle: (title: string) => void;
 				minimize: () => void;
@@ -52,26 +46,6 @@ declare global
 
 	namespace RobotoSkunk
 	{
-		type WindowMessage = WindowMessageNotify | WindowMessageSetBackUrl | WindowMessageResetBackUrl;
-
-		interface WindowMessageNotify
-		{
-			type: 'notify';
-			message: string;
-			notificationType?: 'success' | 'info' | 'warning' | 'danger';
-		}
-
-		interface WindowMessageSetBackUrl
-		{
-			type: 'set-back-url';
-			url: string;
-		}
-
-		interface WindowMessageResetBackUrl
-		{
-			type: 'reset-back-url';
-		}
-
 		namespace IPC {
 			type CallbackListener<T> =  (event: Electron.IpcMainEvent, ...args: T[]) => void;
 		}

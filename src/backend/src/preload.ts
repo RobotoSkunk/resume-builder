@@ -24,12 +24,6 @@ type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		// invoke: <T>(channel: string, data: T) => ipcRenderer.invoke(channel, data),
-		// send: <T>(channel: string, data: T) => ipcRenderer.send(channel, data),
-		// on: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.on(channel, callback),
-		// once: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.once(channel, callback),
-		// removeListener: <T>(channel: string, callback: CallbackListener<T>) => ipcRenderer.removeListener(channel, callback),
-
 		actions: {
 			setTitle: (title: string) => ipcRenderer.send('window/set-title', title),
 			minimize: () => ipcRenderer.send('window/action', 0),

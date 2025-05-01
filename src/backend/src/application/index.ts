@@ -44,12 +44,6 @@ class AppWindow {
 
 		this.createWindow(width, height);
 
-		// this.app.on('activate', () => {
-		// 	if (BrowserWindow.getAllWindows().length === 0) {
-		// 		this.createWindow(width, height);
-		// 	}
-		// });
-
 		this.app.on('window-all-closed', () => {
 			if (process.platform !== 'darwin') {
 				this.app.quit();
