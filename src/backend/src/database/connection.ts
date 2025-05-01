@@ -25,6 +25,7 @@ import { ContextMigrationProvider } from './migrations/provider';
 
 import DatabaseSchema, { DatabaseSchemaType } from './schema';
 
+import fs from 'fs';
 import path from 'path';
 
 
@@ -71,6 +72,10 @@ class Database
 				break;
 		}
 
+
+		if (!fs.existsSync(this.dataDirectory)) {
+			fs.mkdirSync(this.dataDirectory, { recursive: true });
+		}
 
 		const dialect = new SqliteDialect({
 			database: new SQLite(

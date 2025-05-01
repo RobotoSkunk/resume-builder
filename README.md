@@ -34,6 +34,14 @@ contribuír en esto.
 Si quieres contribuír al proyecto, antes de hacer un pull request, primero abre
 una nueva issue y explícame qué cambios propones para el proyecto.
 
+### Instalación
+
+Después de clonar el repositorio, ejecuta los siguientes comandos.
+```bash
+npm i
+npm run electron:rebuild
+```
+
 ### Reglas básicas
 
 Todo código que escribas debe estar en inglés para tener coherencia con el resto

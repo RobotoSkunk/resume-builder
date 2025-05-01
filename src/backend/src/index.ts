@@ -26,9 +26,10 @@ import { app } from 'electron';
 
 import path from 'path';
 import AppWindow from './application';
+import Database from './database/connection';
 
 
-const splash = new AppWindow(app, true);
+// const splash = new AppWindow(app, true);
 const application = new AppWindow(app);
 
 
@@ -102,11 +103,21 @@ async function startNextJSServer()
 
 (async () =>
 {
+	app.database = new Database();
+
+	try {
+		await app.database.tryMigrateToLatest();
+
+		await app.database.testConnection();
+	} catch (e) {
+		console.error(e);
+		process.exit(-2);
+	}
+
+
 	app.setName('Resume Builder');
 	app.commandLine.appendSwitch('lang', 'es');
 
 	await application.start(1270, 720);
 	await loadFrontend(application);
-
-	splash.windowInstance.close();
 })();
