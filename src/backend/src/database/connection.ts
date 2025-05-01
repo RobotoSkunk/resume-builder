@@ -1,4 +1,3 @@
-
 /*
  * Resume Builder, un programa para generar currículums vitae.
  * Copyright (C) 2025  Edgar Lima (RobotoSkunk)
