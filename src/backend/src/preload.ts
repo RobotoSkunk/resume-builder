@@ -37,16 +37,14 @@ function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackL
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		actions: {
+		window: {
 			setTitle: (title: string) => ipcRenderer.send('window/set-title', title),
 			minimize: () => ipcRenderer.send('window/action', 0),
 			maximize: () => ipcRenderer.send('window/action', 1),
 			close:    () => ipcRenderer.send('window/action', 2),
-		},
 
-		events: {
-			onWindowFocus:    (callback: CallbackListenerBoolean) => callbackHandler('window/focus', callback),
-			onWindowMaximize: (callback: CallbackListenerBoolean) => callbackHandler('window/maximize', callback),
+			onFocus:    (callback: CallbackListenerBoolean) => callbackHandler('window/focus', callback),
+			onMaximize: (callback: CallbackListenerBoolean) => callbackHandler('window/maximize', callback),
 		},
 	}
 );

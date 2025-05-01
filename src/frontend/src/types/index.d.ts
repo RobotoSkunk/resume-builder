@@ -26,17 +26,16 @@ declare global
 	interface Window
 	{
 		api: {
-			actions: {
+			window: {
 				setTitle: (title: string) => void;
 				minimize: () => void;
 				maximize: () => void;
 				close:    () => void;
+
+				onFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
+				onMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
 			}
 
-			events: {
-				onWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
-				onWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
-			}
 		}
 	}
 

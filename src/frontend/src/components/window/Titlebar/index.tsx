@@ -36,20 +36,20 @@ export default function Titlebar()
 
 	useEffect(() =>
 	{
-		const removeOnWindowsFocus = window.api.events.onWindowFocus((isFocused) =>
+		const removeOnFocus = window.api.window.onFocus((isFocused) =>
 		{
 			setFocused(isFocused)
 		});
 
-		const removeOnWindowsMaximize = window.api.events.onWindowMaximize((isMaximized) =>
+		const removeOnMaximize = window.api.window.onMaximize((isMaximized) =>
 		{
 			document.body.setAttribute('maximized', isMaximized ? 'true' : 'false');
 			setMaximized(isMaximized);
 		});
 
 		return () => {
-			removeOnWindowsFocus();
-			removeOnWindowsMaximize();
+			removeOnFocus();
+			removeOnMaximize();
 		};
 	}, [ ]);
 
@@ -65,7 +65,7 @@ export default function Titlebar()
 				Resume Builder
 			</span>
 			<div className={ style.actions }>
-				<button onClick={ () => window.api.actions.minimize() }>
+				<button onClick={ () => window.api.window.minimize() }>
 					<Image
 						src={ iconMinimize }
 						alt='Minimizar'
@@ -73,7 +73,7 @@ export default function Titlebar()
 						width={ 10 }
 					/>
 				</button>
-				<button onClick={ () => window.api.actions.maximize() }>
+				<button onClick={ () => window.api.window.maximize() }>
 					<Image
 						src={ maximized ? iconUnmaximize : iconMaximize }
 						alt='Maximizar'
@@ -81,7 +81,7 @@ export default function Titlebar()
 						width={ 10 }
 					/>
 				</button>
-				<button onClick={ () => window.api.actions.close() }>
+				<button onClick={ () => window.api.window.close() }>
 					<Image
 						src={ iconClose }
 						alt='Cerrar'
