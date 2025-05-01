@@ -25,7 +25,7 @@ import './globals.css';
 
 
 export const metadata: Metadata = {
-  title: 'Resume Builder',
+	title: 'Resume Builder',
 };
 
 
