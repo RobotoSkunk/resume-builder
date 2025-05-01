@@ -26,11 +26,11 @@ declare global
 	interface Window
 	{
 		api: {
-			invoke:         <T>(channel: RobotoSkunk.IPC.Sender, data: T) => Promise<T>;
-			send:           <T>(channel: RobotoSkunk.IPC.Sender, data: T) => void;
-			on:             <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
-			once:           <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
-			removeListener: <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
+			// invoke:         <T>(channel: RobotoSkunk.IPC.Sender, data: T) => Promise<T>;
+			// send:           <T>(channel: RobotoSkunk.IPC.Sender, data: T) => void;
+			// on:             <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
+			// once:           <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
+			// removeListener: <T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>) => void;
 
 			actions: {
 				setTitle: (title: string) => void;
