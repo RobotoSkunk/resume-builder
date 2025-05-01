@@ -17,6 +17,7 @@
  */
 
 import { BrowserWindow } from 'electron';
+import { is } from '@electron-toolkit/utils';
 
 import ipcSender from './ipc/sender';
 import './ipc/listener';
@@ -76,7 +77,7 @@ class AppWindow {
 			transparent: true,
 			hasShadow: true,
 			webPreferences: {
-				devTools: process.env.NODE_ENV === 'development',
+				devTools: is.dev,
 				preload: path.join(this.app.getAppPath(), 'src', 'backend', 'dist', 'preload.js')
 			},
 			fullscreenable: false,
