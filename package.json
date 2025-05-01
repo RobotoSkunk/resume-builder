@@ -12,7 +12,8 @@
     "tscw": "tsc -w -p src/backend",
     "prebuild": "next telemetry disable",
     "lint": "next lint src/frontend",
-    "make": "npm run build:backend && next build src/frontend && electron-builder"
+    "make": "npm run build:backend && next build src/frontend && electron-builder",
+    "migration:create": "ts-node ./bin/migration-create.ts"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@electron/fuses": "^1.8.0",
     "@eslint/eslintrc": "^3",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.1",
     "@types/node": "^20",
     "@types/react": "^19",
