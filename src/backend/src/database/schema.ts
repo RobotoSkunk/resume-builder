@@ -22,7 +22,7 @@ import * as achievements            from './tables/achievements';
 import * as addresses               from './tables/addresses';
 import * as certifications          from './tables/certifications';
 import * as courses                 from './tables/courses';
-import * as education               from './tables/education';
+import * as education               from './tables/educations';
 import * as emailAddresses          from './tables/email-addresses';
 import * as experiences             from './tables/experiences';
 import * as jobTitlesAchievements   from './tables/job-titles-achievements';

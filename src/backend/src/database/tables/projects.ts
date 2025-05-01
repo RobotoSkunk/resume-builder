@@ -18,7 +18,7 @@
 
 export const tableName = 'projects';
 
-export enum ProjectPartitipationType
+export enum ProjectParticipationType
 {
 	DIRECTOR = 0,
 	COLLABORATOR = 1,
@@ -28,7 +28,7 @@ export interface DB_Projects
 {
 	id: string;
 	title: string;
-	partitipation_type: ProjectPartitipationType;
+	participation_type: ProjectParticipationType;
 	company: string;
 	description: string;
 	started_at: number;

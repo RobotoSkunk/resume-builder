@@ -30,7 +30,7 @@ export interface DB_PhoneNumbers
 	user_id: string;
 	type: PhoneNumberTypes;
 	country_code: number;
-	lada: number;
+	area_code: number;
 	phone: number;
 	extension: number;
 }

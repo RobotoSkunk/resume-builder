@@ -18,7 +18,7 @@
 
 export const tableName = 'certifications';
 
-export enum CertificationPartitipationType
+export enum CertificationParticipationType
 {
 	TEACHER = 0,
 	ATTENDEE = 1,
@@ -30,7 +30,7 @@ export interface DB_Certifications
 	id: string;
 	name: string;
 	institution: string;
-	partitipation_type: CertificationPartitipationType;
+	participation_type: CertificationParticipationType;
 	date: number;
 }
 

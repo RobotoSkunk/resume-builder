@@ -18,7 +18,7 @@
 
 export const tableName = 'courses';
 
-export enum CoursePartitipationType
+export enum CourseParticipationType
 {
 	SPEAKER = 0,
 	ATTENDEE = 1,
@@ -30,7 +30,7 @@ export interface DB_Courses
 	id: string;
 	name: string;
 	institution: string;
-	partitipation_type: CoursePartitipationType;
+	participation_type: CourseParticipationType;
 	date: number;
 }
 

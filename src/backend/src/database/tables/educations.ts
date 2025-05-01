@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const tableName = 'education';
+export const tableName = 'educations';
 
-export interface DB_Education
+export interface DB_Educations
 {
 	id: string;
 	institution_name: string;
@@ -34,4 +34,4 @@ export interface DB_Education
 }
 
 
-export type PartialDB = { [ tableName ]: DB_Education };
+export type PartialDB = { [ tableName ]: DB_Educations };
