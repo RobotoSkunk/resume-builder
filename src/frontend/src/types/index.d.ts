@@ -34,11 +34,8 @@ declare global
 			}
 
 			events: {
-				onWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
-				onWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
-
-				removeWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
-				removeWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => void;
+				onWindowFocus:    (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
+				onWindowMaximize: (callback: RobotoSkunk.IPC.CallbackListener<boolean>) => () => void;
 			}
 		}
 	}
@@ -47,7 +44,7 @@ declare global
 	namespace RobotoSkunk
 	{
 		namespace IPC {
-			type CallbackListener<T> =  (event: Electron.IpcMainEvent, ...args: T[]) => void;
+			type CallbackListener<T> =  (...args: T[]) => void;
 		}
 	}
 }

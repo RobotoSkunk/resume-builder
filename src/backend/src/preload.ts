@@ -22,6 +22,19 @@ import { contextBridge, ipcRenderer } from 'electron';
 type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
 
 
+function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>)
+{
+	const subscription = (_: Electron.IpcRendererEvent, ...args: T[]) => callback(...args);
+
+	ipcRenderer.on(channel, subscription);
+
+	return () =>
+	{
+		ipcRenderer.removeListener(channel, subscription);
+	};
+}
+
+
 contextBridge.exposeInMainWorld(
 	'api', {
 		actions: {
@@ -32,11 +45,8 @@ contextBridge.exposeInMainWorld(
 		},
 
 		events: {
-			onWindowFocus:    (callback: CallbackListenerBoolean) => ipcRenderer.on('window/focus',    callback),
-			onWindowMaximize: (callback: CallbackListenerBoolean) => ipcRenderer.on('window/maximize', callback),
-
-			removeWindowFocus:    (callback: CallbackListenerBoolean) => ipcRenderer.removeListener('window/focus',    callback),
-			removeWindowMaximize: (callback: CallbackListenerBoolean) => ipcRenderer.removeListener('window/maximize', callback),
+			onWindowFocus:    (callback: CallbackListenerBoolean) => callbackHandler('window/focus', callback),
+			onWindowMaximize: (callback: CallbackListenerBoolean) => callbackHandler('window/maximize', callback),
 		},
 	}
 );
