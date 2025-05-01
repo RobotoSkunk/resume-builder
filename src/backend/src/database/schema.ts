@@ -18,11 +18,49 @@
 
 import { Kysely } from 'kysely';
 
-import * as jobs from './tables/jobs';
+import * as achievements            from './tables/achievements';
+import * as addresses               from './tables/addresses';
+import * as certifications          from './tables/certifications';
+import * as courses                 from './tables/courses';
+import * as education               from './tables/education';
+import * as emailAddresses          from './tables/email-addresses';
+import * as experiences             from './tables/experiences';
+import * as jobTitlesAchievements   from './tables/job-titles-achievements';
+import * as jobTitlesCertifications from './tables/job-titles-certifications';
+import * as jobTitlesCourses        from './tables/job-titles-courses';
+import * as jobTitlesEducations     from './tables/job-titles-educations';
+import * as jobTitlesExperiences    from './tables/job-titles-experiences';
+import * as jobTitlesProjects       from './tables/job-titles-projects';
+import * as jobTitles               from './tables/job-titles';
+import * as languages               from './tables/languages';
+import * as phoneNumbers            from './tables/phone-numbers';
+import * as projects                from './tables/projects';
+import * as templates               from './tables/templates';
+import * as users                   from './tables/users';
+import * as webUrls                 from './tables/web-urls';
 
 
 export type DatabaseSchemaType =
-	jobs.PartialDB;
+	achievements.PartialDB &
+	addresses.PartialDB &
+	certifications.PartialDB &
+	courses.PartialDB &
+	education.PartialDB &
+	emailAddresses.PartialDB &
+	experiences.PartialDB &
+	jobTitlesAchievements.PartialDB &
+	jobTitlesCertifications.PartialDB &
+	jobTitlesCourses.PartialDB &
+	jobTitlesEducations.PartialDB &
+	jobTitlesExperiences.PartialDB &
+	jobTitlesProjects.PartialDB &
+	jobTitles.PartialDB &
+	languages.PartialDB &
+	phoneNumbers.PartialDB &
+	projects.PartialDB &
+	templates.PartialDB &
+	users.PartialDB &
+	webUrls.PartialDB;
 
 
 export type DatabaseSchema = Kysely<DatabaseSchemaType>;

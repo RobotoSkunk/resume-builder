@@ -1,0 +1,37 @@
+/*
+ * Resume Builder, un programa para generar currículums vitae.
+ * Copyright (C) 2025  Edgar Lima (RobotoSkunk)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+export const tableName = 'addresses';
+
+export interface DB_Addresses
+{
+	id: string;
+	user_id: string;
+	street: string;
+	number_ext?: number;
+	number_int?: number;
+	neighborhood: string;
+	postal_code?: number;
+	city: string;
+	state: string;
+	country: string;
+	is_active: boolean;
+}
+
+
+export type PartialDB = { [ tableName ]: DB_Addresses };

@@ -16,16 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export const tableName = 'jobs';
+export const tableName = 'job_titles_projects';
 
-export interface Jobs
+export interface DB_JobTitlesProjects
 {
-	title: string;
-	company: string;
-	description: string;
-	dateStart: Date;
-	dateEnd: Date;
+	job_title_id: string;
+	project_id: string;
 }
 
 
-export type PartialDB = { [ tableName ]: Jobs };
+export type PartialDB = { [ tableName ]: DB_JobTitlesProjects };
