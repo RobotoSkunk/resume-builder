@@ -16,4 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import './user';
+'use client';
+
+import style from './page.module.css';
+import Input from '@/components/Input';
+import InputImage from '@/components/ImageInput';
+
+
+export default function Home()
+{
+	return (
+		<main>
+			<form className={ style.form }>
+				<InputImage/>
+
+				<Input type='text' name='firstname' label='Nombre(s)'/>
+
+				<Input type='text' name='lastname' label='Apellido(s)'/>
+			</form>
+		</main>
+	);
+}

@@ -18,11 +18,6 @@
 
 declare global
 {
-	function Velocity (element: HTMLElement | NodeListOf<HTMLElement>,
-							properties: { [key: string]: string; },
-							options: object | number): void;
-
-
 	interface Window
 	{
 		api: {

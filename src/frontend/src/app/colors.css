@@ -16,4 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import './user';
+:root {
+	--background: #ffffff;
+	--foreground: #333333;
+
+	--titlebar-background: #ffffff;
+	--titlebar-color: #333333;
+
+	--window-border: #222222;
+
+	--input-border: #626262;
+}
+
+/* @media (prefers-color-scheme: dark) {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #ededed;
+	}
+} */
+

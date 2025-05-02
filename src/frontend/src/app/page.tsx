@@ -20,6 +20,13 @@
 
 import { useEffect } from 'react';
 
+type UserData = {
+	id: string;
+	firstname: string;
+	lastname: string;
+	picture: Buffer<ArrayBufferLike>;
+};
+
 
 export default function Home()
 {
@@ -27,20 +34,15 @@ export default function Home()
 	{
 		(async () =>
 		{
-			{
-				const response = await window.api.fetch<string>('/hello', 123);
+			const response = await window.api.fetch<UserData | undefined>('/user/get-info');
 
-				alert(JSON.stringify(response));
-			}
-			{
-				const response = await window.api.fetch<string>('/user/steve');
-
-				alert(JSON.stringify(response));
+			if (!response.body) {
+				location.href = '/user-data';
 			}
 		})();
 	}, []);
 
 	return (
-		<main></main>
+		<></>
 	);
 }

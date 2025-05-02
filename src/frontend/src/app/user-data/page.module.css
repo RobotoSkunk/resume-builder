@@ -16,14 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import router from '../router';
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 5;
 
-router.add('/hello', async (req) =>
-{
-	return `I got ${req.body[0]} numbers!`;
-});
+	min-height: 100vh;
+	margin: 0 auto;
+}
 
-router.add('/user/:name', async (req) =>
-{
-	return `Hi ${req.params.name}!`;
-});
+.form input {
+	width: 300px;
+}

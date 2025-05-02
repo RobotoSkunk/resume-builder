@@ -16,23 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-:root {
-	--background: #ffffff;
-	--foreground: #333333;
-
-	--titlebar-background: #ffffff;
-	--titlebar-color: #333333;
-
-	--window-border: #222222;
-}
-
-/* @media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
-} */
-
+@import url(./colors.css);
 
 :root {
 	--header-size: 30px;
@@ -84,9 +68,18 @@ body[maximized=true] #app {
 	border-radius: 0;
 }
 
+main {
+	min-width: 100vw;
+	min-height: 100vh;
+}
+
 a {
 	color: inherit;
 	text-decoration: none;
+}
+
+* {
+	user-select: none;
 }
 
 /* @media (prefers-color-scheme: dark) {
