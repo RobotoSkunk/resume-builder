@@ -28,11 +28,22 @@ export default function Home()
 	return (
 		<main>
 			<form className={ style.form }>
+				<h1>Ingresa tus datos</h1>
 				<InputImage/>
 
 				<Input type='text' name='firstname' label='Nombre(s)'/>
 
 				<Input type='text' name='lastname' label='Apellido(s)'/>
+
+				<h2>Dirección</h2>
+				<Input type='text' name='street' label='Calle'/>
+				<Input type='text' name='number_ext' label='Número exterior'/>
+				<Input type='text' name='number_int' label='Número interior'/>
+				<Input type='text' name='neighborhood' label='Colonia'/>
+				<Input type='text' name='postal_code' label='Código postal'/>
+				<Input type='text' name='city' label='Ciudad'/>
+				<Input type='text' name='state' label='Estado'/>
+				<Input type='text' name='country' label='País'/>
 			</form>
 		</main>
 	);

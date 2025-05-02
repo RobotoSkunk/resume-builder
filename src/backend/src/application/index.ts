@@ -73,7 +73,7 @@ class AppWindow
 			hasShadow: true,
 			webPreferences: {
 				devTools: is.dev,
-				preload: path.join(this.app.getAppPath(), 'src', 'backend', 'dist', 'preload.js')
+				preload: path.join(this.app.getAppPath(), 'src', 'backend', 'dist', 'preload.js'),
 			},
 			fullscreenable: false,
 			minWidth: this.splash ? 100 : 854,
