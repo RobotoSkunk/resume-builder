@@ -30,21 +30,23 @@ export default function Home()
 			<h1>Ingresa tus datos</h1>
 			<InputImage/>
 
-			<Input type='text' name='firstname' label='Nombre(s)'/>
+			<Input type='text' name='firstname' label='Nombre(s)' required/>
 
-			<Input type='text' name='lastname' label='Apellido(s)'/>
+			<Input type='text' name='lastname' label='Apellido(s)' required/>
 
 			<section>
 				<h2>Dirección</h2>
-				<Input type='text' name='street' label='Calle'/>
-				<Input type='number' name='number_ext' label='Número exterior'/>
-				<Input type='number' name='number_int' label='Número interior'/>
-				<Input type='text' name='neighborhood' label='Colonia'/>
+				<Input type='text' name='street' label='Calle' required/>
+				<Input type='number' name='number_ext' label='Número exterior' min={ 0 }/>
+				<Input type='number' name='number_int' label='Número interior' min={ 0 }/>
+				<Input type='text' name='neighborhood' label='Colonia' required/>
 				<Input type='number' name='postal_code' label='Código postal'/>
-				<Input type='text' name='city' label='Ciudad'/>
-				<Input type='text' name='state' label='Estado'/>
-				<Input type='text' name='country' label='País'/>
+				<Input type='text' name='city' label='Ciudad' required/>
+				<Input type='text' name='state' label='Estado' required/>
+				<Input type='text' name='country' label='País' required/>
 			</section>
+
+			<p><span className={ style.required }>*</span> Campos requeridos</p>
 		</form>
 	);
 }

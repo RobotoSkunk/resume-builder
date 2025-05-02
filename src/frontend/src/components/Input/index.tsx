@@ -29,11 +29,17 @@ export default function Input({
 	type,
 	name,
 	value,
+	min,
+	max,
+	required,
 }: {
 	label: string,
 	type: HTMLInputTypeAttribute,
 	name: string,
 	value?: string,
+	min?: number,
+	max?: number,
+	required?: boolean,
 })
 {
 	const [ id, setId ] = useState('');
@@ -54,6 +60,11 @@ export default function Input({
 				ref={ inputRef }
 				name={ name }
 				defaultValue={ value }
+
+				min={ min }
+				max={ max }
+				required={ required }
+				
 				className={ roboto400.className }
 				onInput={ () =>
 				{
@@ -63,7 +74,7 @@ export default function Input({
 				}}
 			/>
 			<label htmlFor={ id } className={ hasValue ? style['has-value'] : '' }>
-				{ label }
+				{ label }{ required ? <span className={ style.required }>*</span> : '' }
 			</label>
 		</div>
 	);

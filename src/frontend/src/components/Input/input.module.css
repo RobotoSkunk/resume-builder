@@ -60,3 +60,7 @@ label.has-value,
 
 	scale: 0.8;
 }
+
+.required {
+	color: var(--foreground-required);
+}

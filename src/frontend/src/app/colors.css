@@ -25,6 +25,7 @@
 
 	--window-border: #222222;
 
+	--foreground-required: #db5454;
 
 	--border-active: var(--foreground);
 	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
