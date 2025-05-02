@@ -26,8 +26,8 @@
 	margin: 15px;
 
 	border-radius: 10px;
-	border: 1px solid var(--input-border);
-	background-color: var(--input-border);
+	border: 1px solid var(--border-active);
+	background-color: var(--border-active);
 
 	& img,
 	& label {

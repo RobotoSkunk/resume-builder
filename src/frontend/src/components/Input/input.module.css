@@ -26,7 +26,15 @@
 		padding: 13px 10px;
 
 		border-radius: 5px;
-		border: 1px solid var(--input-border);
+		border: 1px solid var(--border-inactive);
+
+		outline: none;
+
+		transition: border-color 0.2s ease;
+	}
+
+	& input:focus {
+		border-color: var(--border-active);
 	}
 
 	& label {

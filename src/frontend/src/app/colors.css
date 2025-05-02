@@ -25,7 +25,9 @@
 
 	--window-border: #222222;
 
-	--input-border: #626262;
+
+	--border-active: var(--foreground);
+	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
 }
 
 /* @media (prefers-color-scheme: dark) {

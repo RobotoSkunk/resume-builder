@@ -16,17 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-.form {
+.form,
+.form section {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	row-gap: 5;
+}
 
+.form {
 	min-height: 100vh;
-	margin: 0 auto;
+	margin: 25px auto;
 }
 
 .form input {
 	width: 300px;
+}
+
+.form h1,
+.form h2 {
+	margin-bottom: 5px;
 }
