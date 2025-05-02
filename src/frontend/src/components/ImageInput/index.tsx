@@ -45,17 +45,21 @@ export default function InputImage()
 		}
 
 		const input = inputRef.current;
+		const file = input.files ? input.files[0] : undefined;
 
-		if (!input.files) {
+		if (!file) {
 			return;
 		}
-
-		const file = input.files[0];
 
 		const fileReader = new FileReader();
 
 		fileReader.onload = (ev) =>
 		{
+			if (!(ev.target?.result as string).startsWith('data:image/')) {
+				alert('Por favor, elije una imagen válida.');
+				return;
+			}
+
 			setImgData(ev.target?.result as string);
 		};
 
