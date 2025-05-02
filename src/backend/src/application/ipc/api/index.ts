@@ -16,45 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
+import { ipcMain } from 'electron';
 
-import './api';
+import router from './router';
+import RSRequest from './router/request';
+
+import './routes';
 
 
-ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index: number) =>
+ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, ...args: unknown[]) =>
 {
-	const window = BrowserWindow.getFocusedWindow();
+	console.log('Got something!!');
 
-	if (window) {
-		switch (index) {
-			case 0:
-				window.minimize();
-				break;
+	const route = router.get(endpoint);
 
-			case 1:
-				if (window.isMaximized()) {
-					window.restore();
-				} else {
-					window.maximize();
-				}
-				break;
+	if (route) {
+		const req = new RSRequest(args);
+		req.setParams(route.params);
 
-			case 2:
-				window.close();
-				break;
-		}
+		const response = await route.handler(req);
+
+		event.reply('api/fetch', { code: 0, body: response });
+		return;
 	}
-});
 
-ipcMain.on('window/set-title', async (_: Electron.IpcMainEvent, title: string) =>
-{
-	const window = BrowserWindow.getFocusedWindow();
-
-	window?.setTitle(title);
-});
-
-
-ipcMain.on('window/dark-mode', async (_: Electron.IpcMainEvent, darkMode: boolean) =>
-{
-	nativeTheme.themeSource = darkMode ? 'dark' : 'light';
+	event.reply('api/fetch', { code: -1 });
 });

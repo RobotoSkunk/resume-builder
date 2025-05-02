@@ -16,45 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
+import router from '../router';
 
-import './api';
-
-
-ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index: number) =>
+router.add('/hello', async (req) =>
 {
-	const window = BrowserWindow.getFocusedWindow();
-
-	if (window) {
-		switch (index) {
-			case 0:
-				window.minimize();
-				break;
-
-			case 1:
-				if (window.isMaximized()) {
-					window.restore();
-				} else {
-					window.maximize();
-				}
-				break;
-
-			case 2:
-				window.close();
-				break;
-		}
-	}
+	return `I got ${req.body[0]} numbers!`;
 });
 
-ipcMain.on('window/set-title', async (_: Electron.IpcMainEvent, title: string) =>
+router.add('/user/:name', async (req) =>
 {
-	const window = BrowserWindow.getFocusedWindow();
-
-	window?.setTitle(title);
-});
-
-
-ipcMain.on('window/dark-mode', async (_: Electron.IpcMainEvent, darkMode: boolean) =>
-{
-	nativeTheme.themeSource = darkMode ? 'dark' : 'light';
+	return `Hi ${req.params.name}!`;
 });

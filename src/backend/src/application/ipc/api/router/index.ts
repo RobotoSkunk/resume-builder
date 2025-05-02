@@ -16,31 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-'use client';
+import { RSRouter } from './router';
 
-import { useEffect } from 'react';
+const router = new RSRouter();
 
-
-export default function Home()
-{
-	useEffect(() =>
-	{
-		(async () =>
-		{
-			{
-				const response = await window.api.fetch<string>('/hello', 123);
-
-				alert(JSON.stringify(response));
-			}
-			{
-				const response = await window.api.fetch<string>('/user/steve');
-
-				alert(JSON.stringify(response));
-			}
-		})();
-	}, []);
-
-	return (
-		<main></main>
-	);
-}
+export default router;

@@ -16,31 +16,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-'use client';
-
-import { useEffect } from 'react';
-
-
-export default function Home()
-{
-	useEffect(() =>
-	{
-		(async () =>
-		{
-			{
-				const response = await window.api.fetch<string>('/hello', 123);
-
-				alert(JSON.stringify(response));
-			}
-			{
-				const response = await window.api.fetch<string>('/user/steve');
-
-				alert(JSON.stringify(response));
-			}
-		})();
-	}, []);
-
-	return (
-		<main></main>
-	);
-}
+import './test';

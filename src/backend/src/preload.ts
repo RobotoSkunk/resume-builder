@@ -19,6 +19,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
+type RSResponse = { code: number, body: unknown };
 
 
 function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>)
@@ -36,25 +37,35 @@ function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackL
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		fetch: <T, TArgs>(channel: string, ...args: TArgs[]): Promise<T[]> =>
+		fetch: (endpoint: string, ...args: unknown[]): Promise<RSResponse> =>
 		{
 			return new Promise((resolve, reject) =>
 			{
-				const listener = (_: Electron.IpcRendererEvent, ...args: T[]) =>
+				const channel = 'api/fetch';
+
+				const listener = (_: Electron.IpcRendererEvent, resArgs: RSResponse) =>
 				{
 					try {
-						resolve(args);
+						resolve(resArgs);
 
 					} catch (e) {
 						reject(e);
 
 					} finally {
+						clearTimeout(timeout);
+
 						ipcRenderer.removeListener(channel, listener);
 					}
 				};
 
-				ipcRenderer.on(`api/${channel}`, listener);
-				ipcRenderer.send(`api/${channel}`, args);
+				ipcRenderer.on(channel, listener);
+				ipcRenderer.send(channel, endpoint, args);
+
+				const timeout = setTimeout(() =>
+				{
+					ipcRenderer.removeListener(channel, listener);
+					reject(`Request '${endpoint}' took too long to respond...`);
+				}, 10000);
 			});
 		},
 

@@ -16,45 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
-
-import './api';
+import RSRequest from './request';
 
 
-ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index: number) =>
+export type RSRoutingHandler = (req: Omit<RSRequest, 'setParams'>) => Promise<unknown>;
+
+export class RSRouterNode
 {
-	const window = BrowserWindow.getFocusedWindow();
+	public name: string;
+	public isDynamic: boolean;
 
-	if (window) {
-		switch (index) {
-			case 0:
-				window.minimize();
-				break;
+	public handler?: RSRoutingHandler;
+	public children: Map<string, RSRouterNode> = new Map();
+	public dynamicChild?: RSRouterNode;
 
-			case 1:
-				if (window.isMaximized()) {
-					window.restore();
-				} else {
-					window.maximize();
-				}
-				break;
 
-			case 2:
-				window.close();
-				break;
-		}
+	public constructor(name: string, isDynamic: boolean = false)
+	{
+		this.name = name;
+		this.isDynamic = isDynamic;
 	}
-});
-
-ipcMain.on('window/set-title', async (_: Electron.IpcMainEvent, title: string) =>
-{
-	const window = BrowserWindow.getFocusedWindow();
-
-	window?.setTitle(title);
-});
-
-
-ipcMain.on('window/dark-mode', async (_: Electron.IpcMainEvent, darkMode: boolean) =>
-{
-	nativeTheme.themeSource = darkMode ? 'dark' : 'light';
-});
+}
