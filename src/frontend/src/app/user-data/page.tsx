@@ -23,7 +23,7 @@ import Input from '@/components/Input';
 import InputImage from '@/components/ImageInput';
 
 
-export default function Home()
+export default function Page()
 {
 	return (
 		<form className={ style.form }>
