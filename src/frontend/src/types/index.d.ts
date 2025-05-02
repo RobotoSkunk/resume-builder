@@ -26,6 +26,8 @@ declare global
 	interface Window
 	{
 		api: {
+			fetch: <T, TArgs>(channel: string, ...args: TArgs[]) => Promise<T[]>;
+
 			window: {
 				setTitle: (title: string) => void;
 				minimize: () => void;

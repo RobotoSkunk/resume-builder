@@ -29,6 +29,7 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
+    "@electron-toolkit/eslint-config": "^2.1.0",
     "@electron/fuses": "^1.8.0",
     "@electron/rebuild": "^4.0.1",
     "@eslint/eslintrc": "^3",

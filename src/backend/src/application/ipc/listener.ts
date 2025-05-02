@@ -18,7 +18,8 @@
 
 import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
 
-ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index) => {
+ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index: number) =>
+{
 	const window = BrowserWindow.getFocusedWindow();
 
 	if (window) {
@@ -42,13 +43,15 @@ ipcMain.on('window/action', async (_: Electron.IpcMainEvent, index) => {
 	}
 });
 
-ipcMain.on('window/set-title', async (_: Electron.IpcMainEvent, title: string) => {
+ipcMain.on('window/set-title', async (_: Electron.IpcMainEvent, title: string) =>
+{
 	const window = BrowserWindow.getFocusedWindow();
 
 	window?.setTitle(title);
 });
 
 
-ipcMain.on('window/dark-mode', async (_: Electron.IpcMainEvent, darkMode: boolean) => {
+ipcMain.on('window/dark-mode', async (_: Electron.IpcMainEvent, darkMode: boolean) =>
+{
 	nativeTheme.themeSource = darkMode ? 'dark' : 'light';
 });

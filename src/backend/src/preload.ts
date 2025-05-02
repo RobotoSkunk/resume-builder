@@ -18,7 +18,6 @@
 
 import { contextBridge, ipcRenderer } from 'electron';
 
-// type CallbackListener<T>     = RobotoSkunk.IPC.CallbackListener<T>;
 type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
 
 
@@ -37,6 +36,28 @@ function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackL
 
 contextBridge.exposeInMainWorld(
 	'api', {
+		fetch: <T, TArgs>(channel: string, ...args: TArgs[]): Promise<T[]> =>
+		{
+			return new Promise((resolve, reject) =>
+			{
+				const listener = (_: Electron.IpcRendererEvent, ...args: T[]) =>
+				{
+					try {
+						resolve(args);
+
+					} catch (e) {
+						reject(e);
+
+					} finally {
+						ipcRenderer.removeListener(channel, listener);
+					}
+				};
+
+				ipcRenderer.on(`api/${channel}`, listener);
+				ipcRenderer.send(`api/${channel}`, args);
+			});
+		},
+
 		window: {
 			setTitle: (title: string) => ipcRenderer.send('window/set-title', title),
 			minimize: () => ipcRenderer.send('window/action', 0),

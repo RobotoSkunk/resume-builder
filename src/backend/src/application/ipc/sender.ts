@@ -21,20 +21,24 @@ import { BrowserWindow } from 'electron';
 
 export default function setSender(window: BrowserWindow)
 {
-	window.on('focus', () => {
+	window.on('focus', () =>
+	{
 		window.webContents.send('window/focus', true);
 	});
 
-	window.on('blur', () => {
+	window.on('blur', () =>
+	{
 		window.webContents.send('window/focus', false);
 	});
 
 
-	window.on('maximize', () => {
+	window.on('maximize', () =>
+	{
 		window.webContents.send('window/maximize', true);
 	});
 
-	window.on('unmaximize', () => {
+	window.on('unmaximize', () =>
+	{
 		window.webContents.send('window/maximize', false);
 	});
 }

@@ -25,7 +25,8 @@ import './ipc/listener';
 import path from 'path';
 
 
-class AppWindow {
+class AppWindow
+{
 	private window: BrowserWindow;
 	private app: Electron.App;
 	private splash: boolean;
