@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
-   sodipodi:docname="default-user-cut.svg"
+   sodipodi:docname="default-user.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:document-units="px"
-     inkscape:zoom="0.53102946"
-     inkscape:cx="448.18606"
-     inkscape:cy="177.95623"
+     inkscape:zoom="1.5019781"
+     inkscape:cx="240.34971"
+     inkscape:cy="293.94569"
      inkscape:window-width="1920"
      inkscape:window-height="1052"
      inkscape:window-x="0"
@@ -39,21 +39,21 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:1;fill:#c2e7f6;stroke-width:0.499999;stroke-linejoin:round;fill-opacity:1"
+       style="opacity:1;fill:#d1dbe0;stroke-width:0.499999;stroke-linejoin:round;fill-opacity:1"
        id="rect1"
        width="132.29167"
        height="132.29167"
        x="0"
        y="0" />
     <circle
-       style="opacity:1;fill:#2f607e;fill-opacity:1;stroke-width:0.654913;stroke-linejoin:round"
+       style="opacity:1;fill:#738aa2;fill-opacity:1;stroke-width:0.654913;stroke-linejoin:round"
        id="path1"
        cx="66.145836"
        cy="44.970379"
        r="32.648972" />
     <path
        id="path2"
-       style="opacity:1;fill:#2f607e;fill-opacity:1;stroke-width:1.37277;stroke-linejoin:round"
+       style="opacity:1;fill:#738aa2;fill-opacity:1;stroke-width:1.37277;stroke-linejoin:round"
        d="M 66.145832 82.961343 A 68.435875 68.435875 0 0 0 0.44390055 132.29166 L 131.84518 132.29166 A 68.435875 68.435875 0 0 0 66.145832 82.961343 z " />
   </g>
 </svg>
