@@ -29,6 +29,10 @@
 	border: 1px solid var(--border-active);
 	background-color: var(--border-active);
 
+	&:focus-within {
+		outline: solid;
+	}
+
 	& img,
 	& label {
 		position: absolute;

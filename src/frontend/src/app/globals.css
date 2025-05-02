@@ -44,13 +44,13 @@ body {
 	display: block;
 
 	position: fixed;
-	top: var(--header-size);
+	top: calc(var(--header-size) + 1px);
 	left: 0;
 
 	overflow-x: hidden;
 
 	width: calc(100vw - 2px);
-	height: calc(100vh - var(--header-size) - 1px);
+	height: calc(100vh - var(--header-size) - 2px);
 
 	margin: 0;
 	padding: 0;
@@ -63,6 +63,8 @@ body {
 }
 
 body[maximized=true] #app {
+	top: var(--header-size);
+
 	width: 100vw;
 	height: calc(100vh - var(--header-size));
 
@@ -86,6 +88,7 @@ h1, h2, h3, h4, h5, h6 {
 
 * {
 	user-select: none;
+	scroll-behavior: smooth;
 }
 
 /* @media (prefers-color-scheme: dark) {
