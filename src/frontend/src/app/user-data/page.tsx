@@ -26,27 +26,25 @@ import InputImage from '@/components/ImageInput';
 export default function Home()
 {
 	return (
-		<main>
-			<form className={ style.form }>
-				<h1>Ingresa tus datos</h1>
-				<InputImage/>
+		<form className={ style.form }>
+			<h1>Ingresa tus datos</h1>
+			<InputImage/>
 
-				<Input type='text' name='firstname' label='Nombre(s)'/>
+			<Input type='text' name='firstname' label='Nombre(s)'/>
 
-				<Input type='text' name='lastname' label='Apellido(s)'/>
+			<Input type='text' name='lastname' label='Apellido(s)'/>
 
-				<section>
-					<h2>Dirección</h2>
-					<Input type='text' name='street' label='Calle'/>
-					<Input type='number' name='number_ext' label='Número exterior'/>
-					<Input type='number' name='number_int' label='Número interior'/>
-					<Input type='text' name='neighborhood' label='Colonia'/>
-					<Input type='number' name='postal_code' label='Código postal'/>
-					<Input type='text' name='city' label='Ciudad'/>
-					<Input type='text' name='state' label='Estado'/>
-					<Input type='text' name='country' label='País'/>
-				</section>
-			</form>
-		</main>
+			<section>
+				<h2>Dirección</h2>
+				<Input type='text' name='street' label='Calle'/>
+				<Input type='number' name='number_ext' label='Número exterior'/>
+				<Input type='number' name='number_int' label='Número interior'/>
+				<Input type='text' name='neighborhood' label='Colonia'/>
+				<Input type='number' name='postal_code' label='Código postal'/>
+				<Input type='text' name='city' label='Ciudad'/>
+				<Input type='text' name='state' label='Estado'/>
+				<Input type='text' name='country' label='País'/>
+			</section>
+		</form>
 	);
 }

@@ -20,6 +20,7 @@
 
 :root {
 	--header-size: 30px;
+	--window-border-width: 1px;
 	--window-border-radius: 10px;
 }
 
@@ -41,40 +42,42 @@ body {
 }
 
 #app {
-	display: block;
+	display: flex;
+	flex-direction: column;
+
+	overflow: hidden;
 
 	position: fixed;
-	top: calc(var(--header-size) + 1px);
+	top: 0;
 	left: 0;
 
-	overflow-x: hidden;
-
-	width: calc(100vw - 2px);
-	height: calc(100vh - var(--header-size) - 2px);
+	width: calc(100vw - var(--window-border-width) * 2);
+	height: calc(100vh - var(--window-border-width) * 2);
 
 	margin: 0;
 	padding: 0;
 
-	border: 1px solid var(--window-border);
-	border-radius: 0 0 var(--window-border-radius) var(--window-border-radius);
-	border-top: 0;
+	border: var(--window-border-width) solid var(--window-border);
+	border-radius: var(--window-border-radius);
 
-	background: var(--background);
+	background: var(--window-border);
 }
 
 body[maximized=true] #app {
-	top: var(--header-size);
-
 	width: 100vw;
-	height: calc(100vh - var(--header-size));
+	height: 100vh;
 
 	border: 0;
 	border-radius: 0;
 }
 
 main {
-	min-width: 100vw;
-	min-height: 100vh;
+	overflow-x: hidden;
+
+	width: 100%;
+	height: 100%;
+
+	background: var(--background);
 }
 
 a {

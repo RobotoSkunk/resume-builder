@@ -37,10 +37,12 @@ export default function RootLayout({
 	return (
 		<html lang='es'>
 			<body className={ roboto400.className }>
-				<Titlebar/>
-
 				<div id='app'>
-					{ children }
+					<Titlebar/>
+
+					<main>
+						{ children }
+					</main>
 				</div>
 			</body>
 		</html>
