@@ -18,15 +18,40 @@
 
 'use client';
 
+import { type FormEvent, type RefObject, useRef } from 'react';
+
 import style from './page.module.css';
+
 import Input from '@/components/Input';
 import InputImage from '@/components/ImageInput';
 
 
 export default function Page()
 {
+	const formRef: RefObject<HTMLFormElement | null> = useRef(null);
+
+	function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
+	{
+		const form = formRef.current;
+
+		ev.preventDefault();
+
+		if (!form) {
+			return;
+		}
+
+		if (!form.checkValidity()) {
+			form.reportValidity();
+		}
+	}
+
+
 	return (
-		<form className={ style.form }>
+		<form
+			className={ style.form }
+			ref={ formRef }
+			onSubmit={ onSubmitHandler }
+		>
 			<h1>Ingresa tus datos</h1>
 			<InputImage/>
 
@@ -47,6 +72,10 @@ export default function Page()
 			</section>
 
 			<p><span className={ style.required }>*</span> Campos requeridos</p>
+
+			<button>
+				Guardar Cambios
+			</button>
 		</form>
 	);
 }
