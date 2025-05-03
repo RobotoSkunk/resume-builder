@@ -16,28 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import RSRequest from './request';
+import { app } from 'electron';
+import router from '../../router';
 
 
-export type RSRoutingHandler<TBody> = (req: Omit<RSRequest<TBody>, 'setParams'>) => Promise<{
-	code: number,
-	message: string,
-	data?: unknown,
-}>;
-
-export class RSRouterNode
+router.add('/user/get-info', async (req) =>
 {
-	public name: string;
-	public isDynamic: boolean;
+	const db = app.database.conn;
 
-	public handler?: RSRoutingHandler<unknown>;
-	public children: Map<string, RSRouterNode> = new Map();
-	public dynamicChild?: RSRouterNode;
+	const [ userData ] = await db
+		.selectFrom('users')
+		.selectAll()
+		.limit(1)
+		.execute();
 
 
-	public constructor(name: string, isDynamic: boolean = false)
-	{
-		this.name = name;
-		this.isDynamic = isDynamic;
-	}
-}
+	return {
+		code: 0,
+		message: 'ok',
+		data: userData,
+	};
+});

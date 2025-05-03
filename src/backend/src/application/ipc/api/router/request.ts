@@ -60,20 +60,20 @@ export interface ParamsDictionary
 }
 
 
-class RSRequest
+class RSRequest<TBody>
 {
-	private __body?: unknown[];
+	private __body?: TBody;
 	private __params: ParamsDictionary;
 
 
-	constructor(body: unknown[])
+	constructor(body: TBody)
 	{
 		this.__body = body;
 		this.__params = {};
 	}
 
 
-	public get body(): unknown[]
+	public get body(): TBody
 	{
 		return this.__body;
 	}

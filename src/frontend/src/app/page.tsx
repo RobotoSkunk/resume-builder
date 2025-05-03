@@ -36,7 +36,7 @@ export default function Home()
 		{
 			const response = await window.api.fetch<UserData | undefined>('/user/get-info');
 
-			if (!response.body) {
+			if (!response.data) {
 				location.href = '/user-data';
 			}
 		})();

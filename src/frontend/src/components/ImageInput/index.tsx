@@ -18,14 +18,19 @@
 
 'use client';
 
-import { RefObject, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
 
 import style from './input.module.css';
 
 import defaultUserImg from '@/assets/icons/default-user.svg';
 
 
-export default function InputImage()
+export default function InputImage({
+	name,
+}: {
+	name: string,
+})
 {
 	const [ id, setId ] = useState('');
 
@@ -38,14 +43,9 @@ export default function InputImage()
 	}, [ ]);
 
 
-	function handleInput()
+	function handleInput(ev: ChangeEvent<HTMLInputElement>)
 	{
-		if (!inputRef.current) {
-			return;
-		}
-
-		const input = inputRef.current;
-		const file = input.files ? input.files[0] : undefined;
+		const file = ev.target.files ? ev.target.files[0] : undefined;
 
 		if (!file) {
 			return;
@@ -61,6 +61,10 @@ export default function InputImage()
 			}
 
 			setImgData(ev.target?.result as string);
+
+			if (inputRef.current) {
+				inputRef.current.value = ev.target?.result as string;
+			}
 		};
 
 		fileReader.readAsDataURL(file);
@@ -68,20 +72,25 @@ export default function InputImage()
 
 
 	return (
-		<div className={ style.container }>
-			<label htmlFor={ id }>
-				<img
-					src={ imgData === '' ? defaultUserImg.src : imgData }
-					alt=''
+		<>
+			<input type='hidden' name={ name } ref={ inputRef }/>
+
+			<div className={ style.container }>
+				<label htmlFor={ id }>
+					<Image
+						src={ imgData === '' ? defaultUserImg : imgData }
+						alt=''
+						width={ 200 }
+						height={ 200 }
+					/>
+				</label>
+				<input
+					id={ id }
+					type='file'
+					accept='image/*'
+					onChange={ handleInput }
 				/>
-			</label>
-			<input
-				id={ id }
-				type='file'
-				ref={ inputRef }
-				accept='image/*'
-				onChange={ handleInput }
-			/>
-		</div>
+			</div>
+		</>
 	);
 }

@@ -18,7 +18,7 @@
 
 'use client';
 
-import { type FormEvent, type RefObject, useRef } from 'react';
+import { type FormEvent } from 'react';
 
 import style from './page.module.css';
 
@@ -28,20 +28,27 @@ import InputImage from '@/components/ImageInput';
 
 export default function Page()
 {
-	const formRef: RefObject<HTMLFormElement | null> = useRef(null);
-
-	function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
+	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
 	{
-		const form = formRef.current;
+		const form = ev.currentTarget;
 
 		ev.preventDefault();
 
-		if (!form) {
-			return;
-		}
-
 		if (!form.checkValidity()) {
 			form.reportValidity();
+		}
+
+		const formData = new FormData(form);
+
+		const data: { [ key: string ]: unknown } = {};
+		formData.forEach((value, key) => data[key] = value);
+
+		const response = await window.api.fetch('/user/create', data);
+
+		if (response.code !== 0) {
+			alert(response.message);
+		} else {
+			location.href = '/';
 		}
 	}
 
@@ -49,11 +56,10 @@ export default function Page()
 	return (
 		<form
 			className={ style.form }
-			ref={ formRef }
 			onSubmit={ onSubmitHandler }
 		>
 			<h1>Ingresa tus datos</h1>
-			<InputImage/>
+			<InputImage name='picture'/>
 
 			<Input type='text' name='firstname' label='Nombre(s)' required/>
 

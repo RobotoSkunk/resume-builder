@@ -37,7 +37,7 @@ function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackL
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		fetch: (endpoint: string, ...args: unknown[]): Promise<RSResponse> =>
+		fetch: (endpoint: string, args: unknown): Promise<RSResponse> =>
 		{
 			return new Promise((resolve, reject) =>
 			{
@@ -60,6 +60,8 @@ contextBridge.exposeInMainWorld(
 
 				ipcRenderer.on(channel, listener);
 				ipcRenderer.send(channel, endpoint, args);
+
+				console.log('args: ', args);
 
 				const timeout = setTimeout(() =>
 				{

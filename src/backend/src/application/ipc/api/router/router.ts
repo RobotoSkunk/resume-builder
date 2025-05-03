@@ -19,9 +19,9 @@
 import { RSRouterNode, RSRoutingHandler } from './node';
 
 
-export interface RSRouterResponse
+export interface RSRouterResponse<TBody>
 {
-	handler: RSRoutingHandler;
+	handler: RSRoutingHandler<TBody>;
 	params: { [key: string]: string };
 }
 
@@ -31,7 +31,7 @@ export class RSRouter
 	private root: RSRouterNode = new RSRouterNode('/');
 
 
-	public add(path: string, handler: RSRoutingHandler): void
+	public add<TBody>(path: string, handler: RSRoutingHandler<TBody>): void
 	{
 		if (typeof path !== 'string') {
 			throw new TypeError('The path must be a string.');
@@ -131,7 +131,7 @@ export class RSRouter
 		}
 	}
 
-	public get(path: string): RSRouterResponse | undefined
+	public get(path: string): RSRouterResponse<unknown> | undefined
 	{
 		if (typeof path !== 'string') {
 			throw new TypeError('The path must be a string.');
