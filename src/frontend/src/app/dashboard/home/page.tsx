@@ -18,39 +18,50 @@
 
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useContext, useEffect, useState, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
 import Input from '@/components/Input';
 import InputImage from '@/components/ImageInput';
+import { UserDataContext } from '../context';
 
 
 export default function Page()
 {
-	const [ userId, setUserId ] = useState<string>('');
-	const [ firstname, setFirstname ] = useState<string>('');
-	const [ lastname, setLastname ] = useState<string>('');
+	const userContext = useContext(UserDataContext);
 	const [ picture, setPicture ] = useState<string | undefined>(undefined);
 
 	useEffect(() =>
 	{
-		(async () =>
-		{
-			const response = await window.api.fetch<UserData>('/user/get-info');
+		if (!userContext.data) {
+			return;
+		}
 
-			if (response.code === 0) {
-				const data = response.data as UserData;
+		const pictureBuffer = Buffer.from(userContext.data.picture);
 
-				const pictureBuffer = Buffer.from(data.picture);
+		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+	}, [ userContext ]);
+	
 
-				setUserId(data.id);
-				setFirstname(data.firstname);
-				setLastname(data.lastname);
-				setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
-			}
-		})();
-	}, [ ]);
+	// useEffect(() =>
+	// {
+	// 	(async () =>
+	// 	{
+	// 		const response = await window.api.fetch<UserData>('/user/get-info');
+
+	// 		if (response.code === 0) {
+	// 			const data = response.data as UserData;
+
+	// 			const pictureBuffer = Buffer.from(data.picture);
+
+	// 			setUserId(data.id);
+	// 			setFirstname(data.firstname);
+	// 			setLastname(data.lastname);
+	// 			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+	// 		}
+	// 	})();
+	// }, [ ]);
 
 
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
@@ -68,12 +79,12 @@ export default function Page()
 		const data: { [ key: string ]: unknown } = {};
 		formData.forEach((value, key) => data[key] = value);
 
-		const response = await window.api.fetch('/user/update', data);
+		const response = await window.api.fetch<UserData>('/user/update', data);
 
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			location.reload();
+			userContext.updateData(response.data as UserData);
 		}
 	}
 
@@ -83,17 +94,19 @@ export default function Page()
 			className={ style.form }
 			onSubmit={ onSubmitHandler }
 		>
-			<input type='hidden' name='id' value={ userId }/>
+			<input type='hidden' name='id' value={ userContext.data ? userContext.data.id : '' }/>
 
-			<InputImage name='picture' defaultSrc={ picture } required={ !userId }/>
+			<InputImage name='picture' defaultSrc={ picture } required={ !(userContext.data?.id) }/>
 
-			<Input type='text' name='firstname' label='Nombre(s)' value={ firstname } required/>
+			<div className={ style.fullname }>
+				<Input type='text' name='firstname' label='Nombre(s)' value={ userContext.data?.firstname } required/>
 
-			<Input type='text' name='lastname' label='Apellido(s)' value={ lastname } required/>
+				<Input type='text' name='lastname' label='Apellido(s)' value={ userContext.data?.lastname } required/>
+			</div>
 
 			<p><span className={ style.required }>*</span> Campos requeridos</p>
 
-			<button>
+			<button className='generic'>
 				Guardar Cambios
 			</button>
 		</form>

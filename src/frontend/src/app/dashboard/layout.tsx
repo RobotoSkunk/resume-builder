@@ -25,6 +25,7 @@ import style from './layout.module.css';
 
 import defaultImage from '@/assets/icons/default-user.svg';
 import Link from 'next/link';
+import { UserDataContext } from './context';
 
 
 
@@ -34,8 +35,7 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
-	const [ firstname, setFirstname ] = useState<string>('...');
-	const [ lastname, setLastname ] = useState<string>('');
+	const [ userData, setUserData ] = useState<UserData | null>(null);
 	const [ picture, setPicture ] = useState<string | null>(null);
 
 	useEffect(() =>
@@ -45,19 +45,31 @@ export default function Dashboard({
 			const response = await window.api.fetch<UserData>('/user/get-info');
 
 			if (response.code === 0) {
-				const data = response.data as UserData;
-
-				const pictureBuffer = Buffer.from(data.picture);
-
-				setFirstname(data.firstname);
-				setLastname(data.lastname);
-				setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+				setUserData(response.data as UserData);
 			}
 		})();
 	}, []);
 
+	useEffect(() =>
+	{
+		if (!userData) {
+			return;
+		}
+
+		const pictureBuffer = Buffer.from(userData.picture);
+
+		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+	}, [ userData ]);
+
+
+	function updateUserData(data: UserData) 
+	{
+		setUserData(data);
+	}
+
+
 	return (
-		<>
+		<UserDataContext.Provider value={ { data: userData, updateData: updateUserData } }>
 			<div className={ style.sidebar }>
 				<Image
 					src={ picture ? picture : defaultImage }
@@ -66,7 +78,9 @@ export default function Dashboard({
 					width={ 180 }
 					height={ 180 }
 				/>
-				<b className={ style.fullname }>{ firstname } { lastname }</b>
+				<b className={ style.fullname }>
+					{ userData ? userData.firstname : '...' } { userData?.lastname }
+				</b>
 				<div className={ style.sections }>
 					<Link href='home'>Inicio</Link>
 					<Link className={ picture ? '' : style.disabled } href='education'>Educación</Link>
@@ -80,6 +94,6 @@ export default function Dashboard({
 			<div className={ style.content }>
 				{ children }
 			</div>
-		</>
+		</UserDataContext.Provider>
 	);
 }

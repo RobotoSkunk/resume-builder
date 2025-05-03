@@ -101,6 +101,29 @@ img, a {
 	-webkit-user-drag: none;
 }
 
+button.generic {
+	border: 0;
+	border-radius: 5px;
+
+	padding: 10px 15px;
+
+	font-family: inherit;
+	font-size: 1em;
+
+	cursor: pointer;
+	color: var(--background);
+
+	background: color-mix(in srgb, var(--border-active), white 20%);
+
+	transition: background 0.2s ease;
+
+	&:hover,
+	&:focus {
+		background: var(--border-active);
+	}
+}
+
+
 * {
 	user-select: none;
 	outline: none;

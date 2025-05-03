@@ -16,25 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.form {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	row-gap: 5px;
-}
+'use client';
 
-.fullname {
-	display: flex;
-	flex-direction: row;
-	column-gap: 15px;
+import { createContext } from 'react';
 
-	& input {
-		width: 200px;
-	}
-}
 
-.required {
-	color: var(--foreground-required);
-}
-
+export const UserDataContext = createContext<{
+	data: UserData | null;
+	updateData: (data: UserData) => void;
+}>({
+	data: null,
+	updateData: (_) => {},
+});

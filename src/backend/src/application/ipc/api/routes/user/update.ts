@@ -91,23 +91,54 @@ router.add<Body>('/user/update', async (req) =>
 				})
 				.where('id', '=', data.id)
 				.execute();
-		} else {
-			await db
-				.insertInto('users')
-				.values({
-					id: crypto.randomUUID(),
+
+			if (!pictureBuffer) {
+				const [ user ] = await db
+					.selectFrom('users')
+					.select('picture')
+					.where('id', '=', data.id)
+					.execute();
+
+				pictureBuffer = user.picture;
+			}
+
+			return {
+				code: 0,
+				message: 'ok',
+				data: {
+					id: data.id,
 					firstname: data.firstname,
 					lastname: data.lastname,
 					picture: pictureBuffer,
-				})
-				.execute();
+				}
+			};
 		}
+		const userId = crypto.randomUUID();
+
+		await db
+			.insertInto('users')
+			.values({
+				id: userId,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				picture: pictureBuffer,
+			})
+			.execute();
+
+		return {
+			code: 0,
+			message: 'ok',
+			data: {
+				id: userId,
+				firstname: data.firstname,
+				lastname: data.lastname,
+				picture: pictureBuffer,
+			}
+		};
 
 	} catch (e) {
 		console.error(e);
 
 		return { code: -2, message: 'Algo salió mal...' };
 	}
-
-	return { code: 0, message: 'ok' };
 });
