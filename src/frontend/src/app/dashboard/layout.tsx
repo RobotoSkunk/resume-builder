@@ -34,7 +34,7 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
-	const [ firstname, setFirstname ] = useState<string>('');
+	const [ firstname, setFirstname ] = useState<string>('...');
 	const [ lastname, setLastname ] = useState<string>('');
 	const [ picture, setPicture ] = useState<string | null>(null);
 
@@ -43,13 +43,16 @@ export default function Dashboard({
 		(async () =>
 		{
 			const response = await window.api.fetch<UserData>('/user/get-info');
-			const data = response.data as UserData;
 
-			const pictureBuffer = Buffer.from(data.picture);
+			if (response.code === 0) {
+				const data = response.data as UserData;
 
-			setFirstname(data.firstname);
-			setLastname(data.lastname);
-			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+				const pictureBuffer = Buffer.from(data.picture);
+
+				setFirstname(data.firstname);
+				setLastname(data.lastname);
+				setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+			}
 		})();
 	}, []);
 

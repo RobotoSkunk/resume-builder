@@ -30,9 +30,11 @@ import defaultUserImg from '@/assets/icons/default-user.svg';
 
 export default function InputImage({
 	name,
+	required,
 	defaultSrc,
 }: {
 	name: string,
+	required?: boolean,
 	defaultSrc?: string,
 })
 {
@@ -108,6 +110,7 @@ export default function InputImage({
 					type='file'
 					accept='image/*'
 					onChange={ handleInput }
+					required={ required }
 				/>
 			</div>
 		</>

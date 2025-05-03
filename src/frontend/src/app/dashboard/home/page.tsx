@@ -28,6 +28,7 @@ import InputImage from '@/components/ImageInput';
 
 export default function Page()
 {
+	const [ userId, setUserId ] = useState<string>('');
 	const [ firstname, setFirstname ] = useState<string>('');
 	const [ lastname, setLastname ] = useState<string>('');
 	const [ picture, setPicture ] = useState<string | undefined>(undefined);
@@ -37,13 +38,17 @@ export default function Page()
 		(async () =>
 		{
 			const response = await window.api.fetch<UserData>('/user/get-info');
-			const data = response.data as UserData;
 
-			const pictureBuffer = Buffer.from(data.picture);
+			if (response.code === 0) {
+				const data = response.data as UserData;
 
-			setFirstname(data.firstname);
-			setLastname(data.lastname);
-			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+				const pictureBuffer = Buffer.from(data.picture);
+
+				setUserId(data.id);
+				setFirstname(data.firstname);
+				setLastname(data.lastname);
+				setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+			}
 		})();
 	}, [ ]);
 
@@ -63,7 +68,7 @@ export default function Page()
 		const data: { [ key: string ]: unknown } = {};
 		formData.forEach((value, key) => data[key] = value);
 
-		const response = await window.api.fetch('/user/create', data);
+		const response = await window.api.fetch('/user/update', data);
 
 		if (response.code !== 0) {
 			alert(response.message);
@@ -78,23 +83,13 @@ export default function Page()
 			className={ style.form }
 			onSubmit={ onSubmitHandler }
 		>
-			<InputImage name='picture' defaultSrc={ picture }/>
+			<input type='hidden' name='id' value={ userId }/>
+
+			<InputImage name='picture' defaultSrc={ picture } required={ !userId }/>
 
 			<Input type='text' name='firstname' label='Nombre(s)' value={ firstname } required/>
 
 			<Input type='text' name='lastname' label='Apellido(s)' value={ lastname } required/>
-
-			<section>
-				<h2>Dirección</h2>
-				<Input type='text' name='street' label='Calle' required/>
-				<Input type='number' name='number_ext' label='Número exterior' min={ 0 }/>
-				<Input type='number' name='number_int' label='Número interior' min={ 0 }/>
-				<Input type='text' name='neighborhood' label='Colonia' required/>
-				<Input type='number' name='postal_code' label='Código postal'/>
-				<Input type='text' name='city' label='Ciudad' required/>
-				<Input type='text' name='state' label='Estado' required/>
-				<Input type='text' name='country' label='País' required/>
-			</section>
 
 			<p><span className={ style.required }>*</span> Campos requeridos</p>
 

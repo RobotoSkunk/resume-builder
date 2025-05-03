@@ -25,17 +25,7 @@ export default function Home()
 {
 	useEffect(() =>
 	{
-		(async () =>
-		{
-			const response = await window.api.fetch('/user/exists');
-
-			if (response.code !== 0) {
-				location.href = '/user-data';
-				return;
-			}
-
-			location.href = '/dashboard/home';
-		})();
+		location.href = '/dashboard/home';
 	}, []);
 
 	return (
