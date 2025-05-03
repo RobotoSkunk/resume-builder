@@ -16,25 +16,57 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-:root {
-	--background: #ffffff;
-	--foreground: #333333;
+.navigator {
+	--color: color-mix(in srgb, var(--border-active), transparent 50%);
 
-	--titlebar-background: #ffffff;
-	--titlebar-color: #333333;
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	align-items: center;
 
-	--window-border: #474747;
+	width: 80%;
+	height: 50px;
 
-	--foreground-required: #db5454;
+	border-bottom: 1px solid var(--color);
 
-	--border-active: var(--foreground);
-	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
+	margin: 50px auto;
+
+	& a {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		position: relative;
+
+		flex-grow: 1;
+		height: 100%;
+
+		transition: background 0.3s ease;
+
+		&:not(:last-child)::after {
+			content: '';
+	
+			display: block;
+	
+			position: absolute;
+			top: 50%;
+			right: 0px;
+	
+			transform: translateY(-50%);
+	
+			width: 1px;
+			height: 80%;
+	
+			background: var(--color);
+		}
+
+		&:hover,
+		&:focus {
+			background: color-mix(in srgb, var(--color), transparent 50%);
+		}
+	}
 }
 
-/* @media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
-} */
-
+.content {
+	margin: 0 auto;
+}

@@ -16,25 +16,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-:root {
-	--background: #ffffff;
-	--foreground: #333333;
+'use client';
 
-	--titlebar-background: #ffffff;
-	--titlebar-color: #333333;
+import Link from 'next/link';
+import style from './layout.module.css';
 
-	--window-border: #474747;
 
-	--foreground-required: #db5454;
-
-	--border-active: var(--foreground);
-	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
+export default function Dashboard({
+	children,
+}: {
+	children: React.ReactNode,
+})
+{
+	return (
+		<>
+			<div className={ style.navigator }>
+				<Link href='/dashboard/home'>
+					<b>Principal</b>
+				</Link>
+				<Link href='/dashboard/home/directions'>
+					<b>Direcciones</b>
+				</Link>
+				<Link href='/dashboard/home/contact'>
+					<b>Contacto</b>
+				</Link>
+				<Link href='/dashboard/home/languages'>
+					<b>Idiomas</b>
+				</Link>
+				<Link href='/dashboard/home/titles'>
+					<b>Títulos profesionales</b>
+				</Link>
+			</div>
+			<div className={ style.content }>
+				{ children }
+			</div>
+		</>
+	);
 }
-
-/* @media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
-} */
-

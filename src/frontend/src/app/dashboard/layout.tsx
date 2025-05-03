@@ -69,12 +69,12 @@ export default function Dashboard({
 				<b className={ style.fullname }>{ firstname } { lastname }</b>
 				<div className={ style.sections }>
 					<Link href='home'>Inicio</Link>
-					<Link href='education'>Educación</Link>
-					<Link href='experience'>Experiencia</Link>
-					<Link href='courses'>Cursos</Link>
-					<Link href='achievements'>Logros</Link>
-					<Link href='certifications'>Certificaciones</Link>
-					<Link href='projects'>Proyectos</Link>
+					<Link className={ picture ? '' : style.disabled } href='education'>Educación</Link>
+					<Link className={ picture ? '' : style.disabled } href='experience'>Experiencia</Link>
+					<Link className={ picture ? '' : style.disabled } href='courses'>Cursos</Link>
+					<Link className={ picture ? '' : style.disabled } href='achievements'>Logros</Link>
+					<Link className={ picture ? '' : style.disabled } href='certifications'>Certificaciones</Link>
+					<Link className={ picture ? '' : style.disabled } href='projects'>Proyectos</Link>
 				</div>
 			</div>
 			<div className={ style.content }>
