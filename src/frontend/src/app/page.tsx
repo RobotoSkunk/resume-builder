@@ -18,18 +18,24 @@
 
 'use client';
 
-import { useEffect } from 'react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+import defaultImage from '@/assets/icons/default-user.svg';
+
 
 type UserData = {
 	id: string;
 	firstname: string;
 	lastname: string;
-	picture: Buffer<ArrayBufferLike>;
+	picture: string;
 };
 
 
 export default function Home()
 {
+	const [ picture, setPicture ] = useState<string | null>(null);
+
 	useEffect(() =>
 	{
 		(async () =>
@@ -38,11 +44,21 @@ export default function Home()
 
 			if (!response.data) {
 				location.href = '/user-data';
+				return;
 			}
+
+			setPicture(response.data.picture);
 		})();
 	}, []);
 
 	return (
-		<></>
+		<>
+			<Image
+				src={ picture ? picture : defaultImage }
+				alt=''
+				width={ 512 }
+				height={ 512 }
+			/>
+		</>
 	);
 }

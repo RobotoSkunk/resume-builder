@@ -80,8 +80,7 @@ export default function InputImage({
 					<Image
 						src={ imgData === '' ? defaultUserImg : imgData }
 						alt=''
-						width={ 200 }
-						height={ 200 }
+						fill
 					/>
 				</label>
 				<input

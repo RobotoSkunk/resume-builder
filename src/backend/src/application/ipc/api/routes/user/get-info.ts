@@ -17,6 +17,8 @@
  */
 
 import { app } from 'electron';
+import { loadImage } from '@napi-rs/canvas';
+
 import router from '../../router';
 
 
@@ -30,10 +32,23 @@ router.add('/user/get-info', async (req) =>
 		.limit(1)
 		.execute();
 
+	if (userData) {
+		const picture = await loadImage(userData.picture);
+		const pictureBuffer = Buffer.from(picture.src);
+
+		return {
+			code: 0,
+			message: 'ok',
+			data: {
+				firstname: userData.firstname,
+				lastname: userData.lastname,
+				picture: `data:image/png;base64,${pictureBuffer.toString('base64')}`,
+			},
+		};
+	}
 
 	return {
-		code: 0,
-		message: 'ok',
-		data: userData,
-	};
+		code: 1,
+		message: '',
+	}
 });

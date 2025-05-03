@@ -17,6 +17,7 @@
  */
 
 import { app } from 'electron';
+import { loadImage, createCanvas } from '@napi-rs/canvas';
 
 import crypto from 'crypto';
 
@@ -39,8 +40,44 @@ router.add<Body>('/user/create', async (req) =>
 	const db = app.database.conn;
 	const data = req.body;
 
-	const base64 = data.picture.split(',')[1];
-	const buffer = Buffer.from(base64, 'base64');
+
+	var pictureBuffer: Buffer;
+
+	{
+		const base64 = data.picture.split(',')[1];
+		const buffer = Buffer.from(base64, 'base64');
+
+		const image = await loadImage(buffer);
+		const ratio = image.height / image.width;
+
+		if (image.width < 512 || image.height < 512) {
+			return {
+				code: 1,
+				message: 'La imagen es demasiado pequeña, usa una imagen de más de 512 píxeles de alto y ancho.'
+			}
+		}
+
+
+		const canvas = createCanvas(512, 512);
+		const context = canvas.getContext('2d');
+
+		if (image.width > image.height) {
+			const newWidth = 512 / ratio;
+
+			context.drawImage(image, -(newWidth - 512) / 2, 0, newWidth, 512);
+
+		} else if (image.width < image.height) {
+			const newHeight = ratio * 512;
+
+			context.drawImage(image, 0, -(newHeight - 512) / 2, 512, newHeight);
+
+		} else {
+			context.drawImage(image, 0, 0, 512, 512);
+		}
+
+		pictureBuffer = await canvas.encode('png');
+	}
+
 
 	try {
 		const [ user ] = await db
@@ -49,7 +86,7 @@ router.add<Body>('/user/create', async (req) =>
 				id: crypto.randomUUID(),
 				firstname: data.firstname,
 				lastname: data.lastname,
-				picture: buffer,
+				picture: pictureBuffer,
 			})
 			.returning('id')
 			.execute();
