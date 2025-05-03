@@ -71,11 +71,16 @@ export default function Dashboard({
 					height={ 180 }
 				/>
 				<b className={ style.fullname }>{ firstname } { lastname }</b>
-				<Link href='#'>AAAAA</Link>
-				<Link href='#'>AAAAA</Link>
-				<Link href='#'>AAAAA</Link>
-				<Link href='#'>AAAAA</Link>
-				<Link href='#'>AAAAA</Link>
+				<div className={ style.sections }>
+					<Link href='home'>Inicio</Link>
+					<Link href='titles'>Títulos profesionales</Link>
+					<Link href='education'>Educación</Link>
+					<Link href='experience'>Experiencia</Link>
+					<Link href='courses'>Cursos</Link>
+					<Link href='achievements'>Logros</Link>
+					<Link href='certifications'>Certificaciones</Link>
+					<Link href='projects'>Proyectos</Link>
+				</div>
 			</div>
 			<div className={ style.content }>
 				{ children }

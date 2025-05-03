@@ -23,7 +23,6 @@
 .sidebar {
 	--radius: calc(var(--window-border-radius) - 1px);
 
-
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -45,6 +44,47 @@
 	background: #d9d9d8;
 }
 
+.sidebar a {
+	--padding-x: 20px;
+
+	position: relative;
+	width: calc(100% - var(--padding-x) * 2);
+
+	padding: 15px var(--padding-x);
+
+	&::before {
+		content: '';
+
+		display: block;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		width: 0;
+		height: 100%;
+
+		background: #00000030;
+
+		transition: width 0.25s ease;
+	}
+
+	&:hover::before,
+	&:focus::before {
+		width: 100%;
+	}
+}
+
+
+.sections {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	width: 100%;
+}
+
 .picture {
 	border: 2px solid var(--border-active);
 	border-radius: 10px;
@@ -56,6 +96,8 @@
 
 .fullname {
 	font-size: 1.2em;
+
+	margin-bottom: 25px;
 }
 
 
