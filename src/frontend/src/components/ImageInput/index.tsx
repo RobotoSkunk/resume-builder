@@ -30,8 +30,10 @@ import defaultUserImg from '@/assets/icons/default-user.svg';
 
 export default function InputImage({
 	name,
+	defaultSrc,
 }: {
 	name: string,
+	defaultSrc?: string,
 })
 {
 	const [ id, setId ] = useState('');
@@ -42,7 +44,11 @@ export default function InputImage({
 	useEffect(() =>
 	{
 		setId(crypto.randomUUID());
-	}, [ ]);
+
+		if (defaultSrc) {
+			setImgData(defaultSrc);
+		}
+	}, [ defaultSrc ]);
 
 
 	function handleInput(ev: ChangeEvent<HTMLInputElement>)

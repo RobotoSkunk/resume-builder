@@ -50,7 +50,18 @@ export default function Input({
 	useEffect(() =>
 	{
 		setId(crypto.randomUUID());
-	}, [ ]);
+
+		checkValue();
+	}, [ value ]);
+
+
+	function checkValue()
+	{
+		if (inputRef.current) {
+			setHasValue(inputRef.current.value !== '');
+		}
+	}
+
 
 	return (
 		<div className={ style.container }>
@@ -66,12 +77,7 @@ export default function Input({
 				required={ required }
 				
 				className={ roboto400.className }
-				onInput={ () =>
-				{
-					if (inputRef.current) {
-						setHasValue(inputRef.current.value !== '');
-					}
-				}}
+				onInput={ checkValue }
 			/>
 			<label htmlFor={ id } className={ hasValue ? style['has-value'] : '' }>
 				{ label }{ required ? <span className={ style.required }>*</span> : '' }

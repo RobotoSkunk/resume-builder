@@ -18,7 +18,7 @@
 
 'use client';
 
-import { type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
@@ -28,6 +28,26 @@ import InputImage from '@/components/ImageInput';
 
 export default function Page()
 {
+	const [ firstname, setFirstname ] = useState<string>('');
+	const [ lastname, setLastname ] = useState<string>('');
+	const [ picture, setPicture ] = useState<string | undefined>(undefined);
+
+	useEffect(() =>
+	{
+		(async () =>
+		{
+			const response = await window.api.fetch<UserData>('/user/get-info');
+			const data = response.data as UserData;
+
+			const pictureBuffer = Buffer.from(data.picture);
+
+			setFirstname(data.firstname);
+			setLastname(data.lastname);
+			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+		})();
+	}, [ ]);
+
+
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
 	{
 		const form = ev.currentTarget;
@@ -48,7 +68,7 @@ export default function Page()
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			location.href = '/';
+			location.reload();
 		}
 	}
 
@@ -58,11 +78,11 @@ export default function Page()
 			className={ style.form }
 			onSubmit={ onSubmitHandler }
 		>
-			<InputImage name='picture'/>
+			<InputImage name='picture' defaultSrc={ picture }/>
 
-			<Input type='text' name='firstname' label='Nombre(s)' required/>
+			<Input type='text' name='firstname' label='Nombre(s)' value={ firstname } required/>
 
-			<Input type='text' name='lastname' label='Apellido(s)' required/>
+			<Input type='text' name='lastname' label='Apellido(s)' value={ lastname } required/>
 
 			<section>
 				<h2>Dirección</h2>

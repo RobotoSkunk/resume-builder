@@ -37,6 +37,13 @@ declare global
 	}
 
 
+	type UserData = {
+		id: string;
+		firstname: string;
+		lastname: string;
+		picture: Uint8Array;
+	};
+
 	namespace RobotoSkunk
 	{
 		namespace IPC {

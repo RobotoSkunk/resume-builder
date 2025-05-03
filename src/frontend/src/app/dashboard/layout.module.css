@@ -34,8 +34,6 @@
 
 	row-gap: 10px;
 
-	clip-path: var(--window-content-clip);
-
 	width: var(--sidebar-width);
 	height: calc(100vh - var(--window-border-width) * 2);
 
@@ -83,7 +81,26 @@
 	align-items: center;
 
 	width: 100%;
+
+	overflow-x: hidden;
+
+	&::-webkit-scrollbar {
+		position: absolute;
+
+		width: 5px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 5px;
+		background: color-mix(in srgb, currentColor, white 40%);
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		border-radius: 5px;
+		background: color-mix(in srgb, currentColor, white 10%);
+	}
 }
+
 
 .picture {
 	border: 2px solid var(--border-active);
@@ -104,4 +121,17 @@
 .content {
 	width: calc(100% - var(--sidebar-width));
 	margin-left: var(--sidebar-width);
+}
+
+
+body[maximized=true] {
+	& .sidebar {
+		top: 0;
+		left: 0;
+
+		height: 100vh;
+
+		border-radius: 0;
+	}
+	
 }

@@ -27,13 +27,6 @@ import defaultImage from '@/assets/icons/default-user.svg';
 import Link from 'next/link';
 
 
-type UserData = {
-	id: string;
-	firstname: string;
-	lastname: string;
-	picture: Uint8Array;
-};
-
 
 export default function Dashboard({
 	children,
@@ -73,7 +66,6 @@ export default function Dashboard({
 				<b className={ style.fullname }>{ firstname } { lastname }</b>
 				<div className={ style.sections }>
 					<Link href='home'>Inicio</Link>
-					<Link href='titles'>Títulos profesionales</Link>
 					<Link href='education'>Educación</Link>
 					<Link href='experience'>Experiencia</Link>
 					<Link href='courses'>Cursos</Link>
