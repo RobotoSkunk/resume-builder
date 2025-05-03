@@ -21,7 +21,10 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import style from './layout.module.css';
+
 import defaultImage from '@/assets/icons/default-user.svg';
+import Link from 'next/link';
 
 
 type UserData = {
@@ -32,8 +35,14 @@ type UserData = {
 };
 
 
-export default function Page()
+export default function Dashboard({
+	children,
+}: {
+	children: React.ReactNode,
+})
 {
+	const [ firstname, setFirstname ] = useState<string>('');
+	const [ lastname, setLastname ] = useState<string>('');
 	const [ picture, setPicture ] = useState<string | null>(null);
 
 	useEffect(() =>
@@ -44,18 +53,33 @@ export default function Page()
 			const data = response.data as UserData;
 
 			const pictureBuffer = Buffer.from(data.picture);
+
+			setFirstname(data.firstname);
+			setLastname(data.lastname);
 			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 		})();
 	}, []);
 
 	return (
 		<>
-			<Image
-				src={ picture ? picture : defaultImage }
-				alt=''
-				width={ 512 }
-				height={ 512 }
-			/>
+			<div className={ style.sidebar }>
+				<Image
+					src={ picture ? picture : defaultImage }
+					alt=''
+					className={ style.picture }
+					width={ 180 }
+					height={ 180 }
+				/>
+				<b className={ style.fullname }>{ firstname } { lastname }</b>
+				<Link href='#'>AAAAA</Link>
+				<Link href='#'>AAAAA</Link>
+				<Link href='#'>AAAAA</Link>
+				<Link href='#'>AAAAA</Link>
+				<Link href='#'>AAAAA</Link>
+			</div>
+			<div className={ style.content }>
+				{ children }
+			</div>
 		</>
 	);
 }

@@ -18,27 +18,11 @@
 
 'use client';
 
-import { useEffect } from 'react';
-
-
-export default function Home()
+export default function Page()
 {
-	useEffect(() =>
-	{
-		(async () =>
-		{
-			const response = await window.api.fetch('/user/exists');
-
-			if (response.code !== 0) {
-				location.href = '/user-data';
-				return;
-			}
-
-			location.href = '/dashboard/home';
-		})();
-	}, []);
-
 	return (
-		<></>
+		<>
+			<p>Over here!</p>
+		</>
 	);
 }

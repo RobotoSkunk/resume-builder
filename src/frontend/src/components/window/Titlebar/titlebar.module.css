@@ -25,12 +25,13 @@
 	min-height: var(--header-size);
 
 	color: var(--titlebar-color);
-	background: var(--titlebar-background);
 
 	border-top-right-radius: 25px;
 
 	-webkit-app-region: drag;
 	user-select: none;
+
+	z-index: 1000;
 
 	transition: background 0.2s ease;
 }
@@ -59,7 +60,6 @@
 	& img {
 		filter: invert(0.2);
 
-		-webkit-user-drag: none;
 		transition: filter 0.2s ease;
 	}
 

@@ -20,7 +20,7 @@
 
 :root {
 	--header-size: 30px;
-	--window-border-width: 1px;
+	--window-border-width: 2px;
 	--window-border-radius: 10px;
 }
 
@@ -34,8 +34,6 @@ body {
 
 	color: var(--foreground);
 	background: transparent;
-
-	border-radius: var(--window-border-radius);
 
 	margin: 0;
 	padding: 0;
@@ -57,21 +55,31 @@ body {
 	margin: 0;
 	padding: 0;
 
-	border: var(--window-border-width) solid var(--window-border);
 	border-radius: var(--window-border-radius);
+	border: var(--window-border-width) solid var(--window-border);
 
-	background: var(--window-border);
+	box-shadow: 0 0 1px 0px var(--window-border) inset, 0 0 1px 0px var(--window-border);
+
+	background: var(--background);
 }
 
-body[maximized=true] #app {
-	width: 100vw;
-	height: 100vh;
+body[maximized=true] {
+	& #app {
+		width: 100vw;
+		height: 100vh;
+	
+		border: 0;
+		border-radius: 0;
+	}
 
-	border: 0;
-	border-radius: 0;
+	#window-border {
+		display: none;
+	}
 }
 
 main {
+	position: relative;
+
 	overflow-x: hidden;
 
 	width: 100%;
@@ -87,6 +95,10 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
 	font-size: 1.5em;
+}
+
+img, a {
+	-webkit-user-drag: none;
 }
 
 * {

@@ -60,10 +60,11 @@ export default function Titlebar()
 				focused ? style.focused : '',
 			].join(' ') }
 		>
-			<div></div>
-			<span className={ style.title }>
-				Resume Builder
-			</span>
+			<div>
+				{/* <span className={ style.title }>
+					Resume Builder
+				</span> */}
+			</div>
 			<div className={ style.actions }>
 				<button onClick={ () => window.api.window.minimize() }>
 					<Image
