@@ -18,27 +18,44 @@
 
 'use client';
 
-import { useEffect } from 'react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+import defaultImage from '@/assets/icons/default-user.svg';
 
 
-export default function Home()
+type UserData = {
+	id: string;
+	firstname: string;
+	lastname: string;
+	picture: Uint8Array;
+};
+
+
+export default function Page()
 {
+	const [ picture, setPicture ] = useState<string | null>(null);
+
 	useEffect(() =>
 	{
 		(async () =>
 		{
-			const response = await window.api.fetch('/user/exists');
+			const response = await window.api.fetch<UserData>('/user/get-info');
+			const data = response.data as UserData;
 
-			if (response.code !== 0) {
-				location.href = '/user-data';
-				return;
-			}
-
-			location.href = '/dashboard';
+			const pictureBuffer = Buffer.from(data.picture);
+			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 		})();
 	}, []);
 
 	return (
-		<></>
+		<>
+			<Image
+				src={ picture ? picture : defaultImage }
+				alt=''
+				width={ 512 }
+				height={ 512 }
+			/>
+		</>
 	);
 }

@@ -16,5 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import './get-info';
 import './create';
+import './exists';
+import './get-info';

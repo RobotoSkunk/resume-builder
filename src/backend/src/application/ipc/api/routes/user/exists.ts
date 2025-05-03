@@ -16,29 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-'use client';
+import { app } from 'electron';
 
-import { useEffect } from 'react';
+import router from '../../router';
 
 
-export default function Home()
+router.add('/user/exists', async (req) =>
 {
-	useEffect(() =>
-	{
-		(async () =>
-		{
-			const response = await window.api.fetch('/user/exists');
+	const db = app.database.conn;
 
-			if (response.code !== 0) {
-				location.href = '/user-data';
-				return;
-			}
+	const rows = await db
+		.selectFrom('users')
+		.select('id')
+		.limit(1)
+		.execute();
 
-			location.href = '/dashboard';
-		})();
-	}, []);
-
-	return (
-		<></>
-	);
-}
+	return {
+		code: rows.length > 0 ? 0 : 1,
+		message: '',
+	}
+});
