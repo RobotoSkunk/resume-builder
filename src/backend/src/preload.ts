@@ -61,8 +61,6 @@ contextBridge.exposeInMainWorld(
 				ipcRenderer.on(channel, listener);
 				ipcRenderer.send(channel, endpoint, args);
 
-				console.log('args: ', args);
-
 				const timeout = setTimeout(() =>
 				{
 					ipcRenderer.removeListener(channel, listener);

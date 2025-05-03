@@ -18,8 +18,10 @@
 
 'use client';
 
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
+
+import { loadImage } from '@napi-rs/canvas';
 
 import style from './input.module.css';
 
@@ -45,7 +47,7 @@ export default function InputImage({
 
 	function handleInput(ev: ChangeEvent<HTMLInputElement>)
 	{
-		const file = ev.target.files ? ev.target.files[0] : undefined;
+		const file = ev.currentTarget.files ? ev.currentTarget.files[0] : undefined;
 
 		if (!file) {
 			return;
@@ -53,18 +55,30 @@ export default function InputImage({
 
 		const fileReader = new FileReader();
 
-		fileReader.onload = (ev) =>
+		fileReader.onload = (fileEvent) =>
 		{
-			if (!(ev.target?.result as string).startsWith('data:image/')) {
+			if (!(fileEvent.target?.result as string).startsWith('data:image/')) {
 				alert('Por favor, elije una imagen válida.');
 				return;
 			}
 
-			setImgData(ev.target?.result as string);
+			const image = new Image();
 
-			if (inputRef.current) {
-				inputRef.current.value = ev.target?.result as string;
-			}
+			image.onload = () =>
+			{
+				if (image.width < 512 || image.height < 512) {
+					alert('La imagen es demasiado pequeña, usa una imagen de 512 píxeles de alto y ancho o mas.');
+					return;
+				}
+
+				setImgData(image.src);
+
+				if (inputRef.current) {
+					inputRef.current.value = image.src;
+				}
+			};
+
+			image.src = fileEvent.target?.result as string;
 		};
 
 		fileReader.readAsDataURL(file);
@@ -77,7 +91,7 @@ export default function InputImage({
 
 			<div className={ style.container }>
 				<label htmlFor={ id }>
-					<Image
+					<NextImage
 						src={ imgData === '' ? defaultUserImg : imgData }
 						alt=''
 						fill

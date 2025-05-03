@@ -28,7 +28,7 @@ type UserData = {
 	id: string;
 	firstname: string;
 	lastname: string;
-	picture: string;
+	picture: Uint8Array;
 };
 
 
@@ -47,7 +47,9 @@ export default function Home()
 				return;
 			}
 
-			setPicture(response.data.picture);
+			const pictureBuffer = Buffer.from(response.data.picture);
+
+			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 		})();
 	}, []);
 
