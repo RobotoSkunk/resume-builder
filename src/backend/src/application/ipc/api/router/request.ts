@@ -1,4 +1,4 @@
-/*
+/**
 	bnnuy - A fast and simple framework for Bun's HTTP API.
 	Copyright (C) 2023 Edgar Alexis Lima <contact@robotoskunk.com>
 	

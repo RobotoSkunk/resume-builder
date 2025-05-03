@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-/*
+/**
  * Resume Builder, un programa para generar currículums vitae.
  * Copyright (C) 2025  Edgar Lima (RobotoSkunk)
  *
@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+**/
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -43,7 +43,7 @@ const template = `/*
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+**/
 
 import { Kysely } from 'kysely';
 
