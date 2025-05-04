@@ -23,6 +23,7 @@
     "electron-squirrel-startup": "^1.0.1",
     "get-port-please": "^3.1.2",
     "kysely": "^0.28.2",
+    "motion": "^12.9.4",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
