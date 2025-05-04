@@ -39,6 +39,8 @@
 
 	border-radius: var(--radius) 0 0 var(--radius);
 
+	z-index: 1000;
+
 	background: #d9d9d8;
 }
 

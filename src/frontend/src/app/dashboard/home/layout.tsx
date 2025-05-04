@@ -19,7 +19,13 @@
 'use client';
 
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import FrozenRouter from '@/components/FrozenRouter';
+
 import style from './layout.module.css';
+import { usePathname } from 'next/navigation';
+
 
 
 export default function Dashboard({
@@ -28,6 +34,8 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
+	const key = usePathname();
+
 	return (
 		<>
 			<div className={ style.navigator }>
@@ -47,9 +55,20 @@ export default function Dashboard({
 					<b>Títulos profesionales</b>
 				</Link>
 			</div>
-			<div className={ style.content }>
-				{ children }
-			</div>
+
+			<AnimatePresence mode='popLayout'>
+				<motion.div
+					key={ key }
+
+					initial={{ x: 20, opacity: 0 }}
+					exit={{ x: -20, opacity: 0 }}
+					animate={{ x: 0, opacity: 1 }}
+
+					className={ style.content }
+				>
+					<FrozenRouter>{ children }</FrozenRouter>
+				</motion.div>
+			</AnimatePresence>
 		</>
 	);
 }
