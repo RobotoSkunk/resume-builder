@@ -47,6 +47,8 @@
 		padding: 0 3px;
 		background-color: var(--background);
 
+		cursor: text;
+
 		transition-property: top, left, scale;
 		transition-duration: 0.2s;
 		transition-timing-function: ease-in-out;

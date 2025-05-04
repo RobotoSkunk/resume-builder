@@ -18,33 +18,81 @@
 
 'use client';
 
-import { type FormEvent } from 'react';
+import { useRef, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
 import Input from '@/components/Input';
 
 
+function AddressEntry({
+	data,
+}: {
+	data?: AddressData,
+})
+{
+	const formRef = useRef<HTMLFormElement | null>(null);
+
+	function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
+	{
+
+	}
+
+	function deleteEntry()
+	{
+		const result = confirm('¿Seguro que deseas eliminar esta dirección?');
+
+		if (!result) {
+			return;
+		}
+
+		if (formRef.current) {
+			formRef.current.remove();
+		}
+	}
+
+
+	return (
+		<form
+			ref={ formRef }
+			className={ style.entry }
+			onSubmit={ onSubmitHandler }
+		>
+			<div className={ style.controls }>
+				<div>
+					<input type='checkbox'/>
+					<label>Activo</label>
+				</div>
+
+				<div className={ style.actions }>
+					<button>1</button>
+					<button>2</button>
+					<button type='button' onClick={ deleteEntry }>3</button>
+				</div>
+			</div>
+
+			<div className={ style.fields }>
+				<Input type='text'   name='street'       label='Calle' required/>
+				<Input type='number' name='number_ext'   label='Número exterior' min={ 0 }/>
+				<Input type='number' name='number_int'   label='Número interior' min={ 0 }/>
+				<Input type='text'   name='neighborhood' label='Colonia' required/>
+				<Input type='number' name='postal_code'  label='Código postal'/>
+				<Input type='text'   name='city'         label='Ciudad' required/>
+				<Input type='text'   name='state'        label='Estado' required/>
+				<Input type='text'   name='country'      label='País' required/>
+			</div>
+		</form>
+	);
+}
+
+
 export default function Page()
 {
 	return (
-		<form
-			className={ style.form }
-		>
-			<Input type='text' name='street' label='Calle' required/>
-			<Input type='number' name='number_ext' label='Número exterior' min={ 0 }/>
-			<Input type='number' name='number_int' label='Número interior' min={ 0 }/>
-			<Input type='text' name='neighborhood' label='Colonia' required/>
-			<Input type='number' name='postal_code' label='Código postal'/>
-			<Input type='text' name='city' label='Ciudad' required/>
-			<Input type='text' name='state' label='Estado' required/>
-			<Input type='text' name='country' label='País' required/>
-
-			<p><span className={ style.required }>*</span> Campos requeridos</p>
-
-			<button>
-				Guardar Cambios
-			</button>
-		</form>
+		<div className={ style.entries }>
+			<AddressEntry/>
+			<AddressEntry/>
+			<AddressEntry/>
+		</div>
 	);
 }

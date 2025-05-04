@@ -44,6 +44,22 @@ declare global
 		picture: Uint8Array;
 	};
 
+	type AddressData =
+	{
+		id: string;
+		user_id: string;
+		street: string;
+		number_ext?: number;
+		number_int?: number;
+		neighborhood: string;
+		postal_code?: number;
+		city: string;
+		state: string;
+		country: string;
+		is_active: boolean;
+	};
+
+
 	namespace RobotoSkunk
 	{
 		namespace IPC {

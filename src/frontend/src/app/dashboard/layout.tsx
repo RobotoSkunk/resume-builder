@@ -81,7 +81,7 @@ export default function Dashboard({
 				<b className={ style.fullname }>
 					{ userData ? userData.firstname : '...' } { userData?.lastname }
 				</b>
-				<div className={ style.sections }>
+				<nav className={ style.sections }>
 					<Link href='home'>Inicio</Link>
 					<Link className={ picture ? '' : style.disabled } href='education'>Educación</Link>
 					<Link className={ picture ? '' : style.disabled } href='experience'>Experiencia</Link>
@@ -89,7 +89,7 @@ export default function Dashboard({
 					<Link className={ picture ? '' : style.disabled } href='achievements'>Logros</Link>
 					<Link className={ picture ? '' : style.disabled } href='certifications'>Certificaciones</Link>
 					<Link className={ picture ? '' : style.disabled } href='projects'>Proyectos</Link>
-				</div>
+				</nav>
 			</div>
 			<div className={ style.content }>
 				{ children }

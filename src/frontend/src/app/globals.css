@@ -101,6 +101,10 @@ img, a {
 	-webkit-user-drag: none;
 }
 
+button {
+	cursor: pointer;
+}
+
 button.generic {
 	border: 0;
 	border-radius: 5px;
@@ -110,7 +114,6 @@ button.generic {
 	font-family: inherit;
 	font-size: 1em;
 
-	cursor: pointer;
 	color: var(--background);
 
 	background: color-mix(in srgb, var(--border-active), white 20%);
