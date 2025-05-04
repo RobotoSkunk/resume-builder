@@ -18,9 +18,6 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
-
-import style from './layout.module.css';
 import { useContext, useRef } from 'react';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
