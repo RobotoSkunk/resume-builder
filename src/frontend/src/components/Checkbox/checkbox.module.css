@@ -1,0 +1,73 @@
+/**
+ * Resume Builder, un programa para generar currículums vitae.
+ * Copyright (C) 2025  Edgar Lima (RobotoSkunk)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+**/
+
+.input {
+	position: absolute;
+
+	width: 0;
+	height: 0;
+}
+
+.checkbox {
+	--radius: 5px;
+
+	display: block;
+	position: relative;
+
+	width: 20px;
+	height: 20px;
+
+	border: 1px solid var(--border-inactive);
+	border-radius: var(--radius);
+
+	transition: border-color 0.3s ease;
+
+
+	&:hover,
+	&:focus {
+		border-color: var(--border-active);
+	}
+
+
+	&::after {
+		content: '';
+		display: block;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+
+		transform: translate(-50%, -50%);
+
+		width: 0;
+		height: 0;
+		border-radius: 50%;
+
+		background: #52a8f5;
+
+		transition-property: width, height, border-radius;
+		transition-duration: 0.15s;
+		transition-timing-function: ease;
+	}
+
+	&.checked::after {
+		width: 100%;
+		height: 100%;
+		border-radius: calc(var(--radius) - 1px);
+	}
+}

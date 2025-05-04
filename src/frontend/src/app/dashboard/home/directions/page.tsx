@@ -18,11 +18,17 @@
 
 'use client';
 
+import Image from 'next/image';
 import { useRef, type FormEvent } from 'react';
+
+import Input from '@/components/Input';
 
 import style from './page.module.css';
 
-import Input from '@/components/Input';
+import cancelImage from '@/assets/icons/cancel.svg';
+import acceptImage from '@/assets/icons/check.svg';
+import deleteImage from '@/assets/icons/trash.svg';
+import Checkbox from '@/components/Checkbox';
 
 
 function AddressEntry({
@@ -60,14 +66,32 @@ function AddressEntry({
 		>
 			<div className={ style.controls }>
 				<div>
-					<input type='checkbox'/>
-					<label>Activo</label>
+					<Checkbox
+						label='Activo'
+						name='is_active'
+						value='0'
+					/>
 				</div>
 
 				<div className={ style.actions }>
-					<button>1</button>
-					<button>2</button>
-					<button type='button' onClick={ deleteEntry }>3</button>
+					{/* <button className={ style.success }>
+						<Image
+							src={ acceptImage }
+							alt=''
+						/>
+					</button>
+					<button className={ style.danger }>
+						<Image
+							src={ cancelImage }
+							alt=''
+						/>
+					</button> */}
+					<button className={ style.danger } type='button' onClick={ deleteEntry }>
+						<Image
+							src={ deleteImage }
+							alt=''
+						/>
+					</button>
 				</div>
 			</div>
 
@@ -76,7 +100,7 @@ function AddressEntry({
 				<Input type='number' name='number_ext'   label='Número exterior' min={ 0 }/>
 				<Input type='number' name='number_int'   label='Número interior' min={ 0 }/>
 				<Input type='text'   name='neighborhood' label='Colonia' required/>
-				<Input type='number' name='postal_code'  label='Código postal'/>
+				<Input type='number' name='postal_code'  label='Código postal' min={ 0 } max={ 99999 }/>
 				<Input type='text'   name='city'         label='Ciudad' required/>
 				<Input type='text'   name='state'        label='Estado' required/>
 				<Input type='text'   name='country'      label='País' required/>
