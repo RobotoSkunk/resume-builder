@@ -43,6 +43,10 @@ export default function Dashboard({
 			label: 'Principal',
 		},
 		{
+			href: '/dashboard/home/titles',
+			label: 'Títulos profesionales',
+		},
+		{
 			href: '/dashboard/home/addresses',
 			label: 'Direcciones',
 		},
@@ -53,10 +57,6 @@ export default function Dashboard({
 		{
 			href: '/dashboard/home/languages',
 			label: 'Idiomas',
-		},
-		{
-			href: '/dashboard/home/titles',
-			label: 'Títulos profesionales',
 		},
 	];
 
