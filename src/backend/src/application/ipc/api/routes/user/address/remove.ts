@@ -16,52 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.form,
-.form section {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	row-gap: 5;
-}
+import { app } from 'electron';
 
-.form {
-	margin: 25px auto;
-	margin-bottom: 100px;
-}
-
-.form input {
-	width: 300px;
-}
-
-.form h1,
-.form h2 {
-	margin-bottom: 5px;
-}
-
-.required {
-	color: var(--foreground-required);
-}
+import router from '../../../router';
 
 
-.form button {
-	border: 0;
-	border-radius: 5px;
+router.add('/user/address/remove/:address_id', async (req) =>
+{
+	const db = app.database.conn;
 
-	padding: 10px 15px;
+	console.log(req.params.address_id);
 
-	font-family: inherit;
-	font-size: 1em;
+	try {
+		await db
+			.deleteFrom('addresses')
+			.where('id', '=', req.params.address_id)
+			.execute();
 
-	cursor: pointer;
-	color: var(--background);
+		return {
+			code: 0,
+			message: '',
+		}
+	} catch (e) {
+		console.error(e);
 
-	background: color-mix(in srgb, var(--border-active), white 20%);
-
-	transition: background 0.2s ease;
-
-	&:hover,
-	&:focus {
-		background: var(--border-active);
+		return {
+			code: -2,
+			message: 'Algo salió mal...',
+		}
 	}
-}
+});

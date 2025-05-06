@@ -18,21 +18,39 @@
 
 import { app } from 'electron';
 
-import router from '../../router';
+import router from '../../../router';
+import { DB_Addresses } from '../../../../../../database/tables/addresses';
+
+import crypto from 'crypto';
+
+type Body = Omit<Omit<DB_Addresses, 'id'>, 'is_active'>;
 
 
-router.add('/user/exists', async (_) =>
+router.add<Body>('/user/:id/address/create', async (req) =>
 {
 	const db = app.database.conn;
 
-	const rows = await db
-		.selectFrom('users')
-		.select('id')
-		.limit(1)
-		.execute();
+	try {
+		await db
+			.insertInto('addresses')
+			.values({
+				id: crypto.randomUUID(),
+				is_active: 1,
 
-	return {
-		code: rows.length > 0 ? 0 : 1,
-		message: '',
+				...req.body,
+			})
+			.execute();
+
+		return {
+			code: 0,
+			message: '',
+		}
+	} catch (e) {
+		console.error(e);
+
+		return {
+			code: -2,
+			message: 'Algo salió mal...',
+		}
 	}
 });

@@ -17,3 +17,4 @@
 **/
 
 import './user';
+import './user/address';

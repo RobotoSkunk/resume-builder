@@ -16,23 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import { app } from 'electron';
-
-import router from '../../router';
-
-
-router.add('/user/exists', async (_) =>
-{
-	const db = app.database.conn;
-
-	const rows = await db
-		.selectFrom('users')
-		.select('id')
-		.limit(1)
-		.execute();
-
-	return {
-		code: rows.length > 0 ? 0 : 1,
-		message: '',
-	}
-});
+import './create';
+import './list-all';
+import './remove';

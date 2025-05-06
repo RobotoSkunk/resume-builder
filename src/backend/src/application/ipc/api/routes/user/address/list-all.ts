@@ -18,21 +18,22 @@
 
 import { app } from 'electron';
 
-import router from '../../router';
+import router from '../../../router';
 
 
-router.add('/user/exists', async (_) =>
+router.add('/user/:id/address/list-all', async (req) =>
 {
 	const db = app.database.conn;
 
 	const rows = await db
-		.selectFrom('users')
-		.select('id')
-		.limit(1)
+		.selectFrom('addresses')
+		.selectAll()
+		.where('user_id', '=', req.params.id)
 		.execute();
 
 	return {
-		code: rows.length > 0 ? 0 : 1,
+		code: 0,
 		message: '',
+		data: rows,
 	}
 });
