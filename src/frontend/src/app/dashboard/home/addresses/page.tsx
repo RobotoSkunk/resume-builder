@@ -59,7 +59,7 @@ function AddressEntry({
 	data?: AddressData,
 	updateData: (data: AddressData[]) => void,
 	onDeleteEntry?: (id: string) => void,
-	onSetActiveEntry?: (id: string) => void,
+	onSetActiveEntry?: (id: string, trigger: boolean) => void,
 	onCancelEntry?: () => void,
 })
 {
@@ -182,7 +182,7 @@ function AddressEntry({
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			onSetActiveEntry(data.id);
+			onSetActiveEntry(data.id, trigger === 1);
 		}
 	}
 
@@ -404,12 +404,12 @@ export default function Page()
 									}
 								}}
 
-								onSetActiveEntry={(id) =>
+								onSetActiveEntry={(id, trigger) =>
 								{
 									const addressesList = [ ...addresses ];
 
 									for (const address of addressesList) {
-										address.is_active = address.id === id ? 1 : 0;
+										address.is_active = address.id === id && trigger ? 1 : 0;
 									}
 
 									setAddresses(addressesList);
