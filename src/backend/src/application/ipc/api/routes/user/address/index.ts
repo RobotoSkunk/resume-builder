@@ -19,3 +19,5 @@
 import './create';
 import './list-all';
 import './remove';
+import './set-active';
+import './update';

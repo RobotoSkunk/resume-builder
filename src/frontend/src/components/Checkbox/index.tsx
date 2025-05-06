@@ -18,7 +18,7 @@
 
 'use client';
 
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import style from './checkbox.module.css';
 
@@ -28,11 +28,15 @@ export default function Checkbox({
 	name,
 	value,
 	checked,
+	disabled,
+	onChange,
 }: {
 	label: string,
 	name: string,
 	value: string,
 	checked?: boolean,
+	disabled?: boolean,
+	onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => (Promise<void> | void),
 })
 {
 	const [ id, setId ] = useState('');
@@ -47,6 +51,10 @@ export default function Checkbox({
 	function onChangeHandler(ev: React.ChangeEvent<HTMLInputElement>)
 	{
 		setIsChecked(ev.currentTarget.checked);
+
+		if (onChange) {
+			onChange(ev);
+		}
 	}
 
 
@@ -57,6 +65,7 @@ export default function Checkbox({
 				name={ name }
 				type='checkbox'
 				value={ value }
+				disabled={ disabled }
 
 				checked={ checked }
 				onChange={ onChangeHandler }

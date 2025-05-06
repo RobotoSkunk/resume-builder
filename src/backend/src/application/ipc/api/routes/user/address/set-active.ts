@@ -19,14 +19,9 @@
 import { app } from 'electron';
 
 import router from '../../../router';
-import { DB_Addresses } from '../../../../../../database/tables/addresses';
-
-import crypto from 'crypto';
-
-type Body = Omit<Omit<DB_Addresses, 'id'>, 'is_active'>;
 
 
-router.add<Body>('/user/:id/address/create', async (req) =>
+router.add('/user/:id/address/:address_id/set-active/:trigger', async (req) =>
 {
 	const db = app.database.conn;
 
@@ -36,18 +31,18 @@ router.add<Body>('/user/:id/address/create', async (req) =>
 			.set({
 				is_active: 0,
 			})
-			.where('user_id', '=', req.body.user_id)
+			.where('user_id', '=', req.params.id)
 			.execute();
 
-		await db
-			.insertInto('addresses')
-			.values({
-				id: crypto.randomUUID(),
-				is_active: 1,
-
-				...req.body,
-			})
-			.execute();
+		if (req.params.trigger === '1') {
+			await db
+				.updateTable('addresses')
+				.set({
+					is_active: 1,
+				})
+				.where('id', '=', req.params.address_id)
+				.execute();
+		}
 
 		return {
 			code: 0,

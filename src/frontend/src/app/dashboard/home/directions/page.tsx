@@ -60,6 +60,17 @@ function AddressEntry({
 {
 	const formRef = useRef<HTMLFormElement | null>(null);
 
+	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
+	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<AddressData>>({ });
+
+
+	async function invokeUpdateData()
+	{
+		updateData(
+			await fetchAddresses(userId)
+		);
+	}
+
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
 	{
 		const form = ev.currentTarget;
@@ -80,9 +91,7 @@ function AddressEntry({
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			updateData(
-				await fetchAddresses(userId)
-			);
+			await invokeUpdateData();
 
 			cancelEntry();
 		}
@@ -104,9 +113,7 @@ function AddressEntry({
 			const response = await window.api.fetch(`/user/address/remove/${data.id}`);
 
 			if (response.code === 0) {
-				updateData(
-					await fetchAddresses(userId)
-				);	
+				await invokeUpdateData();
 			}
 		}
 	}
@@ -119,6 +126,59 @@ function AddressEntry({
 
 		if (onCancelEntry) {
 			onCancelEntry();
+		}
+	}
+
+	async function onInputChange(ev: React.FormEvent<HTMLInputElement>)
+	{
+		if (!data) {
+			return;
+		}
+
+		const input = ev.currentTarget;
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+
+		setDataToUpdate({
+			...dataToUpdate,
+			[ input.name ]: input.value,
+		});
+
+
+		setTimeoutId(
+			setTimeout(() =>
+			{
+				(async () =>
+				{
+					const response = await window.api.fetch(`/user/address/${data.id}/update`, {
+						...dataToUpdate,
+						[ input.name ]: input.value,
+					});
+
+					if (response.code !== 0) {
+						alert(response.message);
+					} else {
+						setDataToUpdate({ });
+					}
+				})();
+
+				setTimeoutId(null);
+			}, 500)
+		);
+	}
+
+	async function onSetActive(ev: React.ChangeEvent<HTMLInputElement>)
+	{
+		const trigger = ev.currentTarget.checked ? 1 : 0;
+
+		const response = await window.api.fetch<UserData>(`/user/${userId}/address/${data?.id}/set-active/${trigger}`);
+
+		if (response.code !== 0) {
+			alert(response.message);
+		} else {
+			await invokeUpdateData();
 		}
 	}
 
@@ -137,14 +197,22 @@ function AddressEntry({
 						<Checkbox
 							label='Activo'
 							name='is_active'
-							value='0'
+							value='1'
+							checked={ data.is_active === 1 }
+							disabled={ !!timeoutId }
+							onChange={ onSetActive }
 						/>
 					</div>
 				}
 
 				<div className={ style.actions }>
 					{ data ?
-						<button className={ style.danger } type='button' onClick={ deleteEntry }>
+						<button
+							className={ style.danger }
+							type='button'
+							disabled={ !!timeoutId }
+							onClick={ deleteEntry }
+						>
 							<Image
 								src={ deleteImage }
 								alt=''
@@ -175,6 +243,7 @@ function AddressEntry({
 					name='street'
 					value={ data?.street ?? '' }
 					label='Calle'
+					onInput={ data ? onInputChange : undefined }
 					required
 				/>
 				<Input
@@ -182,6 +251,7 @@ function AddressEntry({
 					name='number_ext'
 					value={ data?.number_ext?.toString() ?? '' }
 					label='Número exterior'
+					onInput={ data ? onInputChange : undefined }
 					min={ 0 }
 				/>
 				<Input
@@ -189,6 +259,7 @@ function AddressEntry({
 					name='number_int'
 					value={ data?.number_int?.toString() ?? '' }
 					label='Número interior'
+					onInput={ data ? onInputChange : undefined }
 					min={ 0 }
 				/>
 				<Input
@@ -196,6 +267,7 @@ function AddressEntry({
 					name='neighborhood'
 					value={ data?.neighborhood ?? '' }
 					label='Colonia'
+					onInput={ data ? onInputChange : undefined }
 					required
 				/>
 				<Input
@@ -203,6 +275,7 @@ function AddressEntry({
 					name='postal_code'
 					value={ data?.postal_code?.toString() ?? '' }
 					label='Código postal'
+					onInput={ data ? onInputChange : undefined }
 					min={ 0 }
 					max={ 99999 }
 				/>
@@ -211,6 +284,7 @@ function AddressEntry({
 					name='city'
 					value={ data?.city ?? '' }
 					label='Ciudad'
+					onInput={ data ? onInputChange : undefined }
 					required
 				/>
 				<Input
@@ -218,6 +292,7 @@ function AddressEntry({
 					name='state'
 					value={ data?.state ?? '' }
 					label='Estado'
+					onInput={ data ? onInputChange : undefined }
 					required
 				/>
 				<Input
@@ -225,6 +300,7 @@ function AddressEntry({
 					name='country'
 					value={ data?.country ?? '' }
 					label='País'
+					onInput={ data ? onInputChange : undefined }
 					required
 				/>
 			</div>

@@ -32,6 +32,7 @@ export default function Input({
 	min,
 	max,
 	required,
+	onInput,
 }: {
 	label: string,
 	type: HTMLInputTypeAttribute,
@@ -40,6 +41,7 @@ export default function Input({
 	min?: number,
 	max?: number,
 	required?: boolean,
+	onInput?: (ev: React.FormEvent<HTMLInputElement>) => (Promise<void> | void),
 })
 {
 	const [ id, setId ] = useState('');
@@ -77,7 +79,14 @@ export default function Input({
 				required={ required }
 				
 				className={ roboto400.className }
-				onInput={ checkValue }
+				onInput={(ev) =>
+				{
+					checkValue();
+
+					if (onInput) {
+						onInput(ev);
+					}
+				}}
 			/>
 			<label htmlFor={ id } className={ hasValue ? style['has-value'] : '' }>
 				{ label }{ required ? <span className={ style.required }>*</span> : '' }

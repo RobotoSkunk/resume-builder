@@ -21,32 +21,18 @@ import { app } from 'electron';
 import router from '../../../router';
 import { DB_Addresses } from '../../../../../../database/tables/addresses';
 
-import crypto from 'crypto';
-
 type Body = Omit<Omit<DB_Addresses, 'id'>, 'is_active'>;
 
 
-router.add<Body>('/user/:id/address/create', async (req) =>
+router.add<Body>('/user/address/:address_id/update', async (req) =>
 {
 	const db = app.database.conn;
 
 	try {
 		await db
 			.updateTable('addresses')
-			.set({
-				is_active: 0,
-			})
-			.where('user_id', '=', req.body.user_id)
-			.execute();
-
-		await db
-			.insertInto('addresses')
-			.values({
-				id: crypto.randomUUID(),
-				is_active: 1,
-
-				...req.body,
-			})
+			.set(req.body)
+			.where('id', '=', req.params.address_id)
 			.execute();
 
 		return {
