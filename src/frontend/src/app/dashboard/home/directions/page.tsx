@@ -344,6 +344,7 @@ export default function Page()
 
 	const [ addRow, setAddRow ] = useState(false);
 	const [ addresses, setAddresses ] = useState<AddressData[]>([]);
+	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(() =>
 	{
@@ -353,6 +354,8 @@ export default function Page()
 				setAddresses(
 					await fetchAddresses(userData.id)
 				);
+
+				setLoaded(true);
 			}
 		})();
 	}, [ ]);
@@ -380,81 +383,81 @@ export default function Page()
 
 	return (
 		<div>
-			<LayoutGroup>
-				<AnimatePresence mode='popLayout'>
-					{ addresses.map((address) =>
-						<AddressEntry
-							userId={ userData?.id || '' }
-							updateData={ updateData }
-							data={ address }
-							key={ address.id }
-
-							onDeleteEntry={(id) =>
-							{
-								const addressesList = [ ...addresses ];
-								const i = addressesList.findIndex((a) => a.id === id);
-
-								if (i > -1) {
-									addressesList.splice(i, 1);
-									setAddresses(addressesList);
-								}
-							}}
-
-							onSetActiveEntry={(id) =>
-							{
-								const addressesList = [ ...addresses ];
-
-								for (const address of addressesList) {
-									address.is_active = address.id === id ? 1 : 0;
-								}
-
-								setAddresses(addressesList);
-							}}
-						/>
-					) }
-				</AnimatePresence>
-
-				<AnimatePresence mode='wait'>
-					{ addRow ?
-						<motion.div
-							key='new-entry'
-
-							initial='hide'
-							animate='show'
-							exit='hide'
-
-							layout
-							variants={ variants }
-						>
+			{ loaded &&
+				<LayoutGroup>
+					<AnimatePresence mode='popLayout'>
+						{ addresses.map((address) =>
 							<AddressEntry
 								userId={ userData?.id || '' }
 								updateData={ updateData }
-								onCancelEntry={ () => setAddRow(false) }
+								data={ address }
+								key={ address.id }
+
+								onDeleteEntry={(id) =>
+								{
+									const addressesList = [ ...addresses ];
+									const i = addressesList.findIndex((a) => a.id === id);
+
+									if (i > -1) {
+										addressesList.splice(i, 1);
+										setAddresses(addressesList);
+									}
+								}}
+
+								onSetActiveEntry={(id) =>
+								{
+									const addressesList = [ ...addresses ];
+
+									for (const address of addressesList) {
+										address.is_active = address.id === id ? 1 : 0;
+									}
+
+									setAddresses(addressesList);
+								}}
 							/>
-						</motion.div>
-						:
-						<motion.div
-							key='add-button'
+						) }
 
-							initial='hide'
-							animate='show'
-							exit='hide'
+						{ addRow ?
+							<motion.div
+								key='new-entry'
 
-							layout
-							variants={ variants }
+								initial='hide'
+								animate='show'
+								exit='hide'
 
-							className={ style['add-row'] }
-						>
-							<button onClick={ () => setAddRow(true) }>
-								<Image
-									src={ addImage }
-									alt=''
+								layout
+								variants={ variants }
+							>
+								<AddressEntry
+									userId={ userData?.id || '' }
+									updateData={ updateData }
+									onCancelEntry={ () => setAddRow(false) }
 								/>
-							</button>
-						</motion.div>
-					}
-				</AnimatePresence>
-			</LayoutGroup>
+							</motion.div>
+							:
+							<motion.div
+								key='add-button'
+
+								initial='hide'
+								animate='show'
+								exit='hide'
+
+								layout
+								variants={ variants }
+
+								className={ style['add-row'] }
+							>
+								<button onClick={ () => setAddRow(true) }>
+									<Image
+										src={ addImage }
+										alt=''
+									/>
+								</button>
+							</motion.div>
+						}
+					</AnimatePresence>
+				</LayoutGroup>
+			}
 		</div>
 	);
 }

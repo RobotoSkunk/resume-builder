@@ -55,6 +55,8 @@
 
 	padding: 15px 55px;
 
+	transition: background 0.3s ease;
+
 	&:nth-child(even) {
 		background: color-mix(in srgb, var(--border-active), transparent 90%);
 	}
