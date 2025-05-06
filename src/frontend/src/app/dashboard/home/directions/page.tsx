@@ -413,46 +413,48 @@ export default function Page()
 						/>
 					) }
 				</AnimatePresence>
-			</LayoutGroup>
 
-			<AnimatePresence mode='wait'>
-				{ addRow ?
-					<motion.div
-						key='new-entry'
+				<AnimatePresence mode='wait'>
+					{ addRow ?
+						<motion.div
+							key='new-entry'
 
-						initial='hide'
-						animate='show'
-						exit='hide'
+							initial='hide'
+							animate='show'
+							exit='hide'
 
-						variants={ variants }
-					>
-						<AddressEntry
-							userId={ userData?.id || '' }
-							updateData={ updateData }
-							onCancelEntry={ () => setAddRow(false) }
-						/>
-					</motion.div>
-					:
-					<motion.div
-						key='add-button'
-
-						initial='hide'
-						animate='show'
-						exit='hide'
-
-						variants={ variants }
-
-						className={ style['add-row'] }
-					>
-						<button onClick={ () => setAddRow(true) }>
-							<Image
-								src={ addImage }
-								alt=''
+							layout
+							variants={ variants }
+						>
+							<AddressEntry
+								userId={ userData?.id || '' }
+								updateData={ updateData }
+								onCancelEntry={ () => setAddRow(false) }
 							/>
-						</button>
-					</motion.div>
-				}
-			</AnimatePresence>
+						</motion.div>
+						:
+						<motion.div
+							key='add-button'
+
+							initial='hide'
+							animate='show'
+							exit='hide'
+
+							layout
+							variants={ variants }
+
+							className={ style['add-row'] }
+						>
+							<button onClick={ () => setAddRow(true) }>
+								<Image
+									src={ addImage }
+									alt=''
+								/>
+							</button>
+						</motion.div>
+					}
+				</AnimatePresence>
+			</LayoutGroup>
 		</div>
 	);
 }
