@@ -44,6 +44,8 @@ export default function RootLayout({
 						{ children }
 					</main>
 				</div>
+
+				<div id='app-border'></div>
 			</body>
 		</html>
 	);

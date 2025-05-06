@@ -39,7 +39,8 @@ body {
 	padding: 0;
 }
 
-#app {
+#app,
+#app-border {
 	display: flex;
 	flex-direction: column;
 
@@ -59,9 +60,14 @@ body {
 	border-radius: var(--window-border-radius);
 	border: var(--window-border-width) solid var(--window-border);
 
-	/* box-shadow: 0 0 5px 5px var(--window-border) inset; */
-
 	background: var(--background);
+}
+
+#app-border {
+	background: transparent;
+	box-shadow: 0 0 1px 0 var(--window-border) inset;
+
+	pointer-events: none;
 }
 
 body[maximized=true] {
