@@ -25,8 +25,6 @@ router.add('/user/address/remove/:address_id', async (req) =>
 {
 	const db = app.database.conn;
 
-	console.log(req.params.address_id);
-
 	try {
 		await db
 			.deleteFrom('addresses')

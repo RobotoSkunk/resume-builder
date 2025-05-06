@@ -30,7 +30,7 @@ export interface DB_Addresses
 	city: string;
 	state: string;
 	country: string;
-	is_active: boolean;
+	is_active: number;
 }
 
 
