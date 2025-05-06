@@ -43,7 +43,7 @@ export default function Dashboard({
 			label: 'Principal',
 		},
 		{
-			href: '/dashboard/home/directions',
+			href: '/dashboard/home/addresses',
 			label: 'Direcciones',
 		},
 		{
