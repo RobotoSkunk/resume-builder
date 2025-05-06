@@ -69,13 +69,15 @@
 			display: block;
 
 			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: 0px;
+			left: 20px;
+			right: 20px;
+			bottom: 5px;
 
-			height: 5px;
+			height: 3px;
 
-			background: red;
+			border-radius: 5px;
+
+			background: color-mix(in srgb, var(--border-active), white 50%);
 		}
 	}
 }
