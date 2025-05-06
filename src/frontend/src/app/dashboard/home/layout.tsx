@@ -19,12 +19,13 @@
 'use client';
 
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 
 import FrozenRouter from '@/components/FrozenRouter';
 
 import style from './layout.module.css';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 
 
@@ -36,24 +37,42 @@ export default function Dashboard({
 {
 	const key = usePathname();
 
+	const links = [
+		{
+			href: '/dashboard/home',
+			label: 'Principal',
+		},
+		{
+			href: '/dashboard/home/directions',
+			label: 'Direcciones',
+		},
+		{
+			href: '/dashboard/home/contact',
+			label: 'Contacto',
+		},
+		{
+			href: '/dashboard/home/languages',
+			label: 'Idiomas',
+		},
+		{
+			href: '/dashboard/home/titles',
+			label: 'Títulos profesionales',
+		},
+	];
+
+
 	return (
 		<>
 			<div className={ style.navigator }>
-				<Link href='/dashboard/home'>
-					<b>Principal</b>
-				</Link>
-				<Link href='/dashboard/home/directions'>
-					<b>Direcciones</b>
-				</Link>
-				<Link href='/dashboard/home/contact'>
-					<b>Contacto</b>
-				</Link>
-				<Link href='/dashboard/home/languages'>
-					<b>Idiomas</b>
-				</Link>
-				<Link href='/dashboard/home/titles'>
-					<b>Títulos profesionales</b>
-				</Link>
+				{ links.map((link, index) =>
+				(
+					<Link href={ link.href } key={ index }>
+						<span>{ link.label }</span>
+						{ link.href === key ? (
+							<motion.div layoutId='link-underline' id='link-underline'></motion.div>
+						) : null }
+					</Link>
+				))}
 			</div>
 
 			<AnimatePresence mode='popLayout'>
