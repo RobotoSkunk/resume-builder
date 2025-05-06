@@ -19,7 +19,8 @@
 'use client';
 
 import Image from 'next/image';
-import { createContext, useContext, useEffect, useRef, useState, type FormEvent } from 'react';
+import { AnimatePresence, LayoutGroup, motion, Variants } from 'framer-motion';
+import { useContext, useEffect, useRef, useState, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
@@ -50,11 +51,15 @@ function AddressEntry({
 	userId,
 	data,
 	updateData,
+	onDeleteEntry,
+	onSetActiveEntry,
 	onCancelEntry,
 }: {
 	userId: string,
 	data?: AddressData,
 	updateData: (data: AddressData[]) => void,
+	onDeleteEntry?: (id: string) => void,
+	onSetActiveEntry?: (id: string) => void,
 	onCancelEntry?: () => void,
 })
 {
@@ -63,13 +68,6 @@ function AddressEntry({
 	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
 	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<AddressData>>({ });
 
-
-	async function invokeUpdateData()
-	{
-		updateData(
-			await fetchAddresses(userId)
-		);
-	}
 
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
 	{
@@ -91,7 +89,9 @@ function AddressEntry({
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			await invokeUpdateData();
+			updateData(
+				await fetchAddresses(userId)
+			);
 
 			cancelEntry();
 		}
@@ -99,7 +99,7 @@ function AddressEntry({
 
 	async function deleteEntry()
 	{
-		if (!data) {
+		if (!data || !onDeleteEntry) {
 			return;
 		}
 
@@ -113,7 +113,7 @@ function AddressEntry({
 			const response = await window.api.fetch(`/user/address/remove/${data.id}`);
 
 			if (response.code === 0) {
-				await invokeUpdateData();
+				onDeleteEntry(data.id);
 			}
 		}
 	}
@@ -171,23 +171,52 @@ function AddressEntry({
 
 	async function onSetActive(ev: React.ChangeEvent<HTMLInputElement>)
 	{
+		if (!data || !onSetActiveEntry) {
+			return;
+		}
+
 		const trigger = ev.currentTarget.checked ? 1 : 0;
 
-		const response = await window.api.fetch<UserData>(`/user/${userId}/address/${data?.id}/set-active/${trigger}`);
+		const response = await window.api.fetch<UserData>(`/user/${userId}/address/${data.id}/set-active/${trigger}`);
 
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			await invokeUpdateData();
+			onSetActiveEntry(data.id);
 		}
 	}
 
+	const variants = {
+		hide: {
+			x: 100,
+			opacity: 0,
+			transition: {
+				duration: 0.2,
+			}
+		},
+		show: {
+			x: 0,
+			opacity: 1,
+			transition: {
+				duration: 0.4,
+				type: 'spring',
+			}
+		},
+	} satisfies Variants;
+
 
 	return (
-		<form
+		<motion.form
 			ref={ formRef }
 			className={ style.entry }
 			onSubmit={ onSubmitHandler }
+
+			initial='hide'
+			animate='show'
+			exit='hide'
+
+			layout
+			variants={ data ? variants : undefined }
 		>
 			<input type='hidden' name='user_id' value={ userId }/>
 
@@ -304,7 +333,7 @@ function AddressEntry({
 					required
 				/>
 			</div>
-		</form>
+		</motion.form>
 	);
 }
 
@@ -334,34 +363,96 @@ export default function Page()
 		setAddresses(data);
 	}
 
+	const variants = {
+		hide: {
+			y: 30,
+			opacity: 0,
+			transition: {
+				duration: 0.1,
+			}
+		},
+		show: {
+			y: 0,
+			opacity: 1,
+		},
+	} satisfies Variants;
+
 
 	return (
-		<div className={ style.entries }>
-			{ addresses.map((address, index) =>
-				<AddressEntry
-					userId={ userData?.id || '' }
-					updateData={ updateData }
-					data={ address }
-					key={ index }
-				/>
-			) }
+		<div>
+			<LayoutGroup>
+				<AnimatePresence mode='popLayout'>
+					{ addresses.map((address) =>
+						<AddressEntry
+							userId={ userData?.id || '' }
+							updateData={ updateData }
+							data={ address }
+							key={ address.id }
 
-			{ addRow ?
-				<AddressEntry
-					userId={ userData?.id || '' }
-					updateData={ updateData }
-					onCancelEntry={ () => setAddRow(false) }
-				/>
-				:
-				<div className={ style['add-row'] }>
-					<button onClick={ () => setAddRow(true) }>
-						<Image
-							src={ addImage }
-							alt=''
+							onDeleteEntry={(id) =>
+							{
+								const addressesList = [ ...addresses ];
+								const i = addressesList.findIndex((a) => a.id === id);
+
+								if (i > -1) {
+									addressesList.splice(i, 1);
+									setAddresses(addressesList);
+								}
+							}}
+
+							onSetActiveEntry={(id) =>
+							{
+								const addressesList = [ ...addresses ];
+
+								for (const address of addressesList) {
+									address.is_active = address.id === id ? 1 : 0;
+								}
+
+								setAddresses(addressesList);
+							}}
 						/>
-					</button>
-				</div>
-			}
+					) }
+				</AnimatePresence>
+			</LayoutGroup>
+
+			<AnimatePresence mode='wait'>
+				{ addRow ?
+					<motion.div
+						key='new-entry'
+
+						initial='hide'
+						animate='show'
+						exit='hide'
+
+						variants={ variants }
+					>
+						<AddressEntry
+							userId={ userData?.id || '' }
+							updateData={ updateData }
+							onCancelEntry={ () => setAddRow(false) }
+						/>
+					</motion.div>
+					:
+					<motion.div
+						key='add-button'
+
+						initial='hide'
+						animate='show'
+						exit='hide'
+
+						variants={ variants }
+
+						className={ style['add-row'] }
+					>
+						<button onClick={ () => setAddRow(true) }>
+							<Image
+								src={ addImage }
+								alt=''
+							/>
+						</button>
+					</motion.div>
+				}
+			</AnimatePresence>
 		</div>
 	);
 }

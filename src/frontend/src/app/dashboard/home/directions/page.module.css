@@ -16,12 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.entries {
-	display: flex;
-	flex-direction: column;
-}
-
-
 .add-row {
 	margin: 20px auto;
 
@@ -31,6 +25,7 @@
 		justify-content: center;
 
 		padding: 10px 45px;
+		margin: 0 auto;
 
 		border: 0;
 		border-radius: 5px;
@@ -68,7 +63,7 @@
 	& .fields {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: flex-start;
 
 		flex-wrap: wrap;
 

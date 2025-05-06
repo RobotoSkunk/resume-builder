@@ -134,6 +134,10 @@ button.generic {
 	scroll-behavior: smooth;
 }
 
+*:disabled {
+	cursor: not-allowed;
+}
+
 /* @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
