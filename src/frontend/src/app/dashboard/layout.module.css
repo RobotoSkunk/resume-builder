@@ -21,27 +21,24 @@
 }
 
 .sidebar {
-	--radius: calc(var(--window-border-radius) - 1px);
-
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
 
 	position: fixed;
-	top: var(--window-border-width);
-	left: var(--window-border-width);
+	top: 0;
+	left: 0;
+	bottom: 0;
 
 	row-gap: 10px;
 
 	width: var(--sidebar-width);
-	height: calc(100vh - var(--window-border-width) * 2);
-
-	border-radius: var(--radius) 0 0 var(--radius);
 
 	z-index: 1000;
 
-	background: #d9d9d8;
+	color: var(--background) !important;
+	background: var(--foreground);
 }
 
 .sidebar a {
@@ -64,9 +61,11 @@
 		width: 0;
 		height: 100%;
 
-		background: #00000030;
+		background: var(--foreground-secondary);
 
 		transition: width 0.25s ease;
+
+		z-index: -1;
 	}
 
 	&:hover::before,
@@ -111,10 +110,10 @@
 
 
 .picture {
-	border: 2px solid var(--border-active);
+	border: 2px solid var(--background);
 	border-radius: 10px;
 
-	background: var(--border-active);
+	background: var(--background);
 
 	margin-top: calc(var(--header-size) + 25px);
 }
@@ -133,7 +132,7 @@
 }
 
 
-body[maximized=true] {
+/* body[maximized=true] {
 	& .sidebar {
 		top: 0;
 		left: 0;
@@ -142,5 +141,4 @@ body[maximized=true] {
 
 		border-radius: 0;
 	}
-	
-}
+} */

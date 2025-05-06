@@ -48,9 +48,10 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
+	right: var(--window-border-width);
+	bottom: var(--window-border-width);
 
-	width: calc(100vw - var(--window-border-width) * 2);
-	height: calc(100vh - var(--window-border-width) * 2);
+	transform: translateZ(0px);
 
 	margin: 0;
 	padding: 0;
@@ -58,7 +59,7 @@ body {
 	border-radius: var(--window-border-radius);
 	border: var(--window-border-width) solid var(--window-border);
 
-	box-shadow: 0 0 1px 0px var(--window-border) inset, 0 0 1px 0px var(--window-border);
+	/* box-shadow: 0 0 5px 5px var(--window-border) inset; */
 
 	background: var(--background);
 }

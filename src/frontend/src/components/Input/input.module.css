@@ -29,6 +29,7 @@
 		border: 1px solid var(--border-inactive);
 
 		outline: none;
+		background: var(--background);
 
 		transition: border-color 0.2s ease;
 	}
@@ -45,7 +46,7 @@
 		transform: translateY(-50%);
 
 		padding: 0 3px;
-		background-color: var(--background);
+		background: var(--background);
 
 		cursor: text;
 

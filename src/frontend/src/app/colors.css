@@ -17,23 +17,24 @@
 **/
 
 :root {
-	--background: #ffffff;
-	--foreground: #333333;
+	--background: #f8fafc;
+	--foreground: #1f2937;
+	--background-secondary: #cbd5e1;
+	--foreground-secondary: #475569;
 
-	--titlebar-background: #ffffff;
-	--titlebar-color: #333333;
+	--titlebar-close-button: #bc2d2d;
 
-	--window-border: #474747;
+	--window-border: #111827;
 
-	--foreground-required: #db5454;
+	--foreground-required: #9b2c2c;
 
-	--color-success: #4cb885;
-	--color-danger: #f7675b;
-	--color-success-hover: #2c794a;
-	--color-danger-hover: #d05441;
+	--color-success: #115e59;
+	--color-danger: #9f1239;
+	--color-success-hover: #064e3b;
+	--color-danger-hover: #881337;
 
 	--border-active: var(--foreground);
-	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
+	--border-inactive: var(--foreground-secondary);
 }
 
 /* @media (prefers-color-scheme: dark) {

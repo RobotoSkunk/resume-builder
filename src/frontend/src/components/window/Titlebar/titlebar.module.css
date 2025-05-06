@@ -24,14 +24,10 @@
 	width: 100%;
 	min-height: var(--header-size);
 
-	color: var(--titlebar-color);
-
-	border-top-right-radius: 25px;
-
 	-webkit-app-region: drag;
 	user-select: none;
 
-	z-index: 1000;
+	z-index: 10000;
 
 	transition: background 0.2s ease;
 }
@@ -52,7 +48,7 @@
 	border: 0;
 	padding: 0 20px;
 
-	background: var(--titlebar-background);
+	background: transparent;
 	-webkit-app-region: none;
 
 	transition: background 0.2s ease;
@@ -65,7 +61,7 @@
 
 	&:hover,
 	&:focus {
-		background: color-mix(in srgb, var(--titlebar-background), var(--titlebar-color) 60%);
+		background: var(--foreground);
 
 		& img {
 			filter: invert(1);
@@ -81,33 +77,23 @@
 
 	& button:last-child:hover,
 	& button:last-child:focus {
-		background: color-mix(in srgb, var(--titlebar-background), #bc2d2d 90%) !important;
+		background: var(--titlebar-close-button) !important;
 	}
-}
-
-.title {
-	margin: 0 10px;
-
-	transition: color 0.2s ease;
 }
 
 
 .titlebar:not(.focused) {
-	--no-focus-background: color-mix(in srgb, var(--titlebar-background), black 15%);
+	background: var(--foreground);
 
-	background: var(--no-focus-background);
-
-	& .actions button {
-		background: var(--no-focus-background);
+	& button {
+		& img {
+			filter: invert(1);
+		}
 
 		&:hover,
 		&:focus {
-			background: color-mix(in srgb, var(--no-focus-background), var(--titlebar-color) 60%);
+			background: color-mix(in srgb, var(--foreground), var(--background) 30%);
 		}
-	}
-
-	& .title {
-		color: color-mix(in srgb, var(--titlebar-color), transparent 20%);
 	}
 }
 
