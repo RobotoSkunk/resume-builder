@@ -124,6 +124,24 @@ button.generic {
 	&:focus {
 		background: var(--border-active);
 	}
+
+	&.success {
+		background: var(--color-success);
+
+		&:hover,
+		&:focus {
+			background: var(--color-success-hover);
+		}
+	}
+
+	&.danger {
+		background: var(--color-danger);
+
+		&:hover,
+		&:focus {
+			background: var(--color-danger-hover);
+		}
+	}
 }
 
 

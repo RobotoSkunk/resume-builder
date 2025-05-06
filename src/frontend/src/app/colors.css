@@ -27,6 +27,11 @@
 
 	--foreground-required: #db5454;
 
+	--color-success: #4cb885;
+	--color-danger: #f7675b;
+	--color-success-hover: #2c794a;
+	--color-danger-hover: #d05441;
+
 	--border-active: var(--foreground);
 	--border-inactive: color-mix(in srgb, var(--foreground), white 50%);
 }

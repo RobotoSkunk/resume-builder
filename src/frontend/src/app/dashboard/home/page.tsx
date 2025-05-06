@@ -106,7 +106,7 @@ export default function Page()
 
 			<p><span className={ style.required }>*</span> Campos requeridos</p>
 
-			<button className='generic'>
+			<button className='generic success'>
 				Guardar Cambios
 			</button>
 		</form>
