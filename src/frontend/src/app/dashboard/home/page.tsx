@@ -42,26 +42,6 @@ export default function Page()
 
 		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 	}, [ userContext ]);
-	
-
-	// useEffect(() =>
-	// {
-	// 	(async () =>
-	// 	{
-	// 		const response = await window.api.fetch<DB.User>('/user/get-info');
-
-	// 		if (response.code === 0) {
-	// 			const data = response.data as DB.User;
-
-	// 			const pictureBuffer = Buffer.from(data.picture);
-
-	// 			setUserId(data.id);
-	// 			setFirstname(data.firstname);
-	// 			setLastname(data.lastname);
-	// 			setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
-	// 		}
-	// 	})();
-	// }, [ ]);
 
 
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
