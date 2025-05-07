@@ -75,9 +75,11 @@ export default function Dashboard({
 				(
 					<Link href={ link.href } key={ index } className={ link.disabled ? style.disabled : '' }>
 						{ link.label }
-						{ link.href === key ? (
-							<motion.div layoutId='link-underline' id='link-underline'></motion.div>
-						) : null }
+						{ link.href === key &&
+							<motion.div
+								layoutId='link-underline'
+							></motion.div>
+						}
 					</Link>
 				))}
 			</div>

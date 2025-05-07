@@ -22,13 +22,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import style from './layout.module.css';
 
 import { UserDataContext } from './context';
 
 import defaultImage from '@/assets/icons/default-user.svg';
+import FrozenRouter from '@/components/FrozenRouter';
 
 
 
@@ -137,15 +138,26 @@ export default function Dashboard({
 							href={ link.href }
 							key={ index }
 						>
-							{ link.href === key && <motion.div layoutId='nav-indicator'></motion.div> }
+							{ link.href === key &&
+								<motion.div
+									layoutId='nav-indicator'
+								></motion.div>
+							}
 							{ link.label }
 						</Link>
 					)) }
 				</nav>
 			</div>
-			<div className={ style.content }>
+			<motion.div
+				key={ key }
+
+				initial={{ y: 50, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+
+				className={ style.content }
+			>
 				{ children }
-			</div>
+			</motion.div>
 		</UserDataContext.Provider>
 	);
 }
