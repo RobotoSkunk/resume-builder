@@ -22,14 +22,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import style from './layout.module.css';
 
 import { UserDataContext } from './context';
 
 import defaultImage from '@/assets/icons/default-user.svg';
-import FrozenRouter from '@/components/FrozenRouter';
 
 
 
@@ -44,6 +43,9 @@ export default function Dashboard({
 
 	const [ userData, setUserData ] = useState<DB.User | null>(null);
 	const [ picture, setPicture ] = useState<string | null>(null);
+
+	const [ jobTitlesCount, setJobTitlesCount ] = useState(0);
+
 
 	useEffect(() =>
 	{
@@ -66,6 +68,8 @@ export default function Dashboard({
 		const pictureBuffer = Buffer.from(userData.picture);
 
 		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
+
+		fetchJobTitlesCount();
 	}, [ userData ]);
 
 	useEffect(() =>
@@ -83,32 +87,32 @@ export default function Dashboard({
 		{
 			label: 'Educación',
 			href: 'education',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Experiencia',
 			href: 'experience',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Cursos',
 			href: 'courses',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Logros',
 			href: 'achievements',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Certificaciones',
 			href: 'certifications',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Proyectos',
 			href: 'projects',
-			disabled: !userData,
+			disabled: !userData || jobTitlesCount === 0,
 		},
 	];
 
@@ -117,9 +121,32 @@ export default function Dashboard({
 		setUserData(data);
 	}
 
+	function fetchJobTitlesCount()
+	{
+		if (!userData) {
+			setJobTitlesCount(0);
+			return;
+		}
+
+		(async () =>
+		{
+			const response = await window.api.fetch<number>(`/user/${userData.id}/job-title/count`);
+
+			if (response.code === 0) {
+				setJobTitlesCount(response.data || 0);
+			}
+		})();
+	}
+
 
 	return (
-		<UserDataContext.Provider value={ { data: userData, updateData: updateUserData } }>
+		<UserDataContext.Provider
+			value={{
+				data: userData,
+				updateData: updateUserData,
+				fetchJobTitlesCount,
+			}}
+		>
 			<div className={ style.sidebar }>
 				<Image
 					src={ picture ? picture : defaultImage }
