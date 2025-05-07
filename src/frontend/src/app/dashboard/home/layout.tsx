@@ -19,13 +19,14 @@
 'use client';
 
 import Link from 'next/link';
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import FrozenRouter from '@/components/FrozenRouter';
 
 import style from './layout.module.css';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { UserDataContext } from '../context';
+import { useContext } from 'react';
 
 
 
@@ -35,28 +36,34 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
+	const userData = useContext(UserDataContext).data;
 	const key = usePathname();
 
 	const links = [
 		{
 			href: '/dashboard/home',
 			label: 'Principal',
+			disabled: false,
 		},
 		{
 			href: '/dashboard/home/titles',
 			label: 'Títulos profesionales',
+			disabled: !userData,
 		},
 		{
 			href: '/dashboard/home/addresses',
 			label: 'Direcciones',
+			disabled: !userData,
 		},
 		{
 			href: '/dashboard/home/contact',
 			label: 'Contacto',
+			disabled: !userData,
 		},
 		{
 			href: '/dashboard/home/languages',
 			label: 'Idiomas',
+			disabled: !userData,
 		},
 	];
 
@@ -66,8 +73,8 @@ export default function Dashboard({
 			<div className={ style.navigator }>
 				{ links.map((link, index) =>
 				(
-					<Link href={ link.href } key={ index }>
-						<span>{ link.label }</span>
+					<Link href={ link.href } key={ index } className={ link.disabled ? style.disabled : '' }>
+						{ link.label }
 						{ link.href === key ? (
 							<motion.div layoutId='link-underline' id='link-underline'></motion.div>
 						) : null }

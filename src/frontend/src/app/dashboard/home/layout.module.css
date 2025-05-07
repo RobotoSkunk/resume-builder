@@ -41,6 +41,11 @@
 
 		transition: background 0.3s ease;
 
+		&.disabled {
+			color: color-mix(in srgb, currentColor, transparent 50%);
+			pointer-events: none;
+		}
+
 		&:not(:last-child)::after {
 			content: '';
 	
