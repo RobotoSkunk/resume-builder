@@ -64,8 +64,6 @@ declare global
 			user_id: string;
 			name: string;
 			description?: string;
-			preset_template: number;
-			template_id?: string;
 		};
 	}
 

@@ -24,8 +24,6 @@ export interface DB_JobTitles
 	user_id: string;
 	name: string;
 	description?: string;
-	preset_template: number;
-	template_id?: string;
 }
 
 

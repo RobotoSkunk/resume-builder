@@ -126,10 +126,6 @@ export async function up(db: Kysely<unknown>): Promise<void>
 		.addColumn('user_id', 'text', c => c.notNull())
 		.addColumn('name', 'text', c => c.notNull())
 		.addColumn('description', 'text')
-		.addColumn('preset_template', 'integer', c => c.notNull())
-		.addColumn('template_id', 'text', c => c.notNull())
-
-		.addForeignKeyConstraint('user_id_fk', [ 'user_id' ], 'users', [ 'id' ], fk => fk.onDelete('cascade'))
 
 		.execute();
 
