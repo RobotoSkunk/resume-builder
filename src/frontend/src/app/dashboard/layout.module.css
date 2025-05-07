@@ -78,6 +78,18 @@
 
 		pointer-events: none;
 	}
+
+	& div {
+		position: absolute;
+		top: 10px;
+		left: 5px;
+		bottom: 10px;
+
+		width: 5px;
+		border-radius: 5px;
+
+		background: var(--background);
+	}
 }
 
 

@@ -69,7 +69,7 @@ export default function Dashboard({
 
 	useEffect(() =>
 	{
-		setKey(pathname.split('/')[0]);
+		setKey(pathname.split('/')[2]);
 	}, [ pathname ]);
 
 
