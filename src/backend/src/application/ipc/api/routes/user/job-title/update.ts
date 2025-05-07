@@ -16,4 +16,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import './user';
+import { app } from 'electron';
+
+import router from '../../../router';
+import { DB_JobTitles } from '../../../../../../database/tables/job-titles';
+
+type Body = Omit<Omit<DB_JobTitles, 'id'>, 'user_id'>;
+
+
+router.add<Body>('/user/job-title/:title_id/update', async (req) =>
+{
+	const db = app.database.conn;
+
+	try {
+		await db
+			.updateTable('job_titles')
+			.set(req.body)
+			.where('id', '=', req.params.title_id)
+			.execute();
+
+		return {
+			code: 0,
+			message: '',
+		}
+	} catch (e) {
+		console.error(e);
+
+		return {
+			code: -2,
+			message: 'Algo salió mal...',
+		}
+	}
+});

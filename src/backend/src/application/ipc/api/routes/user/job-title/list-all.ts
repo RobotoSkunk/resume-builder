@@ -16,4 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import './user';
+import { app } from 'electron';
+
+import router from '../../../router';
+
+
+router.add('/user/:id/job-title/list-all', async (req) =>
+{
+	const db = app.database.conn;
+
+	const rows = await db
+		.selectFrom('job_titles')
+		.selectAll()
+		.where('user_id', '=', req.params.id)
+		.execute();
+
+	return {
+		code: 0,
+		message: '',
+		data: rows,
+	}
+});

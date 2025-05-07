@@ -16,4 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import './user';
+import { app } from 'electron';
+
+import router from '../../../router';
+
+
+router.add('/user/job-title/remove/:title_id', async (req) =>
+{
+	const db = app.database.conn;
+
+	try {
+		await db
+			.deleteFrom('job_titles')
+			.where('id', '=', req.params.title_id)
+			.execute();
+
+		return {
+			code: 0,
+			message: '',
+		}
+	} catch (e) {
+		console.error(e);
+
+		return {
+			code: -2,
+			message: 'Algo salió mal...',
+		}
+	}
+});

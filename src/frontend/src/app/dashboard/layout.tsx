@@ -18,14 +18,17 @@
 
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 import style from './layout.module.css';
 
-import defaultImage from '@/assets/icons/default-user.svg';
-import Link from 'next/link';
 import { UserDataContext } from './context';
+
+import defaultImage from '@/assets/icons/default-user.svg';
 
 
 
@@ -35,6 +38,9 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
+	const pathname = usePathname();
+	const [ key, setKey ] = useState('');
+
 	const [ userData, setUserData ] = useState<DB.User | null>(null);
 	const [ picture, setPicture ] = useState<string | null>(null);
 
@@ -61,6 +67,49 @@ export default function Dashboard({
 		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 	}, [ userData ]);
 
+	useEffect(() =>
+	{
+		setKey(pathname.split('/')[0]);
+	}, [ pathname ]);
+
+
+	const links = [
+		{
+			label: 'Inicio',
+			href: 'home',
+			disabled: false,
+		},
+		{
+			label: 'Educación',
+			href: 'education',
+			disabled: !userData,
+		},
+		{
+			label: 'Experiencia',
+			href: 'experience',
+			disabled: !userData,
+		},
+		{
+			label: 'Cursos',
+			href: 'courses',
+			disabled: !userData,
+		},
+		{
+			label: 'Logros',
+			href: 'achievements',
+			disabled: !userData,
+		},
+		{
+			label: 'Certificaciones',
+			href: 'certifications',
+			disabled: !userData,
+		},
+		{
+			label: 'Proyectos',
+			href: 'projects',
+			disabled: !userData,
+		},
+	];
 
 	function updateUserData(data: DB.User) 
 	{
@@ -82,13 +131,16 @@ export default function Dashboard({
 					{ userData ? userData.firstname : '...' } { userData?.lastname }
 				</b>
 				<nav className={ style.sections }>
-					<Link href='home'>Inicio</Link>
-					<Link className={ picture ? '' : style.disabled } href='education'>Educación</Link>
-					<Link className={ picture ? '' : style.disabled } href='experience'>Experiencia</Link>
-					<Link className={ picture ? '' : style.disabled } href='courses'>Cursos</Link>
-					<Link className={ picture ? '' : style.disabled } href='achievements'>Logros</Link>
-					<Link className={ picture ? '' : style.disabled } href='certifications'>Certificaciones</Link>
-					<Link className={ picture ? '' : style.disabled } href='projects'>Proyectos</Link>
+					{ links.map((link, index) => (
+						<Link
+							className={ link.disabled ? style.disabled : '' }
+							href={ link.href }
+							key={ index }
+						>
+							{ link.href === key && <motion.div layoutId='nav-indicator'></motion.div> }
+							{ link.label }
+						</Link>
+					)) }
 				</nav>
 			</div>
 			<div className={ style.content }>

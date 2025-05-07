@@ -16,4 +16,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import './user';
+import { app } from 'electron';
+
+import router from '../../../router';
+import { DB_JobTitles } from '../../../../../../database/tables/job-titles';
+
+import crypto from 'crypto';
+
+type Body = Omit<DB_JobTitles, 'id'>;
+
+
+router.add<Body>('/user/:id/job-title/create', async (req) =>
+{
+	const db = app.database.conn;
+
+	try {
+		await db
+			.insertInto('job_titles')
+			.values({
+				id: crypto.randomUUID(),
+				...req.body,
+			})
+			.execute();
+
+		return {
+			code: 0,
+			message: '',
+		}
+	} catch (e) {
+		console.error(e);
+
+		return {
+			code: -2,
+			message: 'Algo salió mal...',
+		}
+	}
+});

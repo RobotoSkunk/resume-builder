@@ -19,3 +19,6 @@
 import './exists';
 import './get-info';
 import './update';
+
+import './address';
+import './job-title';

@@ -16,4 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-import './user';
+import './count';
+import './create';
+import './list-all';
+import './remove';
+import './update';
