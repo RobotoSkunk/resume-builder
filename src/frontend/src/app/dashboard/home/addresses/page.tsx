@@ -35,9 +35,9 @@ import { UserDataContext } from '../../context';
 
 
 
-async function fetchAddresses(userId: string): Promise<AddressData[]>
+async function fetchAddresses(userId: string): Promise<DB.Address[]>
 {
-	const result = await window.api.fetch<AddressData[]>(`/user/${userId}/address/list-all`);
+	const result = await window.api.fetch<DB.Address[]>(`/user/${userId}/address/list-all`);
 
 	if (result.data) {
 		return result.data;
@@ -56,8 +56,8 @@ function AddressEntry({
 	onCancelEntry,
 }: {
 	userId: string,
-	data?: AddressData,
-	updateData: (data: AddressData[]) => void,
+	data?: DB.Address,
+	updateData: (data: DB.Address[]) => void,
 	onDeleteEntry?: (id: string) => void,
 	onSetActiveEntry?: (id: string, trigger: boolean) => void,
 	onCancelEntry?: () => void,
@@ -66,7 +66,7 @@ function AddressEntry({
 	const formRef = useRef<HTMLFormElement | null>(null);
 
 	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
-	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<AddressData>>({ });
+	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<DB.Address>>({ });
 
 
 	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
@@ -84,7 +84,7 @@ function AddressEntry({
 		const data: { [ key: string ]: unknown } = {};
 		formData.forEach((value, key) => data[key] = value);
 
-		const response = await window.api.fetch<UserData>(`/user/${userId}/address/create`, data);
+		const response = await window.api.fetch<DB.User>(`/user/${userId}/address/create`, data);
 
 		if (response.code !== 0) {
 			alert(response.message);
@@ -177,7 +177,7 @@ function AddressEntry({
 
 		const trigger = ev.currentTarget.checked ? 1 : 0;
 
-		const response = await window.api.fetch<UserData>(`/user/${userId}/address/${data.id}/set-active/${trigger}`);
+		const response = await window.api.fetch<DB.User>(`/user/${userId}/address/${data.id}/set-active/${trigger}`);
 
 		if (response.code !== 0) {
 			alert(response.message);
@@ -343,7 +343,7 @@ export default function Page()
 	const userData = useContext(UserDataContext).data;
 
 	const [ addRow, setAddRow ] = useState(false);
-	const [ addresses, setAddresses ] = useState<AddressData[]>([]);
+	const [ addresses, setAddresses ] = useState<DB.Address[]>([]);
 	const [ loaded, setLoaded ] = useState(false);
 
 	useEffect(() =>
@@ -361,7 +361,7 @@ export default function Page()
 	}, [ ]);
 
 
-	function updateData(data: AddressData[])
+	function updateData(data: DB.Address[])
 	{
 		setAddresses(data);
 	}

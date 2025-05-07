@@ -22,8 +22,8 @@ import { createContext } from 'react';
 
 
 export const UserDataContext = createContext<{
-	data: UserData | null;
-	updateData: (data: UserData) => void;
+	data: DB.User | null;
+	updateData: (data: DB.User) => void;
 }>({
 	data: null,
 	updateData: (_) => {},

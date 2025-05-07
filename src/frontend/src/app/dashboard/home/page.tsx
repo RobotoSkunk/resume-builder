@@ -48,10 +48,10 @@ export default function Page()
 	// {
 	// 	(async () =>
 	// 	{
-	// 		const response = await window.api.fetch<UserData>('/user/get-info');
+	// 		const response = await window.api.fetch<DB.User>('/user/get-info');
 
 	// 		if (response.code === 0) {
-	// 			const data = response.data as UserData;
+	// 			const data = response.data as DB.User;
 
 	// 			const pictureBuffer = Buffer.from(data.picture);
 
@@ -79,12 +79,12 @@ export default function Page()
 		const data: { [ key: string ]: unknown } = {};
 		formData.forEach((value, key) => data[key] = value);
 
-		const response = await window.api.fetch<UserData>('/user/update', data);
+		const response = await window.api.fetch<DB.User>('/user/update', data);
 
 		if (response.code !== 0) {
 			alert(response.message);
 		} else {
-			userContext.updateData(response.data as UserData);
+			userContext.updateData(response.data as DB.User);
 		}
 	}
 

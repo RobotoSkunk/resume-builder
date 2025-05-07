@@ -35,17 +35,17 @@ export default function Dashboard({
 	children: React.ReactNode,
 })
 {
-	const [ userData, setUserData ] = useState<UserData | null>(null);
+	const [ userData, setUserData ] = useState<DB.User | null>(null);
 	const [ picture, setPicture ] = useState<string | null>(null);
 
 	useEffect(() =>
 	{
 		(async () =>
 		{
-			const response = await window.api.fetch<UserData>('/user/get-info');
+			const response = await window.api.fetch<DB.User>('/user/get-info');
 
 			if (response.code === 0) {
-				setUserData(response.data as UserData);
+				setUserData(response.data as DB.User);
 			}
 		})();
 	}, []);
@@ -62,7 +62,7 @@ export default function Dashboard({
 	}, [ userData ]);
 
 
-	function updateUserData(data: UserData) 
+	function updateUserData(data: DB.User) 
 	{
 		setUserData(data);
 	}

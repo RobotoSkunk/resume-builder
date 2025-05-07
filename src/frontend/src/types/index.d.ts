@@ -37,27 +37,28 @@ declare global
 	}
 
 
-	type UserData = {
-		id: string;
-		firstname: string;
-		lastname: string;
-		picture: Uint8Array;
-	};
+	namespace DB {
+		type User = {
+			id: string;
+			firstname: string;
+			lastname: string;
+			picture: Uint8Array;
+		};
 
-	type AddressData =
-	{
-		id: string;
-		user_id: string;
-		street: string;
-		number_ext?: number;
-		number_int?: number;
-		neighborhood: string;
-		postal_code?: number;
-		city: string;
-		state: string;
-		country: string;
-		is_active: number;
-	};
+		type Address = {
+			id: string;
+			user_id: string;
+			street: string;
+			number_ext?: number;
+			number_int?: number;
+			neighborhood: string;
+			postal_code?: number;
+			city: string;
+			state: string;
+			country: string;
+			is_active: number;
+		};
+	}
 
 
 	namespace RobotoSkunk
