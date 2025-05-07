@@ -385,7 +385,7 @@ export default function Page()
 		<div>
 			{ loaded &&
 				<LayoutGroup>
-					<AnimatePresence mode='popLayout'>
+					<AnimatePresence mode='popLayout' initial={ false }>
 						{ addresses.map((address) =>
 							<AddressEntry
 								userId={ userData?.id || '' }
