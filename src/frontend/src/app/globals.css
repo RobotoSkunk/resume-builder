@@ -49,8 +49,8 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	right: var(--window-border-width);
-	bottom: var(--window-border-width);
+	right: 0;
+	bottom: 0;
 
 	transform: translateZ(0px);
 

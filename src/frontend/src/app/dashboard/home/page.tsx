@@ -22,8 +22,8 @@ import { useContext, useEffect, useState, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
-import Input from '@/components/Input';
-import InputImage from '@/components/ImageInput';
+import Input from '@/components/form/Input';
+import InputImage from '@/components/form/ImageInput';
 import { UserDataContext } from '../context';
 
 

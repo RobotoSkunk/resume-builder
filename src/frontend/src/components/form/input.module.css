@@ -16,58 +16,60 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.input {
-	position: absolute;
-
-	width: 0;
-	height: 0;
-}
-
-.checkbox {
-	--radius: 5px;
-
-	display: block;
+.container {
 	position: relative;
+	margin: 5px 0;
 
-	width: 20px;
-	height: 20px;
+	& input,
+	& textarea {
+		font-size: 0.9em;
 
-	border: 1px solid var(--border-inactive);
-	border-radius: var(--radius);
+		padding: 13px 10px;
 
-	transition: border-color 0.3s ease;
+		border-radius: 5px;
+		border: 1px solid var(--border-inactive);
 
-	overflow: hidden;
+		outline: none;
+		background: var(--background);
 
+		transition: border-color 0.2s ease;
+	}
 
-	&:hover,
-	&:focus {
+	& input:focus,
+	& textarea:focus {
 		border-color: var(--border-active);
 	}
 
-	&::after {
-		content: '';
-		display: block;
-
-		position: relative;
+	& label {
+		position: absolute;
 		top: 50%;
-		left: 50%;
+		left: 10px;
 
-		transform: translate(-50%, -50%);
+		transform: translateY(-50%);
 
-		width: 0;
-		height: 0;
-		border-radius: 50%;
+		padding: 0 3px;
+		background: var(--background);
 
-		background: var(--border-inactive);
+		cursor: text;
 
-		transition-property: width, height;
+		transition-property: top, left, scale;
 		transition-duration: 0.2s;
-		transition-timing-function: ease;
+		transition-timing-function: ease-in-out;
 	}
 
-	&.checked::after {
-		width: 200%;
-		height: 200%;
+	& textarea ~ label {
+		top: 20px;
 	}
+}
+
+label.has-value,
+.container:focus-within label {
+	top: 0px !important;
+	left: 5px !important;
+
+	scale: 0.8 !important;
+}
+
+.required {
+	color: var(--foreground-required);
 }

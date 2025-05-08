@@ -24,8 +24,8 @@ import { useContext, useEffect, useRef, useState, type FormEvent } from 'react';
 
 import style from './page.module.css';
 
-import Input from '@/components/Input';
-import Checkbox from '@/components/Checkbox';
+import Input from '@/components/form/Input';
+import Checkbox from '@/components/form/Checkbox';
 
 import cancelImage from '@/assets/icons/cancel.svg';
 import acceptImage from '@/assets/icons/check.svg';

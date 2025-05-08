@@ -18,9 +18,42 @@
 
 'use client';
 
+import Input from "@/components/form/Input";
+
+import style from './page.module.css';
+import TextArea from "@/components/form/TextArea";
+
+
+function JobTitleEntry()
+{
+	return (
+		<form
+			className={ style.entry }
+		>
+			<div className={ style.fields }>
+				<Input
+					type='text'
+					name='name'
+					label='Título'
+				/>
+				<TextArea
+					name='description'
+					label='Descripción'
+					rows={ 3 }
+				/>
+			</div>
+		</form>
+	);
+}
+
+
 export default function Page()
 {
 	return (
-		<div></div>
+		<div>
+			<JobTitleEntry/>
+			<JobTitleEntry/>
+			<JobTitleEntry/>
+		</div>
 	);
 }

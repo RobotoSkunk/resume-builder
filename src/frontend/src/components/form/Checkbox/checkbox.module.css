@@ -16,54 +16,66 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.container {
+.input {
+	position: absolute;
+
+	width: 0;
+	height: 0;
+}
+
+.checkbox {
+	--radius: 5px;
+	--after-transition: border-color 0.3s ease;
+
+	display: block;
 	position: relative;
-	margin: 5px 0;
 
-	& input {
-		font-size: 0.9em;
+	width: 20px;
+	height: 20px;
 
-		padding: 13px 10px;
+	border: 1px solid var(--border-inactive);
+	border-radius: var(--radius);
 
-		border-radius: 5px;
-		border: 1px solid var(--border-inactive);
+	transition: var(--after-transition);
 
-		outline: none;
-		background: var(--background);
+	overflow: hidden;
 
-		transition: border-color 0.2s ease;
-	}
 
-	& input:focus {
+	&:hover,
+	&:focus {
 		border-color: var(--border-active);
 	}
 
-	& label {
-		position: absolute;
+	&::after {
+		content: '';
+		display: block;
+
+		position: relative;
 		top: 50%;
-		left: 10px;
+		left: 50%;
 
-		transform: translateY(-50%);
+		transform: translate(-50%, -50%);
 
-		padding: 0 3px;
-		background: var(--background);
+		width: 0;
+		height: 0;
+		border-radius: 50%;
 
-		cursor: text;
+		background: var(--border-inactive);
 
-		transition-property: top, left, scale;
+		transition-property: width, height;
 		transition-duration: 0.2s;
-		transition-timing-function: ease-in-out;
+		transition-timing-function: ease;
 	}
-}
 
-label.has-value,
-.container:focus-within label {
-	top: 0px;
-	left: 5px;
 
-	scale: 0.8;
-}
+	&.checked {
+		background: var(--border-active);
 
-.required {
-	color: var(--foreground-required);
+		transition: var(--after-transition), background 0s ease 0.1s;
+
+		&::after {
+			width: 200%;
+			height: 200%;
+		}
+	}
 }

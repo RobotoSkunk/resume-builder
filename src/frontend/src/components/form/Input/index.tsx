@@ -20,7 +20,7 @@
 
 import { RefObject, useEffect, useRef, useState, type HTMLInputTypeAttribute } from 'react';
 
-import style from './input.module.css';
+import style from '../input.module.css';
 import { roboto400 } from '@/utils/fonts';
 
 
