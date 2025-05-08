@@ -40,6 +40,7 @@ function JobTitleEntry()
 					name='description'
 					label='Descripción'
 					rows={ 3 }
+					maxLength={ 250 }
 				/>
 			</div>
 		</form>

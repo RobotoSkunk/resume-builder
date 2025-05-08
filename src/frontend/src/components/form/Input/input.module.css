@@ -20,8 +20,7 @@
 	position: relative;
 	margin: 5px 0;
 
-	& input,
-	& textarea {
+	& input {
 		font-size: 0.9em;
 
 		padding: 13px 10px;
@@ -35,8 +34,7 @@
 		transition: border-color 0.2s ease;
 	}
 
-	& input:focus,
-	& textarea:focus {
+	& input:focus {
 		border-color: var(--border-active);
 	}
 
@@ -56,18 +54,14 @@
 		transition-duration: 0.2s;
 		transition-timing-function: ease-in-out;
 	}
-
-	& textarea ~ label {
-		top: 20px;
-	}
 }
 
 label.has-value,
 .container:focus-within label {
-	top: 0px !important;
-	left: 5px !important;
+	top: 0px;
+	left: 5px;
 
-	scale: 0.8 !important;
+	scale: 0.8;
 }
 
 .required {

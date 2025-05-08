@@ -18,9 +18,9 @@
 
 'use client';
 
-import { RefObject, useEffect, useRef, useState, type HTMLInputTypeAttribute } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
-import style from '../input.module.css';
+import style from './input.module.css';
 import { roboto400 } from '@/utils/fonts';
 
 
@@ -30,22 +30,27 @@ export default function TextArea({
 	value,
 	rows,
 	cols,
+	minLength,
+	maxLength,
 	required,
 	onInput,
 }: {
-	label: string,
-	name: string,
-	value?: string,
-	rows?: number,
-	cols?: number,
-	required?: boolean,
-	onInput?: (ev: React.FormEvent<HTMLTextAreaElement>) => (Promise<void> | void),
+	label: string;
+	name: string;
+	value?: string;
+	rows?: number;
+	cols?: number;
+	minLength?: number;
+	maxLength?: number;
+	required?: boolean;
+	onInput?: (ev: React.FormEvent<HTMLTextAreaElement>) => (Promise<void> | void);
 })
 {
 	const [ id, setId ] = useState('');
 
 	const inputRef: RefObject<HTMLTextAreaElement | null> = useRef(null);
 	const [ hasValue, setHasValue ] = useState(false);
+	const [ height, setHeight ] = useState<string | number>('auto');
 
 	useEffect(() =>
 	{
@@ -62,6 +67,20 @@ export default function TextArea({
 		}
 	}
 
+	function onInputHandler(ev: React.ChangeEvent<HTMLTextAreaElement>)
+	{
+		checkValue();
+
+		const textArea = ev.currentTarget;
+
+		textArea.style.height = 'auto';
+		textArea.style.height = textArea.scrollHeight + 'px';
+
+		if (onInput) {
+			onInput(ev);
+		}
+	}
+
 
 	return (
 		<div className={ style.container }>
@@ -73,17 +92,12 @@ export default function TextArea({
 
 				rows={ rows }
 				cols={ cols }
+				minLength={ minLength }
+				maxLength={ maxLength }
 				required={ required }
-				
-				className={ roboto400.className }
-				onInput={(ev) =>
-				{
-					checkValue();
 
-					if (onInput) {
-						onInput(ev);
-					}
-				}}
+				className={ roboto400.className }
+				onInput={ onInputHandler }
 			/>
 			<label htmlFor={ id } className={ hasValue ? style['has-value'] : '' }>
 				{ label }{ required ? <span className={ style.required }>*</span> : '' }
