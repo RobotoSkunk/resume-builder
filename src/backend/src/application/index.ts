@@ -76,8 +76,8 @@ class AppWindow
 				preload: path.join(this.app.getAppPath(), 'src', 'backend', 'dist', 'preload.js'),
 			},
 			fullscreenable: false,
-			minWidth: this.splash ? 100 : 854,
-			minHeight: this.splash ? 100 : 480,
+			minWidth: width,
+			minHeight: height,
 			alwaysOnTop: this.splash,
 		});
 
