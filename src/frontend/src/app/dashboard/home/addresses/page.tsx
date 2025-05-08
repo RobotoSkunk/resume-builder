@@ -22,6 +22,7 @@ import Image from 'next/image';
 import { AnimatePresence, LayoutGroup, motion, Variants } from 'framer-motion';
 import { useContext, useEffect, useRef, useState, type FormEvent } from 'react';
 
+import layoutStyle from '../layout.module.css';
 import style from './page.module.css';
 
 import Input from '@/components/form/Input';
@@ -237,7 +238,11 @@ function AddressEntry({
 				<div className={ style.actions }>
 					{ data ?
 						<button
-							className={ style.danger }
+							className={ [
+								layoutStyle['action-button'],
+								layoutStyle.danger,
+							].join(' ') }
+
 							type='button'
 							disabled={ !!timeoutId }
 							onClick={ deleteEntry }
@@ -249,13 +254,26 @@ function AddressEntry({
 						</button>
 						:
 						<>
-							<button className={ style.success }>
+							<button
+								className={ [
+									layoutStyle['action-button'],
+									layoutStyle.success,
+								].join(' ') }
+							>
 								<Image
 									src={ acceptImage }
 									alt=''
 								/>
 							</button>
-							<button className={ style.danger } type='button' onClick={ cancelEntry }>
+							<button
+								className={ [
+									layoutStyle['action-button'],
+									layoutStyle.danger,
+								].join(' ') }
+
+								type='button'
+								onClick={ cancelEntry }
+							>
 								<Image
 									src={ cancelImage }
 									alt=''
@@ -447,7 +465,7 @@ export default function Page()
 
 								className={ style['add-row'] }
 							>
-								<button onClick={ () => setAddRow(true) }>
+								<button className={ layoutStyle['add-button'] } onClick={ () => setAddRow(true) }>
 									<Image
 										src={ addImage }
 										alt=''
