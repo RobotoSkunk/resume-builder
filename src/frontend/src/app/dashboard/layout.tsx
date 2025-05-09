@@ -74,44 +74,47 @@ export default function Dashboard({
 
 	useEffect(() =>
 	{
-		setKey(pathname.split('/')[2]);
+
+		const pathParts = pathname.split('/').filter(v => v !== '');
+
+		setKey(`/${pathParts[0]}/${pathParts[1]}`);
 	}, [ pathname ]);
 
 
 	const links = [
 		{
 			label: 'Inicio',
-			href: 'home',
+			href: '/dashboard/home',
 			disabled: false,
 		},
 		{
 			label: 'Educación',
-			href: 'education',
+			href: '/dashboard/education',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Experiencia',
-			href: 'experience',
+			href: '/dashboard/experience',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Cursos',
-			href: 'courses',
+			href: '/dashboard/courses',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Logros',
-			href: 'achievements',
+			href: '/dashboard/achievements',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Certificaciones',
-			href: 'certifications',
+			href: '/dashboard/certifications',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 		{
 			label: 'Proyectos',
-			href: 'projects',
+			href: '/dashboard/projects',
 			disabled: !userData || jobTitlesCount === 0,
 		},
 	];
