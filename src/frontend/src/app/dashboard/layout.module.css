@@ -82,11 +82,11 @@
 	& div {
 		position: absolute;
 		top: 10px;
-		left: 5px;
+		left: 0px;
 		bottom: 10px;
 
 		width: 5px;
-		border-radius: 5px;
+		border-radius: 0 5px 5px 0;
 
 		background: var(--background);
 	}
