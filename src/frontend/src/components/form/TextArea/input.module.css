@@ -39,6 +39,8 @@
 		outline: none;
 		background: var(--background);
 
+		font-size: 0.9em;
+
 		resize: none;
 		overflow: hidden;
 	}
