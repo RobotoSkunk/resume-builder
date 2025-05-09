@@ -184,7 +184,7 @@ function JobTitleEntry({
 							layoutStyle.danger,
 						].join(' ') }
 						type='button'
-						// disabled={ !!timeoutId }
+						disabled={ !!timeoutId }
 						onClick={ deleteEntry }
 					>
 						<Image
