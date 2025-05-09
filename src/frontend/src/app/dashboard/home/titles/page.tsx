@@ -19,7 +19,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion, Variants } from 'framer-motion';
 
 import Input from '@/components/form/Input';
@@ -36,6 +36,18 @@ import deleteImage from '@/assets/icons/trash.svg';
 import addImage from '@/assets/icons/add.svg';
 
 
+async function fetchJobTitles(userId: string): Promise<DB.JobTitle[]>
+{
+	const result = await window.api.fetch<DB.JobTitle[]>(`/user/${userId}/job-title/list-all`);
+
+	if (result.data) {
+		return result.data;
+	}
+
+	return [];
+}
+
+
 function JobTitleEntry({
 	userId,
 	data,
@@ -45,12 +57,15 @@ function JobTitleEntry({
 }: {
 	userId: string,
 	data?: DB.JobTitle,
-	updateData?: (data: DB.JobTitle[]) => void,
+	updateData: (data: DB.JobTitle[]) => void,
 	onDeleteEntry?: (id: string) => void,
 	onCancelEntry?: () => void,
 })
 {
 	const formRef = useRef<HTMLFormElement | null>(null);
+
+	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
+	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<DB.Address>>({ });
 
 	function cancelEntry()
 	{
@@ -63,11 +78,101 @@ function JobTitleEntry({
 		}
 	}
 
+	async function onSubmitHandler(ev: React.FormEvent<HTMLFormElement>)
+	{
+		const form = ev.currentTarget;
+
+		ev.preventDefault();
+
+		if (!form.checkValidity()) {
+			form.reportValidity();
+		}
+
+		const formData = new FormData(form);
+
+		const data: { [ key: string ]: unknown } = {};
+		formData.forEach((value, key) => data[key] = value);
+
+		const response = await window.api.fetch<DB.User>(`/user/${userId}/job-title/create`, data);
+
+		if (response.code !== 0) {
+			alert(response.message);
+		} else {
+			updateData(
+				await fetchJobTitles(userId)
+			);
+
+			cancelEntry();
+		}
+	}
+
+	async function deleteEntry()
+	{
+		if (!data || !onDeleteEntry) {
+			return;
+		}
+
+		const result = confirm('¿Seguro que deseas eliminar esta dirección?');
+
+		if (!result) {
+			return;
+		}
+
+		if (formRef.current) {
+			const response = await window.api.fetch(`/user/job-title/remove/${data.id}`);
+
+			if (response.code === 0) {
+				onDeleteEntry(data.id);
+			}
+		}
+	}
+
+	async function onInputChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>)
+	{
+		if (!data) {
+			return;
+		}
+
+		const input = ev.currentTarget;
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+
+		setDataToUpdate({
+			...dataToUpdate,
+			[ input.name ]: input.value,
+		});
+
+
+		setTimeoutId(
+			setTimeout(() =>
+			{
+				(async () =>
+				{
+					const response = await window.api.fetch(`/user/job-title/${data.id}/update`, {
+						...dataToUpdate,
+						[ input.name ]: input.value,
+					});
+
+					if (response.code !== 0) {
+						alert(response.message);
+					} else {
+						setDataToUpdate({ });
+					}
+				})();
+
+				setTimeoutId(null);
+			}, 500)
+		);
+	}
 
 	return (
 		<form
 			ref={ formRef }
 			className={ style.entry }
+
+			onSubmit={ onSubmitHandler }
 		>
 			<input type='hidden' name='user_id' value={ userId }/>
 
@@ -80,7 +185,7 @@ function JobTitleEntry({
 						].join(' ') }
 						type='button'
 						// disabled={ !!timeoutId }
-						// onClick={ deleteEntry }
+						onClick={ deleteEntry }
 					>
 						<Image
 							src={ deleteImage }
@@ -121,7 +226,9 @@ function JobTitleEntry({
 				<Input
 					type='text'
 					name='name'
-					label='Título'
+					label='Nombre del título'
+					value={ data?.name }
+					onInput={ onInputChange }
 					required
 				/>
 				<TextArea
@@ -129,6 +236,8 @@ function JobTitleEntry({
 					label='Descripción'
 					rows={ 3 }
 					maxLength={ 250 }
+					value={ data?.description }
+					onInput={ onInputChange }
 					required
 				/>
 			</div>
@@ -139,9 +248,35 @@ function JobTitleEntry({
 
 export default function Page()
 {
-	const userData = useContext(UserDataContext).data;
+	const userContext = useContext(UserDataContext);
+	const userData = userContext.data;
 
 	const [ addRow, setAddRow ] = useState(false);
+	const [ loaded, setLoaded ] = useState(false);
+	const [ jobTitles, setJobTitles ] = useState<DB.JobTitle[]>([]);
+
+	function updateData(data: DB.JobTitle[])
+	{
+		setJobTitles(data);
+		userContext.fetchJobTitlesCount();
+	}
+
+
+	useEffect(() =>
+	{
+		if (!userData) {
+			return;
+		}
+
+		(async () =>
+		{
+			setJobTitles(
+				await fetchJobTitles(userData.id)
+			);
+
+			setLoaded(true);
+		})();
+	}, [ ]);
 
 
 	const variants = {
@@ -159,9 +294,30 @@ export default function Page()
 	} satisfies Variants;
 
 	return (
-		<LayoutGroup>
+		loaded && <LayoutGroup>
 			<AnimatePresence mode='popLayout' initial={ false }>
-				<JobTitleEntry key={ 1 } userId={ userData?.id || '' }/>
+				{ jobTitles.map((jobTitle) =>
+					<JobTitleEntry
+						userId={ userData?.id || '' }
+						updateData={ updateData }
+						data={ jobTitle }
+						key={ jobTitle.id }
+
+						onDeleteEntry={(id) =>
+						{
+							const addressesList = [ ...jobTitles ];
+							const i = addressesList.findIndex((a) => a.id === id);
+
+							if (i > -1) {
+								addressesList.splice(i, 1);
+								setJobTitles(addressesList);
+							}
+
+							userContext.fetchJobTitlesCount();
+						}}
+					/>
+				) }
+
 
 				{ addRow ?
 					<motion.div
@@ -177,6 +333,7 @@ export default function Page()
 						<JobTitleEntry
 							userId={ userData?.id || '' }
 							onCancelEntry={ () => setAddRow(false) }
+							updateData={ updateData }
 						/>
 					</motion.div>
 					:
