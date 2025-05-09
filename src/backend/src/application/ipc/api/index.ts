@@ -17,6 +17,7 @@
 **/
 
 import { ipcMain } from 'electron';
+import { is } from '@electron-toolkit/utils';
 
 import router from './router';
 import RSRequest from './router/request';
@@ -34,8 +35,16 @@ ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, .
 
 		const response = await route.handler(req);
 
+		if (is.dev) {
+			console.info('Fetch: ', endpoint, ' | Code: ', response.code);
+		}
+
 		event.reply('api/fetch', response);
 		return;
+	}
+
+	if (is.dev) {
+		console.info('Fetch: ', endpoint, ' | Not Found');
 	}
 
 	event.reply('api/fetch', { code: -1, message: 'Route not found' });
