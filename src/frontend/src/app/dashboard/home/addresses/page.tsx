@@ -108,7 +108,7 @@ function Entry({
 	{
 		const response = await window.api.fetch(`/user/address/remove/${data.id}`);
 
-		if (response.code === 0) {
+		if (response.ok) {
 			onDelete(data.id);
 		}
 	}
@@ -117,7 +117,7 @@ function Entry({
 	{
 		const response = await window.api.fetch(`/user/address/${data.id}/update`, dataToSend);
 
-		if (response.code !== 0) {
+		if (!response.ok) {
 			alert(response.message);
 
 			return false;
@@ -213,7 +213,7 @@ export default function Page()
 
 		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/create`, data);
 
-		if (response.code !== 0) {
+		if (!response.ok) {
 			alert(response.message);
 
 			return false;
@@ -236,7 +236,7 @@ export default function Page()
 		const value = trigger ? 1 : 0;
 		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/${id}/set-active/${value}`);
 
-		if (response.code !== 0) {
+		if (!response.ok) {
 			alert(response.message);
 
 			return;

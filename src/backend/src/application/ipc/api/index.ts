@@ -39,7 +39,10 @@ ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, .
 			console.info('Fetch: ', endpoint, ' | Code: ', response.code);
 		}
 
-		event.reply('api/fetch', response);
+		event.reply('api/fetch', {
+			ok: response.code === 0,
+			...response,
+		});
 		return;
 	}
 
@@ -47,5 +50,8 @@ ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, .
 		console.info('Fetch: ', endpoint, ' | Not Found');
 	}
 
-	event.reply('api/fetch', { code: -1, message: 'Route not found' });
+	event.reply('api/fetch', {
+		code: -1,
+		message: 'Route not found',
+	});
 });

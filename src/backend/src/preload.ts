@@ -19,7 +19,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 type CallbackListenerBoolean = RobotoSkunk.IPC.CallbackListener<number>;
-type RSResponse = { code: number, body: unknown };
 
 
 function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackListener<T>)
@@ -37,13 +36,13 @@ function callbackHandler<T>(channel: string, callback: RobotoSkunk.IPC.CallbackL
 
 contextBridge.exposeInMainWorld(
 	'api', {
-		fetch: (endpoint: string, args: unknown): Promise<RSResponse> =>
+		fetch: (endpoint: string, args: unknown): Promise<unknown> =>
 		{
 			return new Promise((resolve, reject) =>
 			{
 				const channel = 'api/fetch';
 
-				const listener = (_: Electron.IpcRendererEvent, resArgs: RSResponse) =>
+				const listener = (_: Electron.IpcRendererEvent, resArgs: unknown) =>
 				{
 					try {
 						resolve(resArgs);

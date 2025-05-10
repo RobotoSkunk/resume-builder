@@ -21,7 +21,12 @@ declare global
 	interface Window
 	{
 		api: {
-			fetch: <T>(channel: string, args?: unknown) => Promise<{ code: number, message: string, data?: T }>;
+			fetch: <T>(channel: string, args?: unknown) => Promise<{
+				ok: boolean;
+				code: number;
+				message: string;
+				data?: T;
+			}>;
 
 			window: {
 				setTitle: (title: string) => void;

@@ -19,20 +19,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion, Variants } from 'framer-motion';
-
-import Input from '@/components/form/Input';
-import TextArea from '@/components/form/TextArea';
-
-import { UserDataContext } from '../../context';
 
 import layoutStyle from '../layout.module.css';
 import style from './page.module.css';
 
-import cancelImage from '@/assets/icons/cancel.svg';
-import acceptImage from '@/assets/icons/check.svg';
-import deleteImage from '@/assets/icons/trash.svg';
+import FormEntry, { Field } from '@/components/FormEntry';
+
+import { UserDataContext } from '../../context';
+
 import addImage from '@/assets/icons/add.svg';
 
 
@@ -48,200 +44,75 @@ async function fetchJobTitles(userId: string): Promise<DB.JobTitle[]>
 }
 
 
-function JobTitleEntry({
-	userId,
+const fields: Field[] = [
+	{
+		type: 'text',
+		name: 'name',
+		label: 'Nombre del título',
+		className: style.input,
+		required: true,
+	},
+	{
+		type: 'textarea',
+		name: 'description',
+		label: 'Descripción',
+		className: style.textarea,
+		required: true,
+	},
+];
+
+
+function Entry({
 	data,
-	updateData,
-	onDeleteEntry,
-	onCancelEntry,
+	onDelete,
 }: {
-	userId: string,
-	data?: DB.JobTitle,
-	updateData: (data: DB.JobTitle[]) => void,
-	onDeleteEntry?: (id: string) => void,
-	onCancelEntry?: () => void,
+	data: DB.JobTitle;
+	onDelete: (id: string) => void;
 })
 {
-	const formRef = useRef<HTMLFormElement | null>(null);
-
-	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
-	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<DB.Address>>({ });
-
-	function cancelEntry()
+	async function onDeleteHandler()
 	{
-		if (formRef.current) {
-			formRef.current.reset();
-		}
+		const response = await window.api.fetch(`/user/job-title/remove/${data.id}`);
 
-		if (onCancelEntry) {
-			onCancelEntry();
+		if (response.ok) {
+			onDelete(data.id);
 		}
 	}
 
-	async function onSubmitHandler(ev: React.FormEvent<HTMLFormElement>)
+	async function onUpdateDataHandler(dataToSend: Partial<DB.JobTitle>)
 	{
-		const form = ev.currentTarget;
+		const response = await window.api.fetch(`/user/job-title/${data.id}/update`, dataToSend);
 
-		ev.preventDefault();
-
-		if (!form.checkValidity()) {
-			form.reportValidity();
-		}
-
-		const formData = new FormData(form);
-
-		const data: { [ key: string ]: unknown } = {};
-		formData.forEach((value, key) => data[key] = value);
-
-		const response = await window.api.fetch<DB.User>(`/user/${userId}/job-title/create`, data);
-
-		if (response.code !== 0) {
+		if (!response.ok) {
 			alert(response.message);
-		} else {
-			updateData(
-				await fetchJobTitles(userId)
-			);
 
-			cancelEntry();
+			return false;
 		}
+
+		return true;
 	}
 
-	async function deleteEntry()
-	{
-		if (!data || !onDeleteEntry) {
-			return;
-		}
-
-		const result = confirm('¿Seguro que deseas eliminar esta dirección?');
-
-		if (!result) {
-			return;
-		}
-
-		if (formRef.current) {
-			const response = await window.api.fetch(`/user/job-title/remove/${data.id}`);
-
-			if (response.code === 0) {
-				onDeleteEntry(data.id);
-			}
-		}
-	}
-
-	async function onInputChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>)
-	{
-		if (!data) {
-			return;
-		}
-
-		const input = ev.currentTarget;
-
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
-
-		setDataToUpdate({
-			...dataToUpdate,
-			[ input.name ]: input.value,
-		});
-
-
-		setTimeoutId(
-			setTimeout(() =>
-			{
-				(async () =>
-				{
-					const response = await window.api.fetch(`/user/job-title/${data.id}/update`, {
-						...dataToUpdate,
-						[ input.name ]: input.value,
-					});
-
-					if (response.code !== 0) {
-						alert(response.message);
-					} else {
-						setDataToUpdate({ });
-					}
-				})();
-
-				setTimeoutId(null);
-			}, 500)
-		);
-	}
 
 	return (
-		<form
-			ref={ formRef }
-			className={ style.entry }
+		<FormEntry
+			isTemplate={ false }
 
-			onSubmit={ onSubmitHandler }
-		>
-			<input type='hidden' name='user_id' value={ userId }/>
+			deleteQuestion='¿Estás seguro de eliminar este título profesional? Esta acción no se puede deshacer.'
+			onDelete={ onDeleteHandler }
 
-			<div className={ style.controls }>
-				{ data ?
-					<button
-						className={ [
-							layoutStyle['action-button'],
-							layoutStyle.danger,
-						].join(' ') }
-						type='button'
-						disabled={ !!timeoutId }
-						onClick={ deleteEntry }
-					>
-						<Image
-							src={ deleteImage }
-							alt=''
-						/>
-					</button>
-					:
-					<>
-						<button
-							className={ [
-								layoutStyle['action-button'],
-								layoutStyle.success,
-							].join(' ') }
-						>
-							<Image
-								src={ acceptImage }
-								alt=''
-							/>
-						</button>
-						<button
-							className={ [
-								layoutStyle['action-button'],
-								layoutStyle.danger,
-							].join(' ') }
-							type='button'
-							onClick={ cancelEntry }
-						>
-							<Image
-								src={ cancelImage }
-								alt=''
-							/>
-						</button>
-					</>
-				}
-			</div>
+			onUpdateData={ onUpdateDataHandler }
 
-			<div>
-				<Input
-					type='text'
-					name='name'
-					label='Nombre del título'
-					value={ data?.name }
-					onInput={ onInputChange }
-					required
-				/>
-				<TextArea
-					name='description'
-					label='Descripción'
-					rows={ 3 }
-					maxLength={ 250 }
-					value={ data?.description }
-					onInput={ onInputChange }
-					required
-				/>
-			</div>
-		</form>
+			fields={[
+				{
+					...fields[0], // name
+					value: data.name,
+				},
+				{
+					...fields[1], // description
+					value: data.description,
+				},
+			]}
+		/>
 	);
 }
 
@@ -255,12 +126,27 @@ export default function Page()
 	const [ loaded, setLoaded ] = useState(false);
 	const [ jobTitles, setJobTitles ] = useState<DB.JobTitle[]>([]);
 
-	function updateData(data: DB.JobTitle[])
-	{
-		setJobTitles(data);
-		userContext.fetchJobTitlesCount();
-	}
 
+	async function onSubmit(data: DB.Address)
+	{
+		if (!userData) {
+			return false;
+		}
+
+		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/create`, data);
+
+		if (!response.ok) {
+			alert(response.message);
+
+			return false;
+		}
+
+		setJobTitles(
+			await fetchJobTitles(userData.id)
+		);
+
+		return true;
+	}
 
 	useEffect(() =>
 	{
@@ -297,13 +183,11 @@ export default function Page()
 		loaded && <LayoutGroup>
 			<AnimatePresence mode='popLayout' initial={ false }>
 				{ jobTitles.map((jobTitle) =>
-					<JobTitleEntry
-						userId={ userData?.id || '' }
-						updateData={ updateData }
+					<Entry
 						data={ jobTitle }
 						key={ jobTitle.id }
 
-						onDeleteEntry={(id) =>
+						onDelete={(id) =>
 						{
 							const addressesList = [ ...jobTitles ];
 							const i = addressesList.findIndex((a) => a.id === id);
@@ -312,8 +196,6 @@ export default function Page()
 								addressesList.splice(i, 1);
 								setJobTitles(addressesList);
 							}
-
-							userContext.fetchJobTitlesCount();
 						}}
 					/>
 				) }
@@ -330,10 +212,13 @@ export default function Page()
 						layout
 						variants={ variants }
 					>
-						<JobTitleEntry
-							userId={ userData?.id || '' }
-							onCancelEntry={ () => setAddRow(false) }
-							updateData={ updateData }
+						<FormEntry<DB.Address>
+							isTemplate={ true }
+
+							onCancel={ () => setAddRow(false) }
+							onSubmit={ onSubmit }
+
+							fields={ fields }
 						/>
 					</motion.div>
 					:

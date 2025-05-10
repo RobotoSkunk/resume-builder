@@ -16,44 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.entry {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-
-	padding: 15px 55px;
-
-	transition: background 0.3s ease;
-
-	&:nth-child(even) {
-		background: color-mix(in srgb, var(--border-active), transparent 90%);
-	}
-
-	& input,
-	& textarea {
-		width: 650px;
-	}
-
-
-	& .controls {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-
-		gap: 5px;
-
-		margin-right: 25px;
-
-		& label {
-			display: flex;
-			flex-direction: column-reverse;
-			justify-content: flex-start;
-			align-items: center;
-
-			margin-bottom: 10px
-		}
-	}
-
+.input,
+.textarea {
+	width: 650px;
 }
