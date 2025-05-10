@@ -28,6 +28,7 @@ export enum CertificationParticipationType
 export interface DB_Certifications
 {
 	id: string;
+	user_id: string;
 	name: string;
 	institution: string;
 	participation_type: CertificationParticipationType;

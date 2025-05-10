@@ -18,3 +18,4 @@
 
 export * as _20250501T023856755Z from './20250501T023856755Z-init';
 export * as _20250510T095907962Z from './20250510T095907962Z-languages-cefr-levels';
+export * as _20250510T100711069Z from './20250510T100711069Z-add-userid-to-job-tables';

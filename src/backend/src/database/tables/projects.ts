@@ -27,6 +27,7 @@ export enum ProjectParticipationType
 export interface DB_Projects
 {
 	id: string;
+	user_id: string;
 	title: string;
 	participation_type: ProjectParticipationType;
 	company: string;

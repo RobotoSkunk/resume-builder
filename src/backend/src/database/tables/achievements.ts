@@ -28,6 +28,7 @@ export enum AchievementType
 export interface DB_Achievements
 {
 	id: string;
+	user_id: string;
 	description: string;
 	type: AchievementType;
 	date: number;

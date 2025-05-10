@@ -21,6 +21,7 @@ export const tableName = 'educations';
 export interface DB_Educations
 {
 	id: string;
+	user_id: string;
 	institution_name: string;
 	country: string;
 	state: string;

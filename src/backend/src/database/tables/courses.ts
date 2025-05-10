@@ -28,6 +28,7 @@ export enum CourseParticipationType
 export interface DB_Courses
 {
 	id: string;
+	user_id: string;
 	name: string;
 	institution: string;
 	participation_type: CourseParticipationType;

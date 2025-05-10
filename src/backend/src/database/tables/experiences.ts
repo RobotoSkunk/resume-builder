@@ -21,6 +21,7 @@ export const tableName = 'experiences';
 export interface DB_Experiences
 {
 	id: string;
+	user_id: string;
 	title: string;
 	company: string;
 	description: string;
