@@ -34,7 +34,10 @@ export interface DB_Languages
 	id: string;
 	user_id: string;
 	name: string;
-	cefr_level: CEFRLevels;
+	reading_cefr_level: CEFRLevels;
+	writting_cefr_level: CEFRLevels;
+	listening_cefr_level: CEFRLevels;
+	speaking_cefr_level: CEFRLevels;
 }
 
 
