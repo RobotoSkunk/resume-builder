@@ -135,7 +135,7 @@ type Props<T> = TemplateProps<T> | EntryProps<T>;
 
 
 
-export function FormEntry<T>(props: Props<T>)
+export default function FormEntry<T>(props: Props<T>)
 {
 	const userData = useContext(UserDataContext).data;
 	const formRef = useRef<HTMLFormElement | null>(null);
