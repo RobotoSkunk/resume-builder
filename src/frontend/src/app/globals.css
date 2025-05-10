@@ -79,7 +79,7 @@ body[maximized=true] {
 		border-radius: 0;
 	}
 
-	#window-border {
+	#app-border {
 		display: none;
 	}
 }
