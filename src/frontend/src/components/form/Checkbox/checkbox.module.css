@@ -21,6 +21,13 @@
 
 	width: 0;
 	height: 0;
+
+	outline: none;
+
+	&:focus-visible ~ label {
+		outline: 2px solid var(--border-active) !important;
+		outline-offset: 2px;
+	}
 }
 
 .checkbox {
