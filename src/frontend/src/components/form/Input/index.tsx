@@ -24,25 +24,25 @@ import style from './input.module.css';
 import { roboto400 } from '@/utils/fonts';
 
 
-export default function Input({
-	label,
-	type,
-	name,
-	value,
-	min,
-	max,
-	required,
-	onInput,
-}: {
-	label: string,
-	type: HTMLInputTypeAttribute,
-	name: string,
-	value?: string,
-	min?: number,
-	max?: number,
-	required?: boolean,
-	onInput?: (ev: React.FormEvent<HTMLInputElement>) => (Promise<void> | void),
-})
+interface Props
+{
+	type: HTMLInputTypeAttribute;
+	label: string;
+	name: string;
+
+	value?: string;
+	min?: number;
+	max?: number;
+
+	disabled?: boolean;
+	required?: boolean;
+	className?: string;
+
+	onInput?: (ev: React.FormEvent<HTMLInputElement>) => (Promise<void> | void);
+};
+
+
+export default function Input(props: Props)
 {
 	const [ id, setId ] = useState('');
 
@@ -54,7 +54,7 @@ export default function Input({
 		setId(crypto.randomUUID());
 
 		checkValue();
-	}, [ value ]);
+	}, [ props.value ]);
 
 
 	function checkValue()
@@ -64,32 +64,38 @@ export default function Input({
 		}
 	}
 
+	function onInputHandler(ev: React.ChangeEvent<HTMLInputElement>)
+	{
+		checkValue();
+
+		if (props.onInput) {
+			props.onInput(ev);
+		}
+	}
 
 	return (
 		<div className={ style.container }>
 			<input
-				type={ type }
+				type={ props.type }
 				id={ id }
 				ref={ inputRef }
-				name={ name }
-				defaultValue={ value }
+				name={ props.name }
+				defaultValue={ props.value }
 
-				min={ min }
-				max={ max }
-				required={ required }
-				
-				className={ roboto400.className }
-				onInput={(ev) =>
-				{
-					checkValue();
+				min={ props.min }
+				max={ props.max }
+				required={ props.required }
+				disabled={ props.disabled }
 
-					if (onInput) {
-						onInput(ev);
-					}
-				}}
+				className={ [
+					roboto400.className,
+					props.className || '',
+				].join(' ') }
+
+				onInput={ onInputHandler }
 			/>
 			<label htmlFor={ id } className={ hasValue ? style['has-value'] : '' }>
-				{ label }{ required ? <span className={ style.required }>*</span> : '' }
+				{ props.label }{ props.required ? <span className={ style.required }>*</span> : '' }
 			</label>
 		</div>
 	);
