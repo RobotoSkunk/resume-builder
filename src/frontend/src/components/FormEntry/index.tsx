@@ -20,7 +20,7 @@
 
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
-import { useContext, useEffect, useRef, useState, type FormEvent } from 'react';
+import { useContext, useRef, useState } from 'react';
 
 import { UserDataContext } from '@/app/dashboard/context';
 
@@ -28,19 +28,19 @@ import style from './entry.module.css';
 
 import Input from '@/components/form/Input';
 import Checkbox from '@/components/form/Checkbox';
+import TextArea from '@/components/form/TextArea';
 
 import cancelImage from '@/assets/icons/cancel.svg';
 import acceptImage from '@/assets/icons/check.svg';
 import deleteImage from '@/assets/icons/trash.svg';
-import TextArea from '../form/TextArea';
 
 
 // #region Tipos de entradas
 interface FieldBase
 {
 	name: string;
-	value?: string;
 	label: string;
+	value?: string;
 	required?: boolean;
 	className?: string;
 }
@@ -64,7 +64,7 @@ interface InputField extends FieldBase
 };
 
 
-type Field = TextAreaField | InputField;
+export type Field = TextAreaField | InputField;
 // #endregion
 
 // #region Tipos de propiedades
@@ -147,7 +147,7 @@ export default function FormEntry<T>(props: Props<T>)
 
 
 	// #region Funciones de plantilla
-	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
+	async function onSubmitHandler(ev: React.FormEvent<HTMLFormElement>)
 	{
 		if (!props.isTemplate) {
 			return;
@@ -192,7 +192,6 @@ export default function FormEntry<T>(props: Props<T>)
 	}
 	// #endregion
 
-
 	// #region Funciones de entrada
 	async function onDeleteHandler()
 	{
@@ -230,6 +229,10 @@ export default function FormEntry<T>(props: Props<T>)
 
 		function prepareValue()
 		{
+			if (input.value === '') {
+				return null;
+			}
+
 			if (input.type === 'number') {
 				return Number(input.value);
 			}
@@ -301,7 +304,7 @@ export default function FormEntry<T>(props: Props<T>)
 			exit='hide'
 
 			layout
-			variants={ props.isTemplate ? variants : undefined }
+			variants={ !props.isTemplate ? variants : undefined }
 		>
 			{ userData && <input type='hidden' name='user_id' value={ userData.id }/> }
 
@@ -320,7 +323,7 @@ export default function FormEntry<T>(props: Props<T>)
 				}
 
 				<div className={ style.actions }>
-					{ props.isTemplate ?
+					{ !props.isTemplate ?
 						<button
 							className={ style.danger }
 
@@ -366,12 +369,12 @@ export default function FormEntry<T>(props: Props<T>)
 					<TextArea
 						name={ field.name }
 						label={ field.label }
-						value={ field.value }
+						value={ field.value || '' }
 
+						key={ field.name }
 						required={ field.required }
 						className={ field.className }
 
-						disabled={ isBusy }
 						onInput={ onInputChange }
 
 						rows={ field.rows }
@@ -384,12 +387,12 @@ export default function FormEntry<T>(props: Props<T>)
 						type={ field.type }
 						name={ field.name }
 						label={ field.label }
-						value={ field.value }
+						value={ field.value || '' }
 
+						key={ field.name }
 						required={ field.required }
 						className={ field.className }
 
-						disabled={ isBusy }
 						onInput={ onInputChange }
 
 						min={ field.min }

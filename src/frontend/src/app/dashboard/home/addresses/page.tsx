@@ -20,19 +20,16 @@
 
 import Image from 'next/image';
 import { AnimatePresence, LayoutGroup, motion, Variants } from 'framer-motion';
-import { useContext, useEffect, useRef, useState, type FormEvent } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import layoutStyle from '../layout.module.css';
 import style from './page.module.css';
 
-import Input from '@/components/form/Input';
-import Checkbox from '@/components/form/Checkbox';
+import FormEntry, { Field } from '@/components/FormEntry';
 
-import cancelImage from '@/assets/icons/cancel.svg';
-import acceptImage from '@/assets/icons/check.svg';
-import deleteImage from '@/assets/icons/trash.svg';
-import addImage from '@/assets/icons/add.svg';
 import { UserDataContext } from '../../context';
+
+import addImage from '@/assets/icons/add.svg';
 
 
 
@@ -48,313 +45,142 @@ async function fetchAddresses(userId: string): Promise<DB.Address[]>
 }
 
 
-function AddressEntry({
-	userId,
+const fields: Field[] = [
+	{
+		type: 'text',
+		name: 'street',
+		label: 'Calle',
+		required: true,
+	},
+	{
+		type: 'number',
+		name: 'number_ext',
+		label: 'Número exterior',
+	},
+	{
+		type: 'number',
+		name: 'number_int',
+		label: 'Número interior',
+	},
+	{
+		type: 'text',
+		name: 'neighborhood',
+		label: 'Colonia',
+		required: true,
+	},
+	{
+		type: 'number',
+		name: 'postal_code',
+		label: 'Código postal',
+	},
+	{
+		type: 'text',
+		name: 'city',
+		label: 'Ciudad',
+		required: true,
+	},
+	{
+		type: 'text',
+		name: 'state',
+		label: 'Estado',
+		required: true,
+	},
+	{
+		type: 'text',
+		name: 'country',
+		label: 'País',
+		required: true,
+	},
+];
+
+
+function Entry({
 	data,
-	updateData,
-	onDeleteEntry,
-	onSetActiveEntry,
-	onCancelEntry,
+	onDelete,
+	onSetActive,
 }: {
-	userId: string,
-	data?: DB.Address,
-	updateData: (data: DB.Address[]) => void,
-	onDeleteEntry?: (id: string) => void,
-	onSetActiveEntry?: (id: string, trigger: boolean) => void,
-	onCancelEntry?: () => void,
+	data: DB.Address;
+	onDelete: (id: string) => void;
+	onSetActive: (trigger: boolean) => Promise<void>;
 })
 {
-	const formRef = useRef<HTMLFormElement | null>(null);
-
-	const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout | null>(null);
-	const [ dataToUpdate, setDataToUpdate ] = useState<Partial<DB.Address>>({ });
-
-
-	async function onSubmitHandler(ev: FormEvent<HTMLFormElement>)
+	async function onDeleteHandler()
 	{
-		const form = ev.currentTarget;
+		const response = await window.api.fetch(`/user/address/remove/${data.id}`);
 
-		ev.preventDefault();
-
-		if (!form.checkValidity()) {
-			form.reportValidity();
+		if (response.code === 0) {
+			onDelete(data.id);
 		}
+	}
 
-		const formData = new FormData(form);
-
-		const data: { [ key: string ]: unknown } = {};
-		formData.forEach((value, key) => data[key] = value);
-
-		const response = await window.api.fetch<DB.User>(`/user/${userId}/address/create`, data);
+	async function onUpdateDataHandler(dataToSend: Partial<DB.Address>)
+	{
+		const response = await window.api.fetch(`/user/address/${data.id}/update`, dataToSend);
 
 		if (response.code !== 0) {
 			alert(response.message);
-		} else {
-			updateData(
-				await fetchAddresses(userId)
-			);
 
-			cancelEntry();
+			return false;
 		}
+
+		return true;
 	}
-
-	async function deleteEntry()
-	{
-		if (!data || !onDeleteEntry) {
-			return;
-		}
-
-		const result = confirm('¿Seguro que deseas eliminar esta dirección?');
-
-		if (!result) {
-			return;
-		}
-
-		if (formRef.current) {
-			const response = await window.api.fetch(`/user/address/remove/${data.id}`);
-
-			if (response.code === 0) {
-				onDeleteEntry(data.id);
-			}
-		}
-	}
-
-	function cancelEntry()
-	{
-		if (formRef.current) {
-			formRef.current.reset();
-		}
-
-		if (onCancelEntry) {
-			onCancelEntry();
-		}
-	}
-
-	async function onInputChange(ev: React.FormEvent<HTMLInputElement>)
-	{
-		if (!data) {
-			return;
-		}
-
-		const input = ev.currentTarget;
-
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
-
-		setDataToUpdate({
-			...dataToUpdate,
-			[ input.name ]: input.value,
-		});
-
-
-		setTimeoutId(
-			setTimeout(() =>
-			{
-				(async () =>
-				{
-					const response = await window.api.fetch(`/user/address/${data.id}/update`, {
-						...dataToUpdate,
-						[ input.name ]: input.value,
-					});
-
-					if (response.code !== 0) {
-						alert(response.message);
-					} else {
-						setDataToUpdate({ });
-					}
-				})();
-
-				setTimeoutId(null);
-			}, 500)
-		);
-	}
-
-	async function onSetActive(ev: React.ChangeEvent<HTMLInputElement>)
-	{
-		if (!data || !onSetActiveEntry) {
-			return;
-		}
-
-		const trigger = ev.currentTarget.checked ? 1 : 0;
-
-		const response = await window.api.fetch<DB.User>(`/user/${userId}/address/${data.id}/set-active/${trigger}`);
-
-		if (response.code !== 0) {
-			alert(response.message);
-		} else {
-			onSetActiveEntry(data.id, trigger === 1);
-		}
-	}
-
-	const variants = {
-		hide: {
-			x: 100,
-			opacity: 0,
-			transition: {
-				duration: 0.2,
-			}
-		},
-		show: {
-			x: 0,
-			opacity: 1,
-			transition: {
-				duration: 0.4,
-				type: 'spring',
-			}
-		},
-	} satisfies Variants;
 
 
 	return (
-		<motion.form
-			ref={ formRef }
-			className={ style.entry }
-			onSubmit={ onSubmitHandler }
+		<FormEntry<DB.Address>
+			isTemplate={ false }
 
-			initial='hide'
-			animate='show'
-			exit='hide'
+			deleteQuestion='¿Estás seguro de eliminar esta dirección? Esta acción no se puede deshacer.'
+			onDelete={ onDeleteHandler }
+			onUpdateData={ onUpdateDataHandler }
 
-			layout
-			variants={ data ? variants : undefined }
-		>
-			<input type='hidden' name='user_id' value={ userId }/>
-
-			<div className={ style.controls }>
-				{ data && 
-					<div>
-						<Checkbox
-							label='Activo'
-							name='is_active'
-							value='1'
-							checked={ data.is_active === 1 }
-							disabled={ !!timeoutId }
-							onChange={ onSetActive }
-						/>
-					</div>
+			actionsConfig={{
+				checkbox: {
+					enable: true,
+					value: data.is_active === 1,
+					handler: (ev) => onSetActive(ev.currentTarget.checked),
 				}
+			}}
 
-				<div className={ style.actions }>
-					{ data ?
-						<button
-							className={ [
-								layoutStyle['action-button'],
-								layoutStyle.danger,
-							].join(' ') }
 
-							type='button'
-							disabled={ !!timeoutId }
-							onClick={ deleteEntry }
-						>
-							<Image
-								src={ deleteImage }
-								alt=''
-							/>
-						</button>
-						:
-						<>
-							<button
-								className={ [
-									layoutStyle['action-button'],
-									layoutStyle.success,
-								].join(' ') }
-							>
-								<Image
-									src={ acceptImage }
-									alt=''
-								/>
-							</button>
-							<button
-								className={ [
-									layoutStyle['action-button'],
-									layoutStyle.danger,
-								].join(' ') }
-
-								type='button'
-								onClick={ cancelEntry }
-							>
-								<Image
-									src={ cancelImage }
-									alt=''
-								/>
-							</button>
-						</>
-					}
-				</div>
-			</div>
-
-			<div className={ style.fields }>
-				<Input
-					type='text'
-					name='street'
-					value={ data?.street ?? '' }
-					label='Calle'
-					onInput={ data ? onInputChange : undefined }
-					required
-				/>
-				<Input
-					type='number'
-					name='number_ext'
-					value={ data?.number_ext?.toString() ?? '' }
-					label='Número exterior'
-					onInput={ data ? onInputChange : undefined }
-					min={ 0 }
-				/>
-				<Input
-					type='number'
-					name='number_int'
-					value={ data?.number_int?.toString() ?? '' }
-					label='Número interior'
-					onInput={ data ? onInputChange : undefined }
-					min={ 0 }
-				/>
-				<Input
-					type='text'
-					name='neighborhood'
-					value={ data?.neighborhood ?? '' }
-					label='Colonia'
-					onInput={ data ? onInputChange : undefined }
-					required
-				/>
-				<Input
-					type='number'
-					name='postal_code'
-					value={ data?.postal_code?.toString() ?? '' }
-					label='Código postal'
-					onInput={ data ? onInputChange : undefined }
-					min={ 0 }
-					max={ 99999 }
-				/>
-				<Input
-					type='text'
-					name='city'
-					value={ data?.city ?? '' }
-					label='Ciudad'
-					onInput={ data ? onInputChange : undefined }
-					required
-				/>
-				<Input
-					type='text'
-					name='state'
-					value={ data?.state ?? '' }
-					label='Estado'
-					onInput={ data ? onInputChange : undefined }
-					required
-				/>
-				<Input
-					type='text'
-					name='country'
-					value={ data?.country ?? '' }
-					label='País'
-					onInput={ data ? onInputChange : undefined }
-					required
-				/>
-			</div>
-		</motion.form>
+			fields={[
+				{
+					...fields[0], // street
+					value: data.street,
+				},
+				{
+					...fields[1], // number_ext
+					value: data.number_ext?.toString(),
+				},
+				{
+					...fields[2], // number_int
+					value: data.number_int?.toString(),
+				},
+				{
+					...fields[3], // neighborhood
+					value: data.neighborhood,
+				},
+				{
+					...fields[4], // postal_code
+					value: data.postal_code?.toString(),
+				},
+				{
+					...fields[5], // city
+					value: data.city,
+				},
+				{
+					...fields[6], // state
+					value: data.state,
+				},
+				{
+					...fields[7], // country
+					value: data.country,
+				},
+			]}
+		/>
 	);
 }
-
 
 export default function Page()
 {
@@ -379,10 +205,52 @@ export default function Page()
 	}, [ ]);
 
 
-	function updateData(data: DB.Address[])
+	async function onSubmit(data: DB.Address)
 	{
-		setAddresses(data);
+		if (!userData) {
+			return false;
+		}
+
+		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/create`, data);
+
+		if (response.code !== 0) {
+			alert(response.message);
+
+			return false;
+		}
+
+		setAddresses(
+			await fetchAddresses(userData.id)
+		);
+
+		return true;
 	}
+
+
+	async function onSetActive(id: string, trigger: boolean)
+	{
+		if (!userData) {
+			return;
+		}
+
+		const value = trigger ? 1 : 0;
+		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/${id}/set-active/${value}`);
+
+		if (response.code !== 0) {
+			alert(response.message);
+
+			return;
+		}
+
+		const addressesList = [ ...addresses ];
+
+		for (const address of addressesList) {
+			address.is_active = address.id === id && trigger ? 1 : 0;
+		}
+
+		setAddresses(addressesList);
+	}
+
 
 	const variants = {
 		hide: {
@@ -405,13 +273,11 @@ export default function Page()
 				<LayoutGroup>
 					<AnimatePresence mode='popLayout' initial={ false }>
 						{ addresses.map((address) =>
-							<AddressEntry
-								userId={ userData?.id || '' }
-								updateData={ updateData }
+							<Entry
 								data={ address }
 								key={ address.id }
 
-								onDeleteEntry={(id) =>
+								onDelete={(id) =>
 								{
 									const addressesList = [ ...addresses ];
 									const i = addressesList.findIndex((a) => a.id === id);
@@ -422,15 +288,9 @@ export default function Page()
 									}
 								}}
 
-								onSetActiveEntry={(id, trigger) =>
+								onSetActive={async (trigger) =>
 								{
-									const addressesList = [ ...addresses ];
-
-									for (const address of addressesList) {
-										address.is_active = address.id === id && trigger ? 1 : 0;
-									}
-
-									setAddresses(addressesList);
+									await onSetActive(address.id, trigger);
 								}}
 							/>
 						) }
@@ -446,10 +306,13 @@ export default function Page()
 								layout
 								variants={ variants }
 							>
-								<AddressEntry
-									userId={ userData?.id || '' }
-									updateData={ updateData }
-									onCancelEntry={ () => setAddRow(false) }
+								<FormEntry<DB.Address>
+									isTemplate={ true }
+
+									onCancel={ () => setAddRow(false) }
+									onSubmit={ onSubmit }
+
+									fields={ fields }
 								/>
 							</motion.div>
 							:
