@@ -24,9 +24,7 @@ import { createContext } from 'react';
 export const UserDataContext = createContext<{
 	data: DB.User | null;
 	updateData: (data: DB.User) => void;
-	fetchJobTitlesCount: () => void;
 }>({
 	data: null,
 	updateData: (_) => {},
-	fetchJobTitlesCount: () => {},
 });

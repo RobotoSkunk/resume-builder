@@ -44,8 +44,6 @@ export default function Dashboard({
 	const [ userData, setUserData ] = useState<DB.User | null>(null);
 	const [ picture, setPicture ] = useState<string | null>(null);
 
-	const [ jobTitlesCount, setJobTitlesCount ] = useState(0);
-
 
 	useEffect(() =>
 	{
@@ -69,7 +67,6 @@ export default function Dashboard({
 
 		setPicture(`data:image/png;base64,${pictureBuffer.toString('base64')}`);
 
-		fetchJobTitlesCount();
 	}, [ userData ]);
 
 	useEffect(() =>
@@ -90,32 +87,32 @@ export default function Dashboard({
 		{
 			label: 'Educación',
 			href: '/dashboard/education',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 		{
 			label: 'Experiencia',
 			href: '/dashboard/experience',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 		{
 			label: 'Cursos',
 			href: '/dashboard/courses',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 		{
 			label: 'Logros',
 			href: '/dashboard/achievements',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 		{
 			label: 'Certificaciones',
 			href: '/dashboard/certifications',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 		{
 			label: 'Proyectos',
 			href: '/dashboard/projects',
-			disabled: !userData || jobTitlesCount === 0,
+			disabled: !userData,
 		},
 	];
 
@@ -124,30 +121,11 @@ export default function Dashboard({
 		setUserData(data);
 	}
 
-	function fetchJobTitlesCount()
-	{
-		if (!userData) {
-			setJobTitlesCount(0);
-			return;
-		}
-
-		(async () =>
-		{
-			const response = await window.api.fetch<number>(`/user/${userData.id}/job-title/count`);
-
-			if (response.code === 0) {
-				setJobTitlesCount(response.data || 0);
-			}
-		})();
-	}
-
-
 	return (
 		<UserDataContext.Provider
 			value={{
 				data: userData,
 				updateData: updateUserData,
-				fetchJobTitlesCount,
 			}}
 		>
 			<div className={ style.sidebar }>
