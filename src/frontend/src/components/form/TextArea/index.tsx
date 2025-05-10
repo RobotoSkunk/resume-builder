@@ -81,7 +81,10 @@ export default function TextArea(props: Props)
 
 
 	return (
-		<div className={ style.container }>
+		<div className={ [
+			style.container,
+			props.className || '',
+		].join(' ') }>
 			<textarea
 				id={ id }
 				name={ props.name }
@@ -95,10 +98,7 @@ export default function TextArea(props: Props)
 				required={ props.required }
 				disabled={ props.disabled }
 
-				className={ [
-					roboto400.className,
-					props.className || '',
-				].join(' ') }
+				className={ roboto400.className }
 
 				onInput={ onInputHandler }
 			/>

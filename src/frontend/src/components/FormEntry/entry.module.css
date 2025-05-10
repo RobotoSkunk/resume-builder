@@ -41,11 +41,6 @@
 		max-width: 710px;
 		column-gap: 5px;
 
-		& input,
-		& label {
-			font-size: 0.8em;
-		}
-
 		& input[type=number] {
 			width: 115px;
 		}

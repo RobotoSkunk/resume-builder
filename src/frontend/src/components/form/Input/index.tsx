@@ -74,7 +74,10 @@ export default function Input(props: Props)
 	}
 
 	return (
-		<div className={ style.container }>
+		<div className={ [
+			style.container,
+			props.className || '',
+		].join(' ') }>
 			<input
 				type={ props.type }
 				id={ id }
@@ -87,10 +90,7 @@ export default function Input(props: Props)
 				required={ props.required }
 				disabled={ props.disabled }
 
-				className={ [
-					roboto400.className,
-					props.className || '',
-				].join(' ') }
+				className={ roboto400.className }
 
 				onInput={ onInputHandler }
 			/>

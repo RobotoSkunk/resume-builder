@@ -49,14 +49,14 @@ const fields: Field[] = [
 		type: 'text',
 		name: 'name',
 		label: 'Nombre del título',
-		className: style.input,
+		className: style.field,
 		required: true,
 	},
 	{
 		type: 'textarea',
 		name: 'description',
 		label: 'Descripción',
-		className: style.textarea,
+		className: style.field,
 		required: true,
 	},
 ];

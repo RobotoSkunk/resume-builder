@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 **/
 
-.input,
-.textarea {
+.field input,
+.field textarea {
 	width: 650px;
 }
