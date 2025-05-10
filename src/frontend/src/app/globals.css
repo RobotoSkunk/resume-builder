@@ -127,16 +127,14 @@ button.generic {
 
 	transition: background 0.2s ease;
 
-	&:hover,
-	&:focus {
+	&:hover {
 		background: var(--border-active);
 	}
 
 	&.success {
 		background: var(--color-success);
 
-		&:hover,
-		&:focus {
+		&:hover {
 			background: var(--color-success-hover);
 		}
 	}
@@ -144,8 +142,7 @@ button.generic {
 	&.danger {
 		background: var(--color-danger);
 
-		&:hover,
-		&:focus {
+		&:hover {
 			background: var(--color-danger-hover);
 		}
 	}
@@ -154,7 +151,6 @@ button.generic {
 
 * {
 	user-select: none;
-	outline: none;
 
 	scroll-behavior: smooth;
 }

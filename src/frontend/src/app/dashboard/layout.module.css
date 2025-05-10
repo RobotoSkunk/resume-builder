@@ -68,8 +68,7 @@
 		z-index: -1;
 	}
 
-	&:hover::before,
-	&:focus::before {
+	&:hover::before {
 		width: 100%;
 	}
 

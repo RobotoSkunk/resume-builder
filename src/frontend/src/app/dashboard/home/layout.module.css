@@ -63,8 +63,7 @@
 			background: var(--foreground);
 		}
 
-		&:hover,
-		&:focus {
+		&:hover {
 			background: var(--background-secondary);
 		}
 
