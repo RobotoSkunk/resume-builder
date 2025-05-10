@@ -133,7 +133,7 @@ export default function Page()
 			return false;
 		}
 
-		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/address/create`, data);
+		const response = await window.api.fetch<DB.User>(`/user/${userData.id}/job-title/create`, data);
 
 		if (!response.ok) {
 			alert(response.message);
