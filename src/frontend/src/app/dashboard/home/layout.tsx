@@ -22,7 +22,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import FrozenRouter from '@/components/form/FrozenRouter';
+import FrozenRouter from '@/components/FrozenRouter';
 
 import style from './layout.module.css';
 import { UserDataContext } from '../context';
