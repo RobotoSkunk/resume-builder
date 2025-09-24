@@ -25,7 +25,7 @@ import RSRequest from './router/request';
 import './routes';
 
 
-ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, ...args: unknown[]) =>
+ipcMain.handle('api/fetch', async (_: Electron.IpcMainInvokeEvent, endpoint: string, ...args: unknown[]) =>
 {
 	const route = router.get(endpoint);
 
@@ -39,19 +39,18 @@ ipcMain.on('api/fetch', async (event: Electron.IpcMainEvent, endpoint: string, .
 			console.info('Fetch: ', endpoint, ' | Code: ', response.code);
 		}
 
-		event.reply('api/fetch', {
+		return {
 			ok: response.code === 0,
 			...response,
-		});
-		return;
+		};
 	}
 
 	if (is.dev) {
 		console.info('Fetch: ', endpoint, ' | Not Found');
 	}
 
-	event.reply('api/fetch', {
+	return {
 		code: -1,
 		message: 'Route not found',
-	});
+	};
 });
