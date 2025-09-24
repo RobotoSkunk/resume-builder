@@ -38,35 +38,11 @@ contextBridge.exposeInMainWorld(
 	'api', {
 		fetch: (endpoint: string, args: unknown): Promise<unknown> =>
 		{
-			return new Promise((resolve, reject) =>
-			{
-				const channel = 'api/fetch';
+			const channel = 'api/fetch';
 
-				const listener = (_: Electron.IpcRendererEvent, resArgs: unknown) =>
-				{
-					try {
-						resolve(resArgs);
-
-					} catch (e) {
-						reject(e);
-
-					} finally {
-						clearTimeout(timeout);
-
-						ipcRenderer.removeListener(channel, listener);
-					}
-				};
-
-				ipcRenderer.on(channel, listener);
-				ipcRenderer.send(channel, endpoint, args);
-
-				const timeout = setTimeout(() =>
-				{
-					ipcRenderer.removeListener(channel, listener);
-					reject(`Request '${endpoint}' took too long to respond...`);
-				}, 10000);
-			});
+			return ipcRenderer.invoke(channel, endpoint, args);
 		},
+
 
 		window: {
 			setTitle: (title: string) => ipcRenderer.send('window/set-title', title),
